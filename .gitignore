@@ -1,0 +1,23 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+downloads_cnj/
+*.pdf
+cnj_dados_rj_*.csv
+chromedriver.exe
+geckodriver.exe
+debug_*.py

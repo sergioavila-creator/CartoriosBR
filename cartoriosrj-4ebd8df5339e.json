@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cartoriosrj",
+  "private_key_id": "4ebd8df5339e60047adcf30b70ac4aaccd28f7fa",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDzP44rtj1bXJTz\nc9SPL+jX6LaDTvDsmL48M4vfrZ7qqjG793mR2EwGcEo8zfu4zYpUAEH5J9dfd9AR\nF7D0odS3zYXdNr0f7nOQkgPf+izEVzgKkBKgwEGVrSjpkf4F2a2TneT5k/o+jLFU\n5cAfKxL6+8ShlxigxdvwFL4wUl/LQoZhWEaCD5zJqI9mxuExFvopa0Pt9L/CSf+z\nkg9rS7NiwM7WsOyDHz/KJlPo6hmDjBwIx05W8FZSKgs9l/QaCic+jZlOED8uat+r\nCY3H6cUtag+NoRrPNONk19EVDfGznSgAtQrjgDhe9xTySrnKV2U/eMWq0HXZa5ny\nIu9tW5KZAgMBAAECggEAHBBsmDQjOcEMOaxW9/At8TRwU4+jh0CLeN707SkXCSRQ\nBEuQk0Lnvo8XruflpL7TY06mTeyKp4E8wwQUjpzZ3HI8rAw5NLpqSzc1dZK5CywJ\nk1pnnnP1UniocY4+RwbZb7W1/xTTYy0QoTwNTECdeicwWqOtRpCdXUJ0u5bSu4dR\n6viqpJcVzj8ZH+PUe3VbC1BpJrXyn+onbDuiUfE7M7CUqqXGSia/ar55Rr7ZmZQE\nnUOHc+kqXmQvwYE88/iQDNb6UX1UpBwWAMWdqv2+QRGTys3JBbotZZh9UL1ahwcJ\n3/qEY7lFMcsoPxdfascJgM1tManIvfyCkwhAFNwoswKBgQD9JVwIlGUmPtfigbNN\n0Au1kO1Rvzdi93RKRVYrQKM8GnNCW1GomG5ByGi3By991CVEkkpu/MksPsHykFJl\nw6HxyBVIqQWV+1F3xoAL0LwiOY5qk5fTLNzOp4/nhWFIv3+Jg+yJt57WaR4yAu0r\nO6PpeTjwA80ChvaONjwtD8bpPwKBgQD1/aD28we4eq4G4c4dxw+vrLTNMICoC2zH\niWh31/LlaUxp7EPtf63DHjw3LERWv6kVGJMGUXV+rWph5dparmg1R6T+26pLEqxb\n9n6OkW3YFLX4wqkAXrUgsWmDU8fttda5s9DtnoKF7nRVuC96F1939xuRZ431N6gF\nfdX2U7V2JwKBgHcpmPMo95xTRMiJCWB9qKVlfXFXs7jQh1tW3EMsACsQwGTiG8Rj\nTLOGpVRS+5YdwRVQT92C/Sfout919HOW7aqk5u/3MHvze9wIAsqNDaKGuXWN2JA9\ntAtLcUAo1yypiF2xTi1d1FVV0jL0kbQiNPx4ZccF4wFnirRS72y+2oF9AoGBAMf+\n7Ha6wsUvIPxBbBXzuQIoVVsaGxAFMezM/92n+jigstrPl66phvnDREvLNsiczPh0\n4VxasD9M+NgdS7k8YUcoN7Jpn/unc/DU6LI69OageA6HHWZKmdK5y0JVxI+0rp6O\n3sfCfvYrF/R1akxGYn0jsAs4+UaseHP2ihXamwczAoGBAPxanRpllQQEXbTfG/7A\nFLUuUrGrUo5ql+XGaIBAizx7YlH4opCtouI7CMej7O+jLfvpLWTLXg0oxcrhvTtZ\n5+VsKdJyMZptlU+ZUSpjKDZeYWXpSasW3AIaXtmQ5QYlaU0DN+a6+xqHcOTpDJJ3\nU7U/NjPwixpvvtE1xBUPeX79\n-----END PRIVATE KEY-----\n",
+  "client_email": "cartoriosrj@cartoriosrj.iam.gserviceaccount.com",
+  "client_id": "107696209604876536837",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cartoriosrj%40cartoriosrj.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
