@@ -36,12 +36,14 @@ jobs:
 
     # 1. Atualizar Municípios IBGE
     - name: Update IBGE Municipalities
+      continue-on-error: true
       env:
         GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
       run: python extrair_municipios_ibge.py
 
     # 2. Atualizar Justiça Aberta CNJ (Analytics)
     - name: Update CNJ Analytics Data
+      continue-on-error: true
       env:
         HEADLESS: "true"
         GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}

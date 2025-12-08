@@ -212,7 +212,15 @@ def upload_sheet_generic(sh, file_path, tab_name):
     
     print(f"Processando upload de {file_path} para aba '{tab_name}'...")
     try:
-        df = pd.read_excel(file_path)
+        if file_path.endswith('.csv'):
+            # Tenta diferentes encodings
+            try:
+                df = pd.read_csv(file_path, encoding='utf-8', sep=';')
+            except:
+                df = pd.read_csv(file_path, encoding='latin1', sep=';')
+        else:
+            df = pd.read_excel(file_path)
+            
         df = df.dropna(how='all')
         df = df.astype(str)
         
