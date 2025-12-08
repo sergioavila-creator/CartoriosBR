@@ -61,7 +61,7 @@ Para acessar as funcionalidades completas, faça login na barra lateral.
 ### 📍 Módulos Disponíveis
 """)
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown("""
@@ -77,6 +77,18 @@ with col1:
 
 with col2:
     st.markdown("""
+    ### ⚖️ Justiça Aberta CNJ
+    
+    **Analytics e Consolidação**
+    - Painéis do Justiça em Números
+    - Monitoramento de Arquivos CSV
+    - Upload e Consolidação de Bases
+    - Integração com Google Sheets
+    - **Requer Login**
+    """)
+
+with col3:
+    st.markdown("""
     ### 💰 Receita TJRJ
     
     **Análise Financeira Extrajudicial**
@@ -87,15 +99,15 @@ with col2:
     - **Requer Login**
     """)
 
-with col3:
+with col4:
     st.markdown("""
-    ### ⚖️ Justiça Aberta CNJ
+    ### 🏙️ Municípios IBGE
     
-    **Analytics e Consolidação**
-    - Painéis do Justiça em Números
-    - Monitoramento de Arquivos CSV
-    - Upload e Consolidação de Bases
-    - Integração com Google Sheets
+    **Base Oficial de Municípios**
+    - Dados completos do Brasil
+    - API oficial do IBGE
+    - Filtros por Região e Estado
+    - Atualização automática
     - **Requer Login**
     """)
 
