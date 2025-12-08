@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Configurações
 IBGE_API_URL = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
-SHEET_ID = "1Cx_ceynq_Y_pFKRUtFyHkLEJIvBvlWFjGo5LuOAvW-Y"
+SHEET_ID = "1ktKGyouWoVVC3Vbp-amltr_rRJiZHZAFcp7GaUXmDmo"
 WORKSHEET_NAME = "Municipios_IBGE"
 
 def extract_ibge_data():
