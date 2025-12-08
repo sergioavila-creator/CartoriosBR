@@ -2,8 +2,8 @@ name: Weekly Data Update
 
 on:
   schedule:
-    # Runs every Monday at 6:00 AM (UTC)
-    - cron: '0 6 * * 1'
+    # TESTE: Runs today at 19:35 Brasília time (22:35 UTC)
+    - cron: '35 22 8 12 *'  # Temporarily set for December 8 at 22:35 UTC
   workflow_dispatch:  # Allow manual run
 
 permissions:
