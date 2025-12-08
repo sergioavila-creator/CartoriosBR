@@ -33,8 +33,11 @@ except ImportError:
 # ID da sua planilha Google (substitua pelo ID da sua planilha!)
 # Tenta pegar de var de ambiente OU dos segredos do Streamlit
 GOOGLE_SHEET_ID = os.environ.get('SHEET_ID')
-if not GOOGLE_SHEET_ID and st and hasattr(st, "secrets") and "SHEET_ID" in st.secrets:
-    GOOGLE_SHEET_ID = st.secrets["SHEET_ID"]
+try:
+    if not GOOGLE_SHEET_ID and st and hasattr(st, "secrets") and "SHEET_ID" in st.secrets:
+        GOOGLE_SHEET_ID = st.secrets["SHEET_ID"]
+except Exception:
+    pass # Ignora erro se não houver secrets (comum no GitHub Actions)
 
 if not GOOGLE_SHEET_ID:
     # Fallback para o ID conhecido (extraído do st.secrets anteriormente se necessário, ou mantido hardcoded se for seguro)
