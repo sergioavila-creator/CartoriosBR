@@ -46,6 +46,61 @@ with st.sidebar:
         if st.button("🗑️ Limpar Cache"):
             st.cache_data.clear()
             st.success("Cache limpo! Recarregue (F5).")
+        
+        st.write("")
+        
+        # Botão de Atualização Geral
+        if st.button("🔄 Atualizar Todas as Bases", type="primary", use_container_width=True):
+            import subprocess
+            import sys
+            import os
+            
+            status_box = st.status("🚀 Atualizando todas as bases de dados...", expanded=True)
+            
+            scripts = [
+                ("Municípios IBGE", "extrair_municipios_ibge.py"),
+                ("Justiça Aberta CNJ", "extrair_cnj_analytics.py"),
+                ("Cadastro CNJ", "update_cnj_registry.py"),
+                ("Receita TJRJ", "update_tjrj_revenue.py")
+            ]
+            
+            results = []
+            for nome, script in scripts:
+                status_box.write(f"📥 Atualizando {nome}...")
+                try:
+                    result = subprocess.run(
+                        [sys.executable, script],
+                        capture_output=True,
+                        text=True,
+                        cwd=os.getcwd(),
+                        timeout=300  # 5 minutos por script
+                    )
+                    
+                    if result.returncode == 0:
+                        results.append((nome, "✅", "Sucesso"))
+                        status_box.write(f"✅ {nome} concluído")
+                    else:
+                        results.append((nome, "❌", "Erro"))
+                        status_box.write(f"❌ {nome} falhou")
+                except Exception as e:
+                    results.append((nome, "❌", str(e)))
+                    status_box.write(f"❌ {nome} erro: {str(e)[:50]}")
+            
+            # Resumo final
+            sucessos = sum(1 for _, status, _ in results if status == "✅")
+            total = len(results)
+            
+            if sucessos == total:
+                status_box.update(label=f"✅ Todas as {total} bases atualizadas!", state="complete", expanded=False)
+                st.balloons()
+            else:
+                status_box.update(label=f"⚠️ {sucessos}/{total} bases atualizadas", state="error", expanded=True)
+            
+            # Tabela de resultados
+            with st.expander("📊 Detalhes da Atualização"):
+                import pandas as pd
+                df_results = pd.DataFrame(results, columns=["Base", "Status", "Mensagem"])
+                st.dataframe(df_results, use_container_width=True, hide_index=True)
 
 # ============================================================================
 # MAIN CONTENT

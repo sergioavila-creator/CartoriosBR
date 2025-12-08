@@ -1,0 +1,18 @@
+"""
+Script para atualizar dados da Receita TJRJ
+Wrapper para integração com o botão de atualização geral
+"""
+import cloud_processo
+
+def main():
+    print("Iniciando atualização da Receita TJRJ...")
+    try:
+        cloud_processo.cloud_main(None)
+        print("Receita TJRJ atualizada com sucesso!")
+    except Exception as e:
+        print(f"Erro na atualização: {e}")
+        import sys
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
