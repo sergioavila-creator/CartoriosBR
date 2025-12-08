@@ -59,28 +59,6 @@ def wait_for_download(timeout=60):
         seconds += 1
     return None
 
-def extract_cnj_data():
-    """Executa a extração dos dados"""
-    # Verifica se deve rodar headless (padrão para servidor) ou visual (se configurado)
-    is_headless = os.environ.get("HEADLESS", "true").lower() == "true"
-    print(f"Iniciando extração (Headless: {is_headless})...")
-    
-    driver = setup_driver(headless=is_headless)
-    
-    try:
-        driver.get(CNJ_URL)
-        print("Página carregada, aguardando renderização...")
-        
-        # Aguarda um elemento chave do Qlik Sense carregar (canvas ou grid)
-        WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "qv-grid-object-scroll-area"))
-        )
-        
-        # Espera extra para garantir que os gráficos renderizaram
-        time.sleep(10)
-        
-        # Tenta encontrar o elemento central para clicar com botão direito
-        # Estratégia: Clicar no centro da tela onde geralmente fica o grid
 def click_export_menu(driver):
     """Navega pelos menus de exportação do Qlik"""
     try:
@@ -111,6 +89,7 @@ def click_export_menu(driver):
         return True
     except:
         return False
+
 
 def extract_cnj_data():
     """Executa a extração dos dados (Download de 2 tabelas)"""
