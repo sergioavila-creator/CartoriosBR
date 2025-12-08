@@ -37,7 +37,8 @@ if not GOOGLE_SHEET_ID and st and hasattr(st, "secrets") and "SHEET_ID" in st.se
     GOOGLE_SHEET_ID = st.secrets["SHEET_ID"]
 
 if not GOOGLE_SHEET_ID:
-    GOOGLE_SHEET_ID = 'SUA_PLANILHA_ID_AQUI_OU_CONFIGURE_SECRETS'
+    # Fallback para o ID conhecido (extraído do st.secrets anteriormente se necessário, ou mantido hardcoded se for seguro)
+    GOOGLE_SHEET_ID = '1SkxwQoAnNpcNBg1niLpaRaMs79h8rp143NPgsr1EAXo' # ID da planilha de Receita
 
 # --- CONFIGURAÇÕES DO BAIXADOR ---
 BASE_PAGE = "https://www.tjrj.jus.br/transparencia/relatorio-de-receita-cartoraria-extrajudicial"
@@ -375,8 +376,11 @@ def exportar_para_sheets(df_brutos: pd.DataFrame, df_analise: pd.DataFrame, df_d
     print("Iniciando exportação para o Google Sheets (4 abas)...")
     
     try:
-        # Autenticação
-        if st and hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
+        if "GCP_SERVICE_ACCOUNT" in os.environ:
+             import json
+             creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+             gc = gspread.service_account_from_dict(creds_dict)
+        elif st and hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
              gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
         else:
              gc = gspread.service_account()

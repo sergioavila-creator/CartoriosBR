@@ -26,7 +26,7 @@ def setup_driver(headless=True):
     
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--window-size=2560,1440") # Aumentado resolução para garantir renderização de menus
     
     # CRÍTICO: Desabilita detecção de automação para permitir downloads
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -34,8 +34,10 @@ def setup_driver(headless=True):
     
     # Configurar downloads automáticos
     if os.path.exists(DOWNLOAD_DIR):
-        shutil.rmtree(DOWNLOAD_DIR)
-    os.makedirs(DOWNLOAD_DIR)
+        if os.path.exists(DOWNLOAD_DIR):
+            try: shutil.rmtree(DOWNLOAD_DIR)
+            except: pass
+    os.makedirs(DOWNLOAD_DIR, exist_ok=True)
     
     prefs = {
         "download.default_directory": DOWNLOAD_DIR,
@@ -122,11 +124,11 @@ def extract_cnj_data():
     try:
         driver.get(CNJ_URL)
         print("Página carregada, aguardando renderização...")
-        time.sleep(20)  # Aumentado para 20 segundos
+        time.sleep(45)  # Aumentado para 45 segundos para carga pesada do Qlik
         
         # Aguarda explicitamente pelos botões de exportação
         try:
-            WebDriverWait(driver, 30).until(
+            WebDriverWait(driver, 45).until(
                 EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Exportar dados em .csv')]"))
             )
             print("Botões de exportação detectados!")
