@@ -53,52 +53,7 @@ jobs:
     - name: Update CNJ Registry
       env:
         GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      run: |
-        python -c "
-        import gspread
-        from google.oauth2.service_account import Credentials
-        import json
-        import os
-        from cnj_api import CNJClient
-        import pandas as pd
-        from datetime import datetime
-        
-        # Autenticação
-        creds_dict = json.loads(os.environ['GCP_SERVICE_ACCOUNT'])
-        scope = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-        credentials = Credentials.from_service_account_info(creds_dict, scopes=scope)
-        gc = gspread.authorize(credentials)
-        
-        # Buscar dados
-        client = CNJClient()
-        estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
-        
-        all_data = []
-        for uf in estados:
-            print(f'Buscando {uf}...')
-            try:
-                data = client.buscar_serventias(uf)
-                all_data.extend(data)
-            except Exception as e:
-                print(f'Erro em {uf}: {e}')
-        
-        # Salvar
-        df = pd.DataFrame(all_data)
-        df.insert(0, 'data_atualizacao', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        df = df.astype(str)
-        
-        sh = gc.open_by_key('1SkxwQoAnNpcNBg1niLpaRaMs79h8rp143NPgsr1EAXo')
-        try:
-            ws = sh.worksheet('Dados CNJ')
-            ws.clear()
-        except:
-            ws = sh.add_worksheet(title='Dados CNJ', rows=len(df)+100, cols=len(df.columns)+5)
-        
-        ws.update([df.columns.values.tolist()] + df.values.tolist())
-        ws.freeze(rows=1)
-        ws.set_basic_filter(1, 1, len(df)+1, len(df.columns))
-        print(f'Cadastro CNJ atualizado: {len(df)} registros')
-        "
+      run: python extrair_cadastro_cnj.py
 
     # 4. Atualizar Receita TJRJ
     - name: Update TJRJ Revenue
