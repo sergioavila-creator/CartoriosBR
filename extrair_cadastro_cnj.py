@@ -32,20 +32,25 @@ def main():
     estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
     
     all_data = []
-    print(f"Consultando {len(estados)} estados...")
+    today_str = datetime.now().strftime('%d/%m/%Y')
+    print(f"Consultando {len(estados)} estados com período 01/01/2000 a {today_str}...")
     
     for uf in estados:
         try:
             print(f"  > {uf}...", end=" ")
-            data = client.buscar_serventias(uf)
-            if data:
+            # CRÍTICO: O método correto é buscar_serventias_ativas e EXIGE período.
+            # Usando período amplo para tentar trazer histórico/cadastro completo
+            data = client.buscar_serventias_ativas("01/01/2000", today_str, uf)
+            
+            if not data.empty:
                 print(f"OK ({len(data)} registros)")
-                all_data.extend(data)
+                # Converte para lista de dicts para o extend
+                all_data.extend(data.to_dict('records'))
             else:
                 print("Vazio")
             time.sleep(0.5) # Evitar rate limit
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Erro em {uf}: {e}")
 
     if not all_data:
         print("Nenhum dado encontrado em nenhum estado. Abortando upload.")
