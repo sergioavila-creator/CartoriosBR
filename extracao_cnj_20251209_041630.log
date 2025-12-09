@@ -1,0 +1,490 @@
+2025-12-09 04:16:30,333 [INFO] === Iniciando extração CNJ Analytics ===
+2025-12-09 04:16:30,333 [INFO] Log salvo em: extracao_cnj_20251209_041630.log
+2025-12-09 04:16:30,333 [INFO] Iniciando extração (Headless: False)...
+2025-12-09 04:16:30,334 [INFO] ====== WebDriver manager ======
+2025-12-09 04:16:31,270 [INFO] Get LATEST chromedriver version for google-chrome
+2025-12-09 04:16:31,274 [DEBUG] Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2025-12-09 04:16:31,516 [DEBUG] https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/1.1" 200 14342
+2025-12-09 04:16:31,557 [INFO] Get LATEST chromedriver version for google-chrome
+2025-12-09 04:16:31,558 [DEBUG] Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2025-12-09 04:16:31,803 [DEBUG] https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/1.1" 200 14342
+2025-12-09 04:16:31,819 [INFO] Driver [C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe] found in cache
+2025-12-09 04:16:31,820 [DEBUG] Skipping Selenium Manager; path to chrome driver specified in Service class: C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe
+2025-12-09 04:16:31,825 [DEBUG] Started executable: `C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe` in a child process with pid: 11484 using 0 to output -3
+2025-12-09 04:16:32,342 [DEBUG] POST http://localhost:55370/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'prefs': {'download.default_directory': 'C:\\Users\\avila\\OneDrive\\Escritorio\\site CartoiosRJ\\downloads_cnj', 'download.prompt_for_download': False, 'download.directory_upgrade': True, 'safebrowsing.enabled': True}, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--window-size=2560,1440']}}}}
+2025-12-09 04:16:32,343 [DEBUG] Starting new HTTP connection (1): localhost:55370
+2025-12-09 04:16:33,187 [DEBUG] http://localhost:55370 "POST /session HTTP/1.1" 200 0
+2025-12-09 04:16:33,187 [DEBUG] Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"143.0.7499.41","chrome":{"chromedriverVersion":"143.0.7499.40 (c23ff452476d1b6322d73b9b629420ef119d0388-refs/branch-heads/7499@{#2388})","userDataDir":"C:\\Windows\\SystemTemp\\scoped_dir11484_1070588325"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:55373"},"goog:processID":22468,"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"windows","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"d04d512a6663a7d21eb10d66e6cb56fd"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:33,188 [DEBUG] Finished Request
+2025-12-09 04:16:33,188 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/goog/cdp/execute {'cmd': 'Page.addScriptToEvaluateOnNewDocument', 'params': {'source': "\n            Object.defineProperty(navigator, 'webdriver', {\n                get: () => undefined\n  ..."}}
+2025-12-09 04:16:33,194 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/goog/cdp/execute HTTP/1.1" 200 0
+2025-12-09 04:16:33,194 [DEBUG] Remote response: status=200 | data={"value":{"identifier":"2"}} | headers=HTTPHeaderDict({'Content-Length': '28', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:33,194 [DEBUG] Finished Request
+2025-12-09 04:16:33,194 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/url {'url': 'https://paineisanalytics.cnj.jus.br/single/?appid=6ae52b4b-f6fb-4e06-8f8a-19c0656b1408&sheet=8413120...'}
+2025-12-09 04:16:33,555 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/url HTTP/1.1" 200 0
+2025-12-09 04:16:33,556 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:33,557 [DEBUG] Finished Request
+2025-12-09 04:16:33,557 [INFO] Página carregada, aguardando renderização (25s)...
+2025-12-09 04:16:58,558 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:16:58,583 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:16:58,583 [DEBUG] Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:58,583 [DEBUG] Finished Request
+2025-12-09 04:16:58,584 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'keyDown', 'value': '\ue00c'}, {'type': 'keyUp', 'value': '\ue00c'}]}]}
+2025-12-09 04:16:58,592 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/actions HTTP/1.1" 200 0
+2025-12-09 04:16:58,592 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:58,592 [DEBUG] Finished Request
+2025-12-09 04:16:59,593 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'css selector', 'value': '.lui-fade'}
+2025-12-09 04:16:59,623 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:16:59,624 [DEBUG] Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:59,625 [DEBUG] Finished Request
+2025-12-09 04:16:59,626 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//button[contains(@title, 'Fechar') or contains(@class, 'close')]"}
+2025-12-09 04:16:59,644 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:16:59,644 [DEBUG] Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:59,645 [DEBUG] Finished Request
+2025-12-09 04:16:59,645 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:16:59,659 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/element HTTP/1.1" 200 0
+2025-12-09 04:16:59,659 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.23"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:59,660 [DEBUG] Finished Request
+2025-12-09 04:16:59,660 [INFO] Botões de exportação detectados!
+2025-12-09 04:16:59,660 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'window.scrollTo(0, document.body.scrollHeight);', 'args': []}
+2025-12-09 04:16:59,667 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:16:59,667 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:16:59,667 [DEBUG] Finished Request
+2025-12-09 04:17:04,668 [INFO] 
+--- Processando Tabela 1: SERVENTIAS ---
+2025-12-09 04:17:04,669 [INFO] Tentativa 1/3 para serventias
+2025-12-09 04:17:04,669 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:17:04,686 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:17:04,687 [DEBUG] Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:04,687 [DEBUG] Finished Request
+2025-12-09 04:17:04,688 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'keyDown', 'value': '\ue00c'}, {'type': 'keyUp', 'value': '\ue00c'}]}]}
+2025-12-09 04:17:04,695 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/actions HTTP/1.1" 200 0
+2025-12-09 04:17:04,695 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:04,695 [DEBUG] Finished Request
+2025-12-09 04:17:05,696 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'css selector', 'value': '.lui-fade'}
+2025-12-09 04:17:05,723 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:17:05,724 [DEBUG] Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:05,724 [DEBUG] Finished Request
+2025-12-09 04:17:05,724 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//button[contains(@title, 'Fechar') or contains(@class, 'close')]"}
+2025-12-09 04:17:05,736 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:17:05,737 [DEBUG] Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'Content-Length': '12', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:05,737 [DEBUG] Finished Request
+2025-12-09 04:17:05,737 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Serventia') or contains(text(), 'CNS')]"}
+2025-12-09 04:17:05,755 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/element HTTP/1.1" 200 0
+2025-12-09 04:17:05,755 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.24"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:05,755 [DEBUG] Finished Request
+2025-12-09 04:17:05,756 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.24'}]}
+2025-12-09 04:17:05,761 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:17:05,762 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:05,762 [DEBUG] Finished Request
+2025-12-09 04:17:06,763 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.24'}]}
+2025-12-09 04:17:06,779 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:17:06,780 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:06,780 [DEBUG] Finished Request
+2025-12-09 04:17:08,781 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:17:08,796 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:17:08,797 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.23"},{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:08,797 [DEBUG] Finished Request
+2025-12-09 04:17:08,797 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.23/rect {}
+2025-12-09 04:17:08,805 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.23/rect HTTP/1.1" 200 0
+2025-12-09 04:17:08,806 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2890.375}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:08,806 [DEBUG] Finished Request
+2025-12-09 04:17:08,806 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25/rect {}
+2025-12-09 04:17:08,815 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25/rect HTTP/1.1" 200 0
+2025-12-09 04:17:08,815 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:08,816 [DEBUG] Finished Request
+2025-12-09 04:17:08,816 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25/rect {}
+2025-12-09 04:17:08,823 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25/rect HTTP/1.1" 200 0
+2025-12-09 04:17:08,823 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:08,823 [DEBUG] Finished Request
+2025-12-09 04:17:08,824 [INFO] Clicando no botão (Y=2150)...
+2025-12-09 04:17:08,824 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25'}]}
+2025-12-09 04:17:08,829 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:17:08,829 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:08,829 [DEBUG] Finished Request
+2025-12-09 04:17:09,830 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.25'}]}
+2025-12-09 04:17:09,835 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:17:09,835 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:17:09,836 [DEBUG] Finished Request
+2025-12-09 04:17:09,836 [INFO] Aguardando download (timeout=180s)...
+2025-12-09 04:17:09,837 [DEBUG]   ... 0s aguardando...
+2025-12-09 04:17:14,841 [DEBUG]   ... 5s aguardando...
+2025-12-09 04:17:19,846 [DEBUG]   ... 10s aguardando...
+2025-12-09 04:17:24,849 [DEBUG]   ... 15s aguardando...
+2025-12-09 04:17:29,854 [DEBUG]   ... 20s aguardando...
+2025-12-09 04:17:34,858 [DEBUG]   ... 25s aguardando...
+2025-12-09 04:17:39,862 [DEBUG]   ... 30s aguardando...
+2025-12-09 04:17:44,866 [DEBUG]   ... 35s aguardando...
+2025-12-09 04:17:49,870 [DEBUG]   ... 40s aguardando...
+2025-12-09 04:17:54,874 [DEBUG]   ... 45s aguardando...
+2025-12-09 04:17:59,878 [DEBUG]   ... 50s aguardando...
+2025-12-09 04:18:04,881 [DEBUG]   ... 55s aguardando...
+2025-12-09 04:18:09,886 [DEBUG]   ... 60s aguardando...
+2025-12-09 04:18:14,891 [DEBUG]   ... 65s aguardando...
+2025-12-09 04:18:19,895 [DEBUG]   ... 70s aguardando...
+2025-12-09 04:18:24,899 [DEBUG]   ... 75s aguardando...
+2025-12-09 04:18:29,903 [DEBUG]   ... 80s aguardando...
+2025-12-09 04:18:34,908 [DEBUG]   ... 85s aguardando...
+2025-12-09 04:18:39,911 [DEBUG]   ... 90s aguardando...
+2025-12-09 04:18:44,916 [DEBUG]   ... 95s aguardando...
+2025-12-09 04:18:49,920 [DEBUG]   ... 100s aguardando...
+2025-12-09 04:18:54,924 [DEBUG]   ... 105s aguardando...
+2025-12-09 04:18:59,928 [DEBUG]   ... 110s aguardando...
+2025-12-09 04:19:04,931 [DEBUG]   ... 115s aguardando...
+2025-12-09 04:19:09,935 [DEBUG]   ... 120s aguardando...
+2025-12-09 04:19:14,940 [DEBUG]   ... 125s aguardando...
+2025-12-09 04:19:19,944 [DEBUG]   ... 130s aguardando...
+2025-12-09 04:19:24,949 [DEBUG]   ... 135s aguardando...
+2025-12-09 04:19:29,954 [DEBUG]   ... 140s aguardando...
+2025-12-09 04:19:34,958 [DEBUG]   ... 145s aguardando...
+2025-12-09 04:19:39,963 [DEBUG]   ... 150s aguardando...
+2025-12-09 04:19:44,969 [DEBUG]   ... 155s aguardando...
+2025-12-09 04:19:49,974 [DEBUG]   ... 160s aguardando...
+2025-12-09 04:19:54,979 [DEBUG]   ... 165s aguardando...
+2025-12-09 04:19:59,984 [DEBUG]   ... 170s aguardando...
+2025-12-09 04:20:04,989 [DEBUG]   ... 175s aguardando...
+2025-12-09 04:20:09,995 [WARNING] Timeout no download de serventias. Tentando novamente...
+2025-12-09 04:20:09,995 [INFO] Tentativa 2/3 para serventias
+2025-12-09 04:20:09,996 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:20:10,017 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:20:10,017 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.28"}]} | headers=HTTPHeaderDict({'Content-Length': '128', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:10,018 [DEBUG] Finished Request
+2025-12-09 04:20:10,018 [WARNING] Detectado modal de Erro/Conexão Perdida. Tentando recuperar...
+2025-12-09 04:20:10,018 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//button[contains(text(), 'Atualizar') or contains(text(), 'Refresh')]"}
+2025-12-09 04:20:10,032 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:20:10,033 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.29"}]} | headers=HTTPHeaderDict({'Content-Length': '128', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:10,033 [DEBUG] Finished Request
+2025-12-09 04:20:10,034 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': '/* isDisplayed */return (function(){return (function(){var g=this||self;\nfunction aa(a){var b=typeof...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.29'}]}
+2025-12-09 04:20:10,045 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:20:10,045 [DEBUG] Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:10,046 [DEBUG] Finished Request
+2025-12-09 04:20:10,046 [INFO] Clicando em 'Atualizar'...
+2025-12-09 04:20:10,046 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C8232AD1FC363DA1A89441CE4722D234.e.29'}]}
+2025-12-09 04:20:10,071 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:20:10,071 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:10,072 [DEBUG] Finished Request
+2025-12-09 04:20:10,072 [INFO] Aguardando recarregamento da página (20s)...
+2025-12-09 04:20:30,073 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Serventia') or contains(text(), 'CNS')]"}
+2025-12-09 04:20:30,094 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/element HTTP/1.1" 200 0
+2025-12-09 04:20:30,095 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.52"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:30,095 [DEBUG] Finished Request
+2025-12-09 04:20:30,096 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.52'}]}
+2025-12-09 04:20:30,103 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:20:30,103 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:30,103 [DEBUG] Finished Request
+2025-12-09 04:20:31,104 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.52'}]}
+2025-12-09 04:20:31,118 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:20:31,119 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:31,119 [DEBUG] Finished Request
+2025-12-09 04:20:33,119 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:20:33,131 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:20:33,131 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.53"},{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:33,131 [DEBUG] Finished Request
+2025-12-09 04:20:33,132 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.53/rect {}
+2025-12-09 04:20:33,140 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.53/rect HTTP/1.1" 200 0
+2025-12-09 04:20:33,141 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2890.375}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:33,141 [DEBUG] Finished Request
+2025-12-09 04:20:33,141 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54/rect {}
+2025-12-09 04:20:33,151 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54/rect HTTP/1.1" 200 0
+2025-12-09 04:20:33,151 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:33,151 [DEBUG] Finished Request
+2025-12-09 04:20:33,152 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54/rect {}
+2025-12-09 04:20:33,160 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54/rect HTTP/1.1" 200 0
+2025-12-09 04:20:33,160 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:33,161 [DEBUG] Finished Request
+2025-12-09 04:20:33,161 [INFO] Clicando no botão (Y=2150)...
+2025-12-09 04:20:33,161 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54'}]}
+2025-12-09 04:20:33,167 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:20:33,167 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:33,168 [DEBUG] Finished Request
+2025-12-09 04:20:34,169 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.54'}]}
+2025-12-09 04:20:34,175 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:20:34,175 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:20:34,175 [DEBUG] Finished Request
+2025-12-09 04:20:34,175 [INFO] Aguardando download (timeout=180s)...
+2025-12-09 04:20:34,176 [DEBUG]   ... 0s aguardando...
+2025-12-09 04:20:39,180 [DEBUG]   ... 5s aguardando...
+2025-12-09 04:20:44,184 [DEBUG]   ... 10s aguardando...
+2025-12-09 04:20:49,188 [DEBUG]   ... 15s aguardando...
+2025-12-09 04:20:54,193 [DEBUG]   ... 20s aguardando...
+2025-12-09 04:20:59,197 [DEBUG]   ... 25s aguardando...
+2025-12-09 04:21:04,202 [DEBUG]   ... 30s aguardando...
+2025-12-09 04:21:09,205 [DEBUG]   ... 35s aguardando...
+2025-12-09 04:21:14,209 [DEBUG]   ... 40s aguardando...
+2025-12-09 04:21:19,214 [DEBUG]   ... 45s aguardando...
+2025-12-09 04:21:24,224 [DEBUG]   ... 50s aguardando...
+2025-12-09 04:21:29,229 [DEBUG]   ... 55s aguardando...
+2025-12-09 04:21:34,235 [DEBUG]   ... 60s aguardando...
+2025-12-09 04:21:39,241 [DEBUG]   ... 65s aguardando...
+2025-12-09 04:21:44,246 [DEBUG]   ... 70s aguardando...
+2025-12-09 04:21:49,250 [DEBUG]   ... 75s aguardando...
+2025-12-09 04:21:54,268 [DEBUG]   ... 80s aguardando...
+2025-12-09 04:21:59,272 [DEBUG]   ... 85s aguardando...
+2025-12-09 04:22:04,275 [DEBUG]   ... 90s aguardando...
+2025-12-09 04:22:09,288 [DEBUG]   ... 95s aguardando...
+2025-12-09 04:22:14,304 [DEBUG]   ... 100s aguardando...
+2025-12-09 04:22:19,308 [DEBUG]   ... 105s aguardando...
+2025-12-09 04:22:24,313 [DEBUG]   ... 110s aguardando...
+2025-12-09 04:22:29,317 [DEBUG]   ... 115s aguardando...
+2025-12-09 04:22:34,320 [DEBUG]   ... 120s aguardando...
+2025-12-09 04:22:39,325 [DEBUG]   ... 125s aguardando...
+2025-12-09 04:22:44,330 [DEBUG]   ... 130s aguardando...
+2025-12-09 04:22:49,339 [DEBUG]   ... 135s aguardando...
+2025-12-09 04:22:54,352 [DEBUG]   ... 140s aguardando...
+2025-12-09 04:22:59,356 [DEBUG]   ... 145s aguardando...
+2025-12-09 04:23:04,360 [DEBUG]   ... 150s aguardando...
+2025-12-09 04:23:09,365 [DEBUG]   ... 155s aguardando...
+2025-12-09 04:23:14,369 [DEBUG]   ... 160s aguardando...
+2025-12-09 04:23:19,374 [DEBUG]   ... 165s aguardando...
+2025-12-09 04:23:24,378 [DEBUG]   ... 170s aguardando...
+2025-12-09 04:23:29,382 [DEBUG]   ... 175s aguardando...
+2025-12-09 04:23:34,385 [WARNING] Timeout no download de serventias. Tentando novamente...
+2025-12-09 04:23:34,386 [INFO] Tentativa 3/3 para serventias
+2025-12-09 04:23:34,386 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:23:34,400 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:23:34,400 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.57"}]} | headers=HTTPHeaderDict({'Content-Length': '128', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:34,401 [DEBUG] Finished Request
+2025-12-09 04:23:34,401 [WARNING] Detectado modal de Erro/Conexão Perdida. Tentando recuperar...
+2025-12-09 04:23:34,401 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//button[contains(text(), 'Atualizar') or contains(text(), 'Refresh')]"}
+2025-12-09 04:23:34,411 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:23:34,411 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.58"}]} | headers=HTTPHeaderDict({'Content-Length': '128', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:34,412 [DEBUG] Finished Request
+2025-12-09 04:23:34,412 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': '/* isDisplayed */return (function(){return (function(){var g=this||self;\nfunction aa(a){var b=typeof...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.58'}]}
+2025-12-09 04:23:34,422 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:23:34,422 [DEBUG] Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:34,422 [DEBUG] Finished Request
+2025-12-09 04:23:34,423 [INFO] Clicando em 'Atualizar'...
+2025-12-09 04:23:34,423 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.76E081D62FED8F942DEED2713116FA72.e.58'}]}
+2025-12-09 04:23:34,448 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:23:34,449 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:34,449 [DEBUG] Finished Request
+2025-12-09 04:23:34,449 [INFO] Aguardando recarregamento da página (20s)...
+2025-12-09 04:23:54,450 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Serventia') or contains(text(), 'CNS')]"}
+2025-12-09 04:23:54,466 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/element HTTP/1.1" 200 0
+2025-12-09 04:23:54,466 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.81"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:54,466 [DEBUG] Finished Request
+2025-12-09 04:23:54,466 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.81'}]}
+2025-12-09 04:23:54,472 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:23:54,473 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:54,473 [DEBUG] Finished Request
+2025-12-09 04:23:55,474 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.81'}]}
+2025-12-09 04:23:55,531 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:23:55,531 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:55,531 [DEBUG] Finished Request
+2025-12-09 04:23:57,532 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:23:57,561 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/elements HTTP/1.1" 200 0
+2025-12-09 04:23:57,562 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.82"},{"element-6066-11e4-a52e-4f735466cecf":"f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:57,562 [DEBUG] Finished Request
+2025-12-09 04:23:57,562 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.82/rect {}
+2025-12-09 04:23:57,570 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.82/rect HTTP/1.1" 200 0
+2025-12-09 04:23:57,571 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2890.375}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:57,571 [DEBUG] Finished Request
+2025-12-09 04:23:57,571 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83/rect {}
+2025-12-09 04:23:57,579 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83/rect HTTP/1.1" 200 0
+2025-12-09 04:23:57,579 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:57,579 [DEBUG] Finished Request
+2025-12-09 04:23:57,580 [DEBUG] GET http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83/rect {}
+2025-12-09 04:23:57,589 [DEBUG] http://localhost:55370 "GET /session/d04d512a6663a7d21eb10d66e6cb56fd/element/f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83/rect HTTP/1.1" 200 0
+2025-12-09 04:23:57,589 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:57,589 [DEBUG] Finished Request
+2025-12-09 04:23:57,590 [INFO] Clicando no botão (Y=2150)...
+2025-12-09 04:23:57,590 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83'}]}
+2025-12-09 04:23:57,595 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:23:57,596 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:57,596 [DEBUG] Finished Request
+2025-12-09 04:23:58,596 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.6D91EAB979A4E8807DC891A7FDC776A6.d.C22299C6BA2E32BEC41E72A735C00C31.e.83'}]}
+2025-12-09 04:23:58,603 [DEBUG] http://localhost:55370 "POST /session/d04d512a6663a7d21eb10d66e6cb56fd/execute/sync HTTP/1.1" 200 0
+2025-12-09 04:23:58,604 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 04:23:58,604 [DEBUG] Finished Request
+2025-12-09 04:23:58,604 [INFO] Aguardando download (timeout=180s)...
+2025-12-09 04:23:58,605 [DEBUG]   ... 0s aguardando...
+2025-12-09 04:24:03,609 [DEBUG]   ... 5s aguardando...
+2025-12-09 04:24:08,613 [DEBUG]   ... 10s aguardando...
+2025-12-09 04:24:13,617 [DEBUG]   ... 15s aguardando...
+2025-12-09 04:24:18,622 [DEBUG]   ... 20s aguardando...
+2025-12-09 04:24:23,626 [DEBUG]   ... 25s aguardando...
+2025-12-09 04:24:28,629 [DEBUG]   ... 30s aguardando...
+2025-12-09 04:24:33,632 [DEBUG]   ... 35s aguardando...
+2025-12-09 04:24:38,636 [DEBUG]   ... 40s aguardando...
+2025-12-09 04:24:43,639 [DEBUG]   ... 45s aguardando...
+2025-12-09 04:24:48,644 [DEBUG]   ... 50s aguardando...
+2025-12-09 04:24:53,649 [DEBUG]   ... 55s aguardando...
+2025-12-09 04:24:58,653 [DEBUG]   ... 60s aguardando...
+2025-12-09 04:25:03,657 [DEBUG]   ... 65s aguardando...
+2025-12-09 04:25:08,660 [DEBUG]   ... 70s aguardando...
+2025-12-09 04:25:13,664 [DEBUG]   ... 75s aguardando...
+2025-12-09 04:25:18,668 [DEBUG]   ... 80s aguardando...
+2025-12-09 04:25:23,671 [DEBUG]   ... 85s aguardando...
+2025-12-09 04:25:28,675 [DEBUG]   ... 90s aguardando...
+2025-12-09 04:25:33,679 [DEBUG]   ... 95s aguardando...
+2025-12-09 04:25:38,684 [DEBUG]   ... 100s aguardando...
+2025-12-09 04:25:43,688 [DEBUG]   ... 105s aguardando...
+2025-12-09 04:25:48,694 [DEBUG]   ... 110s aguardando...
+2025-12-09 04:25:53,697 [DEBUG]   ... 115s aguardando...
+2025-12-09 04:25:58,700 [DEBUG]   ... 120s aguardando...
+2025-12-09 04:26:03,704 [DEBUG]   ... 125s aguardando...
+2025-12-09 04:26:08,707 [DEBUG]   ... 130s aguardando...
+2025-12-09 04:26:13,711 [DEBUG]   ... 135s aguardando...
+2025-12-09 04:26:18,715 [DEBUG]   ... 140s aguardando...
+2025-12-09 04:26:23,719 [DEBUG]   ... 145s aguardando...
+2025-12-09 04:26:28,723 [DEBUG]   ... 150s aguardando...
+2025-12-09 04:26:33,726 [DEBUG]   ... 155s aguardando...
+2025-12-09 04:26:38,730 [DEBUG]   ... 160s aguardando...
+2025-12-09 04:26:43,735 [DEBUG]   ... 165s aguardando...
+2025-12-09 04:26:48,738 [DEBUG]   ... 170s aguardando...
+2025-12-09 04:26:53,743 [DEBUG]   ... 175s aguardando...
+2025-12-09 04:26:58,763 [WARNING] Timeout no download de serventias. Tentando novamente...
+2025-12-09 04:26:58,764 [ERROR] FALHA FATAL: Não foi possível baixar serventias após 3 tentativas.
+2025-12-09 04:26:58,764 [INFO] 
+--- Processando Tabela 2: ARRECADACAO ---
+2025-12-09 04:26:58,764 [INFO] Aguardando 10 segundos antes da próxima tabela...
+2025-12-09 04:27:08,765 [INFO] Tentativa 1/3 para arrecadacao
+2025-12-09 04:27:08,766 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:27:08,767 [DEBUG] Resetting dropped connection: localhost
+2025-12-09 04:27:12,872 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:12,873 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:27:12,873 [DEBUG] Starting new HTTP connection (2): localhost:55370
+2025-12-09 04:27:16,959 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:16,961 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:27:16,962 [DEBUG] Starting new HTTP connection (3): localhost:55370
+2025-12-09 04:27:21,055 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:21,056 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:27:21,057 [DEBUG] Starting new HTTP connection (4): localhost:55370
+2025-12-09 04:27:25,099 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'keyDown', 'value': '\ue00c'}, {'type': 'keyUp', 'value': '\ue00c'}]}]}
+2025-12-09 04:27:25,100 [DEBUG] Starting new HTTP connection (5): localhost:55370
+2025-12-09 04:27:29,180 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:29,181 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:27:29,181 [DEBUG] Starting new HTTP connection (6): localhost:55370
+2025-12-09 04:27:33,237 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:33,237 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:27:33,238 [DEBUG] Starting new HTTP connection (7): localhost:55370
+2025-12-09 04:27:37,327 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:37,328 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:27:37,328 [DEBUG] Starting new HTTP connection (8): localhost:55370
+2025-12-09 04:27:41,411 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Atos, arrecadação')]"}
+2025-12-09 04:27:41,412 [DEBUG] Starting new HTTP connection (9): localhost:55370
+2025-12-09 04:27:45,469 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:45,470 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:27:45,470 [DEBUG] Starting new HTTP connection (10): localhost:55370
+2025-12-09 04:27:49,562 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:49,562 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:27:49,562 [DEBUG] Starting new HTTP connection (11): localhost:55370
+2025-12-09 04:27:53,656 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:27:53,656 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:27:53,657 [DEBUG] Starting new HTTP connection (12): localhost:55370
+2025-12-09 04:27:57,707 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:27:57,708 [DEBUG] Starting new HTTP connection (13): localhost:55370
+2025-12-09 04:28:01,803 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:01,804 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:28:01,804 [DEBUG] Starting new HTTP connection (14): localhost:55370
+2025-12-09 04:28:05,868 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:05,869 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:28:05,869 [DEBUG] Starting new HTTP connection (15): localhost:55370
+2025-12-09 04:28:09,934 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:09,935 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:28:09,935 [DEBUG] Starting new HTTP connection (16): localhost:55370
+2025-12-09 04:28:14,007 [ERROR] Erro na tentativa 1: HTTPConnectionPool(host='localhost', port=55370): Max retries exceeded with url: /session/d04d512a6663a7d21eb10d66e6cb56fd/elements (Caused by NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2025-12-09 04:28:19,008 [INFO] Tentativa 2/3 para arrecadacao
+2025-12-09 04:28:19,009 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:28:19,009 [DEBUG] Starting new HTTP connection (17): localhost:55370
+2025-12-09 04:28:23,121 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:23,122 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:28:23,122 [DEBUG] Starting new HTTP connection (18): localhost:55370
+2025-12-09 04:28:27,190 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:27,191 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:28:27,191 [DEBUG] Starting new HTTP connection (19): localhost:55370
+2025-12-09 04:28:31,263 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:31,263 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:28:31,264 [DEBUG] Starting new HTTP connection (20): localhost:55370
+2025-12-09 04:28:35,374 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'keyDown', 'value': '\ue00c'}, {'type': 'keyUp', 'value': '\ue00c'}]}]}
+2025-12-09 04:28:35,374 [DEBUG] Starting new HTTP connection (21): localhost:55370
+2025-12-09 04:28:39,456 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:39,456 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:28:39,457 [DEBUG] Starting new HTTP connection (22): localhost:55370
+2025-12-09 04:28:43,493 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:43,493 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:28:43,494 [DEBUG] Starting new HTTP connection (23): localhost:55370
+2025-12-09 04:28:47,593 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:47,594 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:28:47,594 [DEBUG] Starting new HTTP connection (24): localhost:55370
+2025-12-09 04:28:51,704 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Atos, arrecadação')]"}
+2025-12-09 04:28:51,705 [DEBUG] Starting new HTTP connection (25): localhost:55370
+2025-12-09 04:28:55,772 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:55,772 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:28:55,773 [DEBUG] Starting new HTTP connection (26): localhost:55370
+2025-12-09 04:28:59,842 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:28:59,842 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:28:59,843 [DEBUG] Starting new HTTP connection (27): localhost:55370
+2025-12-09 04:29:03,949 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:03,950 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:29:03,950 [DEBUG] Starting new HTTP connection (28): localhost:55370
+2025-12-09 04:29:08,031 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:29:08,032 [DEBUG] Starting new HTTP connection (29): localhost:55370
+2025-12-09 04:29:12,097 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:12,097 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:29:12,098 [DEBUG] Starting new HTTP connection (30): localhost:55370
+2025-12-09 04:29:16,179 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:16,179 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:29:16,180 [DEBUG] Starting new HTTP connection (31): localhost:55370
+2025-12-09 04:29:20,281 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:20,282 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:29:20,283 [DEBUG] Starting new HTTP connection (32): localhost:55370
+2025-12-09 04:29:24,360 [ERROR] Erro na tentativa 2: HTTPConnectionPool(host='localhost', port=55370): Max retries exceeded with url: /session/d04d512a6663a7d21eb10d66e6cb56fd/elements (Caused by NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2025-12-09 04:29:29,361 [INFO] Tentativa 3/3 para arrecadacao
+2025-12-09 04:29:29,361 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Ocorreu um erro') or contains(text(), 'Connection lost')]"}
+2025-12-09 04:29:29,362 [DEBUG] Starting new HTTP connection (33): localhost:55370
+2025-12-09 04:29:33,462 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:33,463 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:29:33,464 [DEBUG] Starting new HTTP connection (34): localhost:55370
+2025-12-09 04:29:37,550 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:37,552 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:29:37,554 [DEBUG] Starting new HTTP connection (35): localhost:55370
+2025-12-09 04:29:41,670 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:41,670 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:29:41,670 [DEBUG] Starting new HTTP connection (36): localhost:55370
+2025-12-09 04:29:45,731 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'keyDown', 'value': '\ue00c'}, {'type': 'keyUp', 'value': '\ue00c'}]}]}
+2025-12-09 04:29:45,732 [DEBUG] Starting new HTTP connection (37): localhost:55370
+2025-12-09 04:29:49,844 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:49,845 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:29:49,845 [DEBUG] Starting new HTTP connection (38): localhost:55370
+2025-12-09 04:29:53,919 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:53,919 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:29:53,919 [DEBUG] Starting new HTTP connection (39): localhost:55370
+2025-12-09 04:29:58,043 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/actions'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:29:58,043 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/actions
+2025-12-09 04:29:58,044 [DEBUG] Starting new HTTP connection (40): localhost:55370
+2025-12-09 04:30:02,155 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/element {'using': 'xpath', 'value': "//*[contains(text(), 'Atos, arrecadação')]"}
+2025-12-09 04:30:02,155 [DEBUG] Starting new HTTP connection (41): localhost:55370
+2025-12-09 04:30:06,238 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:06,239 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:30:06,240 [DEBUG] Starting new HTTP connection (42): localhost:55370
+2025-12-09 04:30:10,324 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:10,325 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:30:10,325 [DEBUG] Starting new HTTP connection (43): localhost:55370
+2025-12-09 04:30:14,418 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/element'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:14,419 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/element
+2025-12-09 04:30:14,420 [DEBUG] Starting new HTTP connection (44): localhost:55370
+2025-12-09 04:30:18,501 [DEBUG] POST http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 04:30:18,502 [DEBUG] Starting new HTTP connection (45): localhost:55370
+2025-12-09 04:30:22,597 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:22,598 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:30:22,599 [DEBUG] Starting new HTTP connection (46): localhost:55370
+2025-12-09 04:30:26,652 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:26,652 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:30:26,653 [DEBUG] Starting new HTTP connection (47): localhost:55370
+2025-12-09 04:30:30,734 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd/elements'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:30,734 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd/elements
+2025-12-09 04:30:30,734 [DEBUG] Starting new HTTP connection (48): localhost:55370
+2025-12-09 04:30:34,811 [ERROR] Erro na tentativa 3: HTTPConnectionPool(host='localhost', port=55370): Max retries exceeded with url: /session/d04d512a6663a7d21eb10d66e6cb56fd/elements (Caused by NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2025-12-09 04:30:39,813 [ERROR] FALHA FATAL: Não foi possível baixar arrecadacao após 3 tentativas.
+2025-12-09 04:30:39,813 [DEBUG] DELETE http://localhost:55370/session/d04d512a6663a7d21eb10d66e6cb56fd {}
+2025-12-09 04:30:39,813 [DEBUG] Starting new HTTP connection (49): localhost:55370
+2025-12-09 04:30:43,911 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:43,911 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd
+2025-12-09 04:30:43,912 [DEBUG] Starting new HTTP connection (50): localhost:55370
+2025-12-09 04:30:47,988 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:47,989 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd
+2025-12-09 04:30:47,989 [DEBUG] Starting new HTTP connection (51): localhost:55370
+2025-12-09 04:30:52,070 [DEBUG] Incremented Retry for (url='/session/d04d512a6663a7d21eb10d66e6cb56fd'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+2025-12-09 04:30:52,070 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55370): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d04d512a6663a7d21eb10d66e6cb56fd
+2025-12-09 04:30:52,070 [DEBUG] Starting new HTTP connection (52): localhost:55370

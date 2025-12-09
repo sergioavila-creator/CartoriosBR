@@ -1,0 +1,46 @@
+Aguardando página carregar...
+
+Total de gráficos: 14
+
+============================================================
+GRÁFICO 0 (SERVENTIAS)
+============================================================
+Classes: qv-object-content-container
+
+Elementos filhos:
+  Tables: 0
+  Buttons: 1
+  Export/Download elements: 0
+
+HTML (preview):
+
+				<div id="zJpGwB_content" class="qv-object-content ng-isolate-scope" qv-object-content="" component="object.content" options="options" object="object" backend-api="object.backendApi" layout="layout" ext="object.ext" selections-api="object.selectionsApi" tooltip-api="object.tooltipApi" throbber-api="object.throbberApi" on-init="onInit"><div style="height: 100%;position: relative" class="ng-scope"><button style="width: 100%;height: 100%;transition: transform .1s ease-in-out;position: absolute;bottom: 0;left: 0; top: 0;right: 0;margin: auto;cursor: pointer;color: #ffffff;font-weight: bold;background-color: #4477aa;background-image: url('https://paineisanalytics.cnj.jus.br/appcontent/6ae52b4b-f6fb-4e06-8f8a-19c0656b1408/CNJ_logo_branca_transparente.png');background-size: contain;background-position: 0% 50%;background-repeat: no-repeat;border: none;" tabindex="-1"><text style="white-space: nowrap; font-family: &quot;QlikView Sans&quot;, sans-serif; font-size: 33.17px; margin: 0px 3%; di
+...
+
+============================================================
+GRÁFICO 1 (ARRECADACAO)
+============================================================
+Classes: qv-object-content-container
+
+Elementos filhos:
+  Tables: 2
+  Buttons: 2
+  Export/Download elements: 0
+
+HTML (preview):
+
+				<div id="ZpYcs_content" class="qv-object-content ng-isolate-scope" qv-object-content="" component="object.content" options="options" object="object" backend-api="object.backendApi" layout="layout" ext="object.ext" selections-api="object.selectionsApi" tooltip-api="object.tooltipApi" throbber-api="object.throbberApi" on-init="onInit"><div class="qv-st ng-scope qv-st-virtual-scroll-enabled qv-st-interactive qv-st-links-interactive qv-st-navigatable" ng-class="{ 'qv-st-interactive': interactive,
+			'qv-st-links-interactive': linksInteractive,
+			'align-column-picker': scrollApi.settings.columnPicker.show,
+			'qv-st-selections-active': selections.active,
+			'qv-st-virtual-scroll-enabled': scrollApi.virtualScrollEnabled,
+			'qv-st-navigatable': navigatable,
+			'qv-rtl-layout': rtl,
+			'qv-st-nowrap-in-headers': !multiline.wrapTextInHeaders,
+			'qv-st-nowrap-in-cells': !multiline.wrapTextInCells,
+			'qv-st-reordering-active': reorderingColumn
+		}" ng-keydown="handleKeyDown($event)" ng-k
+...
+
+============================================================
+Análise completa!

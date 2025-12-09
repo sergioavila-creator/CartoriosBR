@@ -1,0 +1,68 @@
+2025-12-09 03:09:49,925 [INFO] === Iniciando extração CNJ Analytics ===
+2025-12-09 03:09:49,926 [INFO] Log salvo em: extracao_cnj_20251209_030949.log
+2025-12-09 03:09:49,928 [INFO] ====== WebDriver manager ======
+2025-12-09 03:09:51,317 [INFO] Get LATEST chromedriver version for google-chrome
+2025-12-09 03:09:51,321 [DEBUG] Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2025-12-09 03:09:51,832 [DEBUG] https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/1.1" 200 14342
+2025-12-09 03:09:51,930 [INFO] Get LATEST chromedriver version for google-chrome
+2025-12-09 03:09:51,933 [DEBUG] Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2025-12-09 03:09:52,307 [DEBUG] https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/1.1" 200 14342
+2025-12-09 03:09:52,330 [INFO] Driver [C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe] found in cache
+2025-12-09 03:09:52,346 [DEBUG] Skipping Selenium Manager; path to chrome driver specified in Service class: C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe
+2025-12-09 03:09:52,373 [DEBUG] Started executable: `C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe` in a child process with pid: 7396 using 0 to output -3
+2025-12-09 03:09:52,881 [DEBUG] POST http://localhost:49981/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'prefs': {'download.default_directory': 'C:\\Users\\avila\\OneDrive\\Escritorio\\site CartoiosRJ\\downloads_cnj', 'download.prompt_for_download': False, 'download.directory_upgrade': True, 'safebrowsing.enabled': True}, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--window-size=2560,1440']}}}}
+2025-12-09 03:09:52,882 [DEBUG] Starting new HTTP connection (1): localhost:49981
+2025-12-09 03:09:53,672 [DEBUG] http://localhost:49981 "POST /session HTTP/1.1" 200 0
+2025-12-09 03:09:53,672 [DEBUG] Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"143.0.7499.41","chrome":{"chromedriverVersion":"143.0.7499.40 (c23ff452476d1b6322d73b9b629420ef119d0388-refs/branch-heads/7499@{#2388})","userDataDir":"C:\\Windows\\SystemTemp\\scoped_dir7396_1978149129"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:49984"},"goog:processID":50228,"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"windows","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"6f232b2b4905ec90235e80c96a75b0a1"}} | headers=HTTPHeaderDict({'Content-Length': '889', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:09:53,673 [DEBUG] Finished Request
+2025-12-09 03:09:53,673 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/goog/cdp/execute {'cmd': 'Page.addScriptToEvaluateOnNewDocument', 'params': {'source': "\n            Object.defineProperty(navigator, 'webdriver', {\n                get: () => undefined\n  ..."}}
+2025-12-09 03:09:53,682 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/goog/cdp/execute HTTP/1.1" 200 0
+2025-12-09 03:09:53,683 [DEBUG] Remote response: status=200 | data={"value":{"identifier":"2"}} | headers=HTTPHeaderDict({'Content-Length': '28', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:09:53,684 [DEBUG] Finished Request
+2025-12-09 03:09:53,684 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/url {'url': 'https://paineisanalytics.cnj.jus.br/single/?appid=6ae52b4b-f6fb-4e06-8f8a-19c0656b1408&sheet=8413120...'}
+2025-12-09 03:09:54,078 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/url HTTP/1.1" 200 0
+2025-12-09 03:09:54,079 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:09:54,079 [DEBUG] Finished Request
+2025-12-09 03:10:39,080 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/element {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:10:39,107 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/element HTTP/1.1" 200 0
+2025-12-09 03:10:39,107 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.24"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:39,107 [DEBUG] Finished Request
+2025-12-09 03:10:39,108 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:10:39,128 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/elements HTTP/1.1" 200 0
+2025-12-09 03:10:39,128 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.24"},{"element-6066-11e4-a52e-4f735466cecf":"f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.25"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:39,128 [DEBUG] Finished Request
+2025-12-09 03:10:39,133 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync {'script': '/* isDisplayed */return (function(){return (function(){var g=this||self;\nfunction aa(a){var b=typeof...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.24'}]}
+2025-12-09 03:10:39,147 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:10:39,147 [DEBUG] Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:39,148 [DEBUG] Finished Request
+2025-12-09 03:10:39,148 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.24'}]}
+2025-12-09 03:10:39,159 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:10:39,160 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:39,160 [DEBUG] Finished Request
+2025-12-09 03:10:41,161 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pointerMove', 'duration': 250, 'x': 0, 'y': 0, 'origin': {'element-6066-11e4-a52e-4f735466cecf': 'f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.24'}}, {'type': 'pause', 'duration': 500}, {'type': 'pointerDown', 'duration': 0, 'button': 0}, {'type': 'pointerUp', 'duration': 0, 'button': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}]}
+2025-12-09 03:10:42,007 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/actions HTTP/1.1" 200 0
+2025-12-09 03:10:42,007 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:42,008 [DEBUG] Finished Request
+2025-12-09 03:10:59,031 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync {'script': '/* isDisplayed */return (function(){return (function(){var g=this||self;\nfunction aa(a){var b=typeof...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.25'}]}
+2025-12-09 03:10:59,043 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:10:59,044 [DEBUG] Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:59,044 [DEBUG] Finished Request
+2025-12-09 03:10:59,045 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.25'}]}
+2025-12-09 03:10:59,056 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:10:59,057 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:10:59,057 [DEBUG] Finished Request
+2025-12-09 03:11:01,058 [DEBUG] POST http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pointerMove', 'duration': 250, 'x': 0, 'y': 0, 'origin': {'element-6066-11e4-a52e-4f735466cecf': 'f.2020E7BB991CA5A445BB25BA9536364E.d.E2EECDA1CA2FB9CB7843794FC960FA59.e.25'}}, {'type': 'pause', 'duration': 500}, {'type': 'pointerDown', 'duration': 0, 'button': 0}, {'type': 'pointerUp', 'duration': 0, 'button': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}]}
+2025-12-09 03:11:01,912 [DEBUG] http://localhost:49981 "POST /session/6f232b2b4905ec90235e80c96a75b0a1/actions HTTP/1.1" 200 0
+2025-12-09 03:11:01,913 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:11:01,913 [DEBUG] Finished Request
+2025-12-09 03:11:04,917 [DEBUG] DELETE http://localhost:49981/session/6f232b2b4905ec90235e80c96a75b0a1 {}
+2025-12-09 03:11:05,041 [DEBUG] http://localhost:49981 "DELETE /session/6f232b2b4905ec90235e80c96a75b0a1 HTTP/1.1" 200 0
+2025-12-09 03:11:05,041 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:11:05,042 [DEBUG] Finished Request
+2025-12-09 03:11:07,352 [DEBUG] Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+2025-12-09 03:11:07,361 [DEBUG] Starting new HTTPS connection (1): oauth2.googleapis.com:443
+2025-12-09 03:11:07,961 [DEBUG] https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+2025-12-09 03:11:07,964 [DEBUG] Starting new HTTPS connection (1): sheets.googleapis.com:443
+2025-12-09 03:11:08,898 [DEBUG] https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1Cx_ceynq_Y_pFKRUtFyHkLEJIvBvlWFjGo5LuOAvW-Y?includeGridData=false HTTP/1.1" 200 None
+2025-12-09 03:11:09,125 [DEBUG] https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1Cx_ceynq_Y_pFKRUtFyHkLEJIvBvlWFjGo5LuOAvW-Y?includeGridData=false HTTP/1.1" 200 None
+2025-12-09 03:11:09,436 [DEBUG] https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1Cx_ceynq_Y_pFKRUtFyHkLEJIvBvlWFjGo5LuOAvW-Y/values/%27Log_Bot%27:append?valueInputOption=RAW&includeValuesInResponse=False HTTP/1.1" 200 None

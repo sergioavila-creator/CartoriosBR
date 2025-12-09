@@ -517,13 +517,188 @@ def cloud_main(request):
     # Limpeza e ordenação dos dados brutos
     df_brutos.drop_duplicates(subset=['cod', 'cidade', 'designacao', 'arquivo_origem', 'mes', 'ano', 'Total'], keep='first', inplace=True)
     df_brutos.sort_values(by=['cidade', 'designacao', 'ano', 'mes'], inplace=True)
-    
+
+    # =================================================================================
+    # MAPEAMENTO DE CNS (SERVIÇO INDEPENDENTE)
+    # =================================================================================
+    # Chama a função de enriquecimento que foi isolada para modularidade
+    df_brutos = enrich_tjrj_with_cns(df_brutos)
+
     # --- ANALISE 1 (Média por Cartório) ---
     df_analise = df_brutos.groupby(['cod', 'cidade', 'designacao'], as_index=False).agg({
         'RCPJ': 'mean', 'RCPN': 'mean', 'IT': 'mean', 'RI': 'mean', 'RTD': 'mean', 
         'Notas': 'mean', 'Protesto': 'mean', 'Emolumentos': 'mean', 'Funarpem': 'mean', 
         'Gratuitos': 'mean', 'Total': 'mean', 'gestor': 'last', 'cargo': 'last'
     })
+
+def enrich_tjrj_with_cns(df_brutos):
+    """
+    Serviço Independente de População de CNS.
+    Recebe o DataFrame Bruto do TJRJ e adiciona a coluna CNS usando fuzzy matching
+    com a base oficial do CNJ (Lista de Serventias).
+    """
+    print("\n[INFO] Iniciando Serviço de Enriquecimento de CNS...")
+    
+    # 1. Carregar Base de Conhecimento (Serventias CNJ)
+    df_serventias = None
+    try:
+        # Tentar CSV local (cache)
+        path_serventias_csv = os.path.join(os.getcwd(), "downloads", "serventias.csv")
+        if os.path.exists(path_serventias_csv):
+             try:
+                 df_serventias = pd.read_csv(path_serventias_csv, dtype=str)
+                 print("  -> Carregado de serventias.csv local")
+             except: pass
+        
+        # Tentar Google Sheets se não achou local
+        if df_serventias is None:
+             if "GCP_SERVICE_ACCOUNT" in os.environ:
+                  import json
+                  creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+                  gc_map = gspread.service_account_from_dict(creds_dict)
+             elif st and hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
+                  gc_map = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+             else:
+                  gc_map = gspread.service_account()
+             
+             sh_map = gc_map.open_by_key("1Cx_ceynq_Y_pFKRUtFyHkLEJIvBvlWFjGo5LuOAvW-Y")
+             ws_map = sh_map.worksheet("Lista de Serventias")
+             df_serventias = pd.DataFrame(ws_map.get_all_records())
+             print("  -> Carregado do Google Sheets")
+             
+    except Exception as e:
+        print(f"  [AVISO] Falha ao carregar base CNJ: {e}")
+        return df_brutos # Retorna sem alterações em caso de erro
+
+    if df_serventias is None or df_serventias.empty:
+        return df_brutos
+
+    try:
+         # Função helper interna
+         def normalize_name(name):
+             if not isinstance(name, str): return ""
+             return normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII').upper().strip()
+         
+         print(f"  [DEBUG] Colunas encontradas na base CNJ: {list(df_serventias.columns)}")
+         
+         # Identificar colunas
+         col_nome = next((c for c in df_serventias.columns if 'nome' in c.lower() or 'denominacao' in c.lower() or 'denominação' in c.lower()), 'Denominação')
+         col_municipio = next((c for c in df_serventias.columns if 'municipio' in c.lower() or 'cidade' in c.lower()), 'Município')
+         col_cns = next((c for c in df_serventias.columns if 'cns' in c.lower()), 'CNS')
+         col_gestor = next((c for c in df_serventias.columns if 'titular' in c.lower() or 'responsavel' in c.lower() or 'responsável' in c.lower()), 'Titular')
+         col_atribuicao = next((c for c in df_serventias.columns if 'atribuicao' in c.lower() or 'atribuição' in c.lower()), 'Atribuição')
+         
+         # Indexar Base CNJ
+         cnj_map_nome = {}
+         cnj_map_gestor = {}
+
+         for _, row in df_serventias.iterrows():
+             cns = str(row[col_cns]).strip()
+             nome = normalize_name(row[col_nome])
+             mun = normalize_name(row[col_municipio])
+             gestor = normalize_name(row[col_gestor])
+             atribs = str(row[col_atribuicao]).upper()
+             
+             cnj_map_nome[f"{mun}_{nome}"] = cns
+             cnj_map_nome[nome] = cns
+             
+             if gestor:
+                 if gestor not in cnj_map_gestor: cnj_map_gestor[gestor] = []
+                 cnj_map_gestor[gestor].append({
+                     'cns': cns,
+                     'municipio': mun,
+                     'atribuicoes': atribs,
+                     'nome_cartorio': nome
+                 })
+         
+         print(f"  -> Base indexada: {len(cnj_map_nome)} nomes, {len(cnj_map_gestor)} gestores.")
+
+         # Lógica de Busca
+         def find_cns(row):
+             tjrj_mun = normalize_name(row['cidade'])
+             tjrj_nome = normalize_name(row['designacao'])
+             tjrj_gestor = normalize_name(row['gestor'])
+             
+             # 1. Match Exato (Mun + Nome)
+             key_exact = f"{tjrj_mun}_{tjrj_nome}"
+             if key_exact in cnj_map_nome: return cnj_map_nome[key_exact]
+             
+             # 2. Match Gestor (com Desambiguação de Atribuição)
+             if tjrj_gestor and tjrj_gestor in cnj_map_gestor:
+                 candidatos = cnj_map_gestor[tjrj_gestor]
+                 # Filtra municipio
+                 cand_mun = [c for c in candidatos if c['municipio'] == tjrj_mun]
+                 if not cand_mun: cand_mun = candidatos # Fallback
+                 
+                 if len(cand_mun) == 1:
+                     return cand_mun[0]['cns']
+                 elif len(cand_mun) > 1:
+                     # Desambiguação por Atribuição (Receita vs Atribuição CNJ)
+                     pontuacao = []
+                     cols_receita = ['RCPJ', 'RCPN', 'RI', 'RTD', 'Notas', 'Protesto']
+                     atribuicoes_row = []
+                     for c in cols_receita:
+                         val = pd.to_numeric(row.get(c, 0), errors='coerce')
+                         if val > 0: atribuicoes_row.append(c)
+                     
+                     for cand in cand_mun:
+                         score = 0
+                         cand_atribs = cand['atribuicoes']
+                         for atrib_req in atribuicoes_row:
+                             termos = [atrib_req]
+                             if atrib_req == 'Notas': termos += ['TABELIE', 'NOTAS']
+                             if atrib_req == 'RI': termos += ['REGISTRO DE IMOVEIS']
+                             if atrib_req == 'RCPN': termos += ['CIVIL DAS PESSOAS NATURAIS']
+                             if atrib_req == 'RCPJ': termos += ['CIVIL DAS PESSOAS JURIDICAS']
+                             if atrib_req == 'RTD': termos += ['TITULOS E DOCUMENTOS']
+                             
+                             for t in termos:
+                                 if t in cand_atribs: 
+                                     score += 1
+                                     break
+                         
+                         # Tie-breaker: Nome similar
+                         from difflib import SequenceMatcher
+                         ratio = SequenceMatcher(None, tjrj_nome, cand['nome_cartorio']).ratio()
+                         score += ratio
+                         pontuacao.append((score, cand['cns']))
+                     
+                     pontuacao.sort(key=lambda x: x[0], reverse=True)
+                     if pontuacao: return pontuacao[0][1]
+
+             # 3. Fuzzy Match Nome
+             candidates = [k for k in cnj_map_nome.keys() if k.startswith(f"{tjrj_mun}_")]
+             best_ratio = 0
+             best_cns = None
+             from difflib import SequenceMatcher
+             for cand_key in candidates:
+                 cand_nome_only = cand_key.replace(f"{tjrj_mun}_", "")
+                 ratio = SequenceMatcher(None, tjrj_nome, cand_nome_only).ratio()
+                 if ratio > 0.85 and ratio > best_ratio:
+                     best_ratio = ratio
+                     best_cns = cnj_map_nome[cand_key]
+             if best_cns: return best_cns
+             
+             return "NAO_ENCONTRADO"
+
+         df_brutos['CNS'] = df_brutos.apply(find_cns, axis=1)
+         
+         # Reordenar colunas
+         cols = ['CNS'] + [c for c in df_brutos.columns if c != 'CNS']
+         df_brutos = df_brutos[cols]
+         
+         # Hack: atualizar a lista global COLUNAS_BRUTAS se necessario
+         # Mas aqui estamos retornando o DF modificado. O caller deve usar esse DF.
+         
+         success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
+         print(f"  -> Enriquecimento concluído: {success_count}/{len(df_brutos)} mapeados.")
+         return df_brutos
+
+    except Exception as e:
+        print(f"[ERRO ENRIQUECIMENTO] {e}")
+        import traceback
+        traceback.print_exc()
+        return df_brutos
     # Renomear para compatibilidade
     df_analise_compat = df_analise.copy()
     df_analise_compat.rename(columns={'Total': 'Media Mensal Total (R$)'}, inplace=True)
@@ -559,7 +734,17 @@ def cloud_main(request):
     
     df_cidades.sort_values(by='Media Mensal Total (R$)', ascending=False, inplace=True)
     
-    # 4. Exportação para Google Sheets
+    # 4. Snapshots de Debug (Solicitado pelo usuário)
+    try:
+        from logging_utils import save_debug_snapshot
+        save_debug_snapshot(df_brutos, "tjrj_dados_brutos")
+        save_debug_snapshot(df_analise_compat, "tjrj_analise_12m")
+        save_debug_snapshot(df_distritos, "tjrj_distritos")
+        save_debug_snapshot(df_cidades, "tjrj_cidades")
+    except ImportError:
+        print("[AVISO] logging_utils não encontrado para snapshots.")
+
+    # 5. Exportação para Google Sheets
     exportar_para_sheets(df_brutos, df_analise_compat, df_distritos, df_cidades)
 
     fim_total = time.time()

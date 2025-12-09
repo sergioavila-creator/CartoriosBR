@@ -97,40 +97,56 @@ def salvar_em_sheets(df):
     except Exception as e:
         return False, str(e)
 
-@st.cache_data(ttl=600) # Cache de 10 minutos
+@st.cache_data(ttl=60) # Cache reduzido para 1 minuto
 def load_data_from_sheets():
     """Carrega dados da planilha Google Sheets"""
     try:
+        # DEBUG MODE ATIVADO
+        st.write("🔧 DEBUG: Iniciando autenticação...")
         gc = autenticar_google_sheets()
-        sh = gc.open_by_key(SHEET_ID)
+        st.write("🔧 DEBUG: Autenticado. Abrindo planilha...")
         
         try:
-            worksheet = sh.worksheet(WORKSHEET_NAME)
-            # Lê todos os dados
-            data = worksheet.get_all_records()
+            sh = gc.open_by_key(SHEET_ID)
+            st.write(f"🔧 DEBUG: Planilha aberta. Buscando aba '{WORKSHEET_NAME}'...")
             
-            if not data:
-                return pd.DataFrame()
-            
-            df = pd.DataFrame(data)
-            
-            # Remove a coluna de metadata se existir
-            if 'data_atualizacao' in df.columns:
-                df = df.drop(columns=['data_atual_atualizacao', 'data_atualizacao'], errors='ignore')
-            
-            # Garante que status_serventia seja string para comparações
-            if 'status_serventia' in df.columns:
-                df['status_serventia'] = df['status_serventia'].astype(str)
-                # Remove .0 se tiver vindo como float (1.0 -> 1)
-                df['status_serventia'] = df['status_serventia'].str.replace(r'\.0$', '', regex=True)
+            try:
+                worksheet = sh.worksheet(WORKSHEET_NAME)
+                st.write(f"🔧 DEBUG: Aba '{WORKSHEET_NAME}' encontrada. Baixando dados...")
                 
-            return df
-            
-        except gspread.exceptions.WorksheetNotFound:
-            return pd.DataFrame()
+                # Lê todos os dados
+                data = worksheet.get_all_records()
+                st.write(f"🔧 DEBUG: Dados brutos: {len(data)} registros encontrados.")
+                
+                if not data:
+                    st.warning(f"⚠️ A aba '{WORKSHEET_NAME}' existe mas está vazia.")
+                    return pd.DataFrame()
+                
+                df = pd.DataFrame(data)
+                st.write(f"🔧 DEBUG: DataFrame criado. Colunas: {df.columns.tolist()}")
+                
+                # Remove a coluna de metadata se existir
+                if 'data_atualizacao' in df.columns:
+                    df = df.drop(columns=['data_atual_atualizacao', 'data_atualizacao'], errors='ignore')
+                
+                # Garante que status_serventia seja string para comparações
+                if 'status_serventia' in df.columns:
+                    df['status_serventia'] = df['status_serventia'].astype(str)
+                    # Remove .0 se tiver vindo como float (1.0 -> 1)
+                    df['status_serventia'] = df['status_serventia'].str.replace(r'\.0$', '', regex=True)
+                    
+                return df
+                
+            except gspread.exceptions.WorksheetNotFound:
+                st.error(f"❌ ERRO: Aba '{WORKSHEET_NAME}' NÃO encontrada na planilha.")
+                return pd.DataFrame()
+                
+        except Exception as e:
+             st.error(f"❌ ERRO ao abrir planilha: {e}")
+             return pd.DataFrame()
             
     except Exception as e:
-        st.error(f"Erro ao carregar dados salvos: {e}")
+        st.error(f"❌ ERRO CRÍTICO ao carregar dados salvos: {e}")
         return pd.DataFrame()
 
 # ============================================================================
@@ -144,6 +160,13 @@ with st.sidebar:
     st.image("logo_ribrj.png", width=250)
     st.markdown("---")
     
+    # Botão de Recarregar Cache
+    if st.button("🔄 Recarregar Dados Salvos"):
+        load_data_from_sheets.clear()
+        if 'cnj_dados' in st.session_state:
+            del st.session_state['cnj_dados']
+        st.rerun()
+
     st.subheader("Filtros")
     
     # Seleção de Estados com opção "Todo o Brasil"

@@ -41,13 +41,20 @@ jobs:
         GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
       run: python extrair_municipios_ibge.py
 
-    # 2. Atualizar Justiça Aberta CNJ (Analytics)
-    - name: Update CNJ Analytics Data
+    # 2a. Baixar dados CNJ Analytics
+    - name: Download CNJ Analytics Data
       continue-on-error: true
       env:
         HEADLESS: "true"
         GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      run: python extrair_cnj_analytics.py
+      run: python extrair_cnj_analytics.py --action download
+
+    # 2b. Processar e enviar dados CNJ Analytics
+    - name: Process CNJ Analytics Data
+      continue-on-error: true
+      env:
+        GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      run: python extrair_cnj_analytics.py --action process
 
     # 3. Atualizar Cadastro CNJ
     - name: Update CNJ Registry
@@ -57,10 +64,7 @@ jobs:
 
     # 4. Atualizar Receita TJRJ
     - name: Update TJRJ Revenue
+      continue-on-error: true
       env:
         GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      run: |
-        python -c "
-        import cloud_processo
-        cloud_processo.cloud_main(None)
-        "
+      run: python extrair_receita_tjrj.py

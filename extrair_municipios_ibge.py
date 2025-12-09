@@ -3,13 +3,12 @@ import requests
 import pandas as pd
 import gspread
 from datetime import datetime
+import time
 
 # Configurações
 IBGE_API_URL = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
 SHEET_ID = "1ktKGyouWoVVC3Vbp-amltr_rRJiZHZAFcp7GaUXmDmo"
 WORKSHEET_NAME = "Municipios_IBGE"
-
-import time
 
 def get_sidra_data(table_code, variable_code, desc):
     """Função genérica para buscar dados do SIDRA com retry"""
@@ -22,10 +21,7 @@ def get_sidra_data(table_code, variable_code, desc):
             if response.status_code == 200:
                 data = response.json()
                 if len(data) > 1:
-                    df = pd.DataFrame(data[1:]) # Pula cabeçalho
-                    # D1C = Código do Município
-                    # V = Valor
-                    # D3N = Ano
+                    df = pd.DataFrame(data[1:])  # Pula cabeçalho
                     return df[['D1C', 'V', 'D3N']]
             elif response.status_code >= 500:
                 print(f"Erro no servidor IBGE ({response.status_code}). Tentativa {attempt+1}/3...")
@@ -44,17 +40,13 @@ def get_population_data():
     df = get_sidra_data('6579', '9324', 'população')
     if df is not None:
         try:
-            df = df.rename(columns={
-                'D1C': 'codigo_municipio',
-                'V': 'populacao_estimada',
-                'D3N': 'ano_populacao'
-            })
+            df = df.rename(columns={'D1C': 'codigo_municipio', 'V': 'populacao_estimada', 'D3N': 'ano_populacao'})
             df['codigo_municipio'] = df['codigo_municipio'].astype(str)
             df['populacao_estimada'] = pd.to_numeric(df['populacao_estimada'], errors='coerce')
             print(f"População obtida: {len(df)} registros")
             return df
         except Exception as e:
-            print(f"Erro ao processar dataframe de população: {e}")
+            print(f"Erro ao processar população: {e}")
     return None
 
 def get_gdp_data():
@@ -62,59 +54,100 @@ def get_gdp_data():
     df = get_sidra_data('5938', '37', 'PIB')
     if df is not None:
         try:
-            df = df.rename(columns={
-                'D1C': 'codigo_municipio',
-                'V': 'pib_total',
-                'D3N': 'ano_pib'
-            })
+            df = df.rename(columns={'D1C': 'codigo_municipio', 'V': 'pib_total', 'D3N': 'ano_pib'})
             df['codigo_municipio'] = df['codigo_municipio'].astype(str)
             df['pib_total'] = pd.to_numeric(df['pib_total'], errors='coerce')
             print(f"PIB obtido: {len(df)} registros")
             return df
         except Exception as e:
-            print(f"Erro ao processar dataframe de PIB: {e}")
+            print(f"Erro ao processar PIB: {e}")
     return None
 
-def get_area_data():
-    """Busca área territorial via API de Agregados"""
-    print("Buscando dados de área territorial...")
-    # Tenta obter dados de área. Se a API de agregados estiver instável, retorna None
-    # Agregado 1301 - Área territorial
-    url = "https://servicodados.ibge.gov.br/api/v3/agregados/1301/periodos/2021/variaveis/614?localidades=N6[all]"
+def get_vab_data():
+    """Busca Valor Adicionado Bruto por setor (Tabela 5938)"""
+    print("Buscando VAB por setor...")
     
-    for attempt in range(3):
+    df_agro = get_sidra_data('5938', '513', 'VAB Agropecuária')
+    df_ind = get_sidra_data('5938', '514', 'VAB Indústria')
+    df_serv = get_sidra_data('5938', '515', 'VAB Serviços')
+    
+    dfs = []
+    if df_agro is not None:
+        df_agro = df_agro.rename(columns={'D1C': 'codigo_municipio', 'V': 'vab_agropecuaria'})
+        dfs.append(df_agro[['codigo_municipio', 'vab_agropecuaria']])
+    
+    if df_ind is not None:
+        df_ind = df_ind.rename(columns={'D1C': 'codigo_municipio', 'V': 'vab_industria'})
+        dfs.append(df_ind[['codigo_municipio', 'vab_industria']])
+    
+    if df_serv is not None:
+        df_serv = df_serv.rename(columns={'D1C': 'codigo_municipio', 'V': 'vab_servicos'})
+        dfs.append(df_serv[['codigo_municipio', 'vab_servicos']])
+    
+    if dfs:
+        df_final = dfs[0]
+        for df in dfs[1:]:
+            df_final = df_final.merge(df, on='codigo_municipio', how='outer')
+        
+        df_final['codigo_municipio'] = df_final['codigo_municipio'].astype(str)
+        for col in ['vab_agropecuaria', 'vab_industria', 'vab_servicos']:
+            if col in df_final.columns:
+                df_final[col] = pd.to_numeric(df_final[col], errors='coerce')
+        
+        print(f"VAB obtido: {len(df_final)} registros")
+        return df_final
+    
+    return None
+
+def get_idhm_data():
+    """Busca IDHM (Índice de Desenvolvimento Humano Municipal) - Tabela 1612"""
+    print("Buscando IDHM...")
+    df = get_sidra_data('1612', '120', 'IDHM')
+    
+    if df is not None:
         try:
-            response = requests.get(url, timeout=60)
-            if response.status_code != 200:
-                print(f"API de Agregados retornou erro {response.status_code} para Área. Tentativa {attempt+1}")
-                time.sleep(2)
-                continue
-                
-            data = response.json()
-            areas = []
-            if data and len(data) > 0:
-                resultados = data[0].get('resultados', [])
-                if resultados:
-                    series = resultados[0].get('series', [])
-                    for item in series:
-                        codigo = item.get('localidade', {}).get('id')
-                        valor = item.get('serie', {}).get('2021')
-                        if codigo and valor and valor != '...':
-                             areas.append({
-                                'codigo_municipio': str(codigo),
-                                'area_territorial_km2': float(valor)
-                            })
-            
-            if areas:
-                df = pd.DataFrame(areas)
-                print(f"Área obtida: {len(df)} registros")
-                return df
-                
+            df = df.rename(columns={'D1C': 'codigo_municipio', 'V': 'idhm', 'D3N': 'ano_idhm'})
+            df['codigo_municipio'] = df['codigo_municipio'].astype(str)
+            df['idhm'] = pd.to_numeric(df['idhm'], errors='coerce')
+            print(f"IDHM obtido: {len(df)} registros")
+            return df
         except Exception as e:
-            print(f"Erro ao buscar área (Agregados): {e}")
-            time.sleep(2)
-            
-    print("Não foi possível obter dados de área após tentativas.")
+            print(f"Erro ao processar IDHM: {e}")
+    
+    return None
+
+def get_income_data():
+    """Busca Rendimento Médio Mensal - Tabela 1552"""
+    print("Buscando rendimento médio...")
+    df = get_sidra_data('1552', '1615', 'Rendimento médio')
+    
+    if df is not None:
+        try:
+            df = df.rename(columns={'D1C': 'codigo_municipio', 'V': 'rendimento_medio_mensal', 'D3N': 'ano_rendimento'})
+            df['codigo_municipio'] = df['codigo_municipio'].astype(str)
+            df['rendimento_medio_mensal'] = pd.to_numeric(df['rendimento_medio_mensal'], errors='coerce')
+            print(f"Rendimento obtido: {len(df)} registros")
+            return df
+        except Exception as e:
+            print(f"Erro ao processar rendimento: {e}")
+    
+    return None
+
+def get_health_data():
+    """Busca Estabelecimentos de Saúde - Tabela 1378"""
+    print("Buscando estabelecimentos de saúde...")
+    df = get_sidra_data('1378', '265', 'Estabelecimentos de saúde')
+    
+    if df is not None:
+        try:
+            df = df.rename(columns={'D1C': 'codigo_municipio', 'V': 'estabelecimentos_saude', 'D3N': 'ano_saude'})
+            df['codigo_municipio'] = df['codigo_municipio'].astype(str)
+            df['estabelecimentos_saude'] = pd.to_numeric(df['estabelecimentos_saude'], errors='coerce')
+            print(f"Estabelecimentos de saúde obtidos: {len(df)} registros")
+            return df
+        except Exception as e:
+            print(f"Erro ao processar estabelecimentos de saúde: {e}")
+    
     return None
 
 def extract_ibge_data():
@@ -122,7 +155,7 @@ def extract_ibge_data():
     print("Conectando à API do IBGE...")
     
     try:
-        # 1. Dados básicos de municípios
+        # 1. Dados básicos de municípios (INCLUI ÁREA!)
         response = requests.get(IBGE_API_URL, timeout=30)
         response.raise_for_status()
         
@@ -137,6 +170,15 @@ def extract_ibge_data():
             uf = mesorregiao.get('UF', {}) or {}
             regiao = uf.get('regiao', {}) or {}
             
+            # ÁREA vem direto na resposta principal!
+            area_obj = item.get('area', {})
+            area_km2 = None
+            if area_obj:
+                try:
+                    area_km2 = float(area_obj) if isinstance(area_obj, (int, float)) else float(area_obj.get('area', 0))
+                except:
+                    area_km2 = None
+            
             municipio = {
                 'codigo_municipio': str(item.get('id')),
                 'nome_municipio': item.get('nome'),
@@ -146,16 +188,21 @@ def extract_ibge_data():
                 'codigo_regiao': regiao.get('id'),
                 'sigla_regiao': regiao.get('sigla'),
                 'nome_regiao': regiao.get('nome'),
+                'area_territorial_km2': area_km2
             }
             municipios.append(municipio)
         
         df = pd.DataFrame(municipios)
         print(f"DataFrame básico criado: {len(df)} linhas")
+        print(f"Municípios com área: {df['area_territorial_km2'].notna().sum()}")
         
         # 2. Busca dados socioeconômicos
         pop_df = get_population_data()
         gdp_df = get_gdp_data()
-        area_df = get_area_data()
+        vab_df = get_vab_data()
+        idhm_df = get_idhm_data()
+        income_df = get_income_data()
+        health_df = get_health_data()
         
         # 3. Merge dos dados
         if pop_df is not None:
@@ -166,9 +213,21 @@ def extract_ibge_data():
             df = df.merge(gdp_df, on='codigo_municipio', how='left')
             print("PIB integrado")
         
-        if area_df is not None:
-            df = df.merge(area_df, on='codigo_municipio', how='left')
-            print("Área integrada")
+        if vab_df is not None:
+            df = df.merge(vab_df, on='codigo_municipio', how='left')
+            print("VAB integrado")
+        
+        if idhm_df is not None:
+            df = df.merge(idhm_df, on='codigo_municipio', how='left')
+            print("IDHM integrado")
+        
+        if income_df is not None:
+            df = df.merge(income_df, on='codigo_municipio', how='left')
+            print("Rendimento integrado")
+        
+        if health_df is not None:
+            df = df.merge(health_df, on='codigo_municipio', how='left')
+            print("Estabelecimentos de saúde integrados")
         
         # 4. Calcula indicadores derivados
         if 'populacao_estimada' in df.columns and 'area_territorial_km2' in df.columns:
@@ -255,8 +314,18 @@ def upload_to_gsheets(df):
         print(f"Erro no upload para o Sheets: {e}")
 
 if __name__ == "__main__":
-    df = extract_ibge_data()
-    if df is not None:
-        upload_to_gsheets(df)
-    else:
-        print("Falha na extração.")
+    from logging_utils import print_start_log, print_end_log
+    
+    start_time = print_start_log("Extração Municípios IBGE")
+    
+    try:
+        df = extract_ibge_data()
+        if df is not None:
+            upload_to_gsheets(df)
+            print_end_log(start_time, success=True)
+        else:
+            print("Falha na extração.")
+            print_end_log(start_time, success=False, error_msg="Falha na extração de dados")
+    except Exception as e:
+        print_end_log(start_time, success=False, error_msg=str(e))
+        raise

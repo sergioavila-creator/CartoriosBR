@@ -1,7 +1,7 @@
 [theme]
-base="light"
-primaryColor="#004B8D" # Corporate Blue
-backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#F0F2F6"
-textColor="#31333F"
+base="dark"
+primaryColor="#4A9EFF"  # Bright Blue for dark mode
+backgroundColor="#0E1117"  # Dark background
+secondaryBackgroundColor="#262730"  # Slightly lighter dark
+textColor="#FAFAFA"  # Light text
 font="sans serif"

@@ -1,0 +1,443 @@
+2025-12-09 03:33:12,182 [INFO] === Iniciando extração CNJ Analytics ===
+2025-12-09 03:33:12,183 [INFO] Log salvo em: extracao_cnj_20251209_033312.log
+2025-12-09 03:33:12,183 [INFO] Iniciando extração (Headless: False)...
+2025-12-09 03:33:12,185 [INFO] ====== WebDriver manager ======
+2025-12-09 03:33:13,751 [INFO] Get LATEST chromedriver version for google-chrome
+2025-12-09 03:33:13,755 [DEBUG] Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2025-12-09 03:33:14,244 [DEBUG] https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/1.1" 200 14342
+2025-12-09 03:33:14,275 [INFO] Get LATEST chromedriver version for google-chrome
+2025-12-09 03:33:14,277 [DEBUG] Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2025-12-09 03:33:14,751 [DEBUG] https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/1.1" 200 14342
+2025-12-09 03:33:14,849 [INFO] Driver [C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe] found in cache
+2025-12-09 03:33:14,850 [DEBUG] Skipping Selenium Manager; path to chrome driver specified in Service class: C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe
+2025-12-09 03:33:14,861 [DEBUG] Started executable: `C:\Users\avila\.wdm\drivers\chromedriver\win64\143.0.7499.40\chromedriver-win32/chromedriver.exe` in a child process with pid: 52776 using 0 to output -3
+2025-12-09 03:33:15,379 [DEBUG] POST http://localhost:60915/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'excludeSwitches': ['enable-automation'], 'useAutomationExtension': False, 'prefs': {'download.default_directory': 'C:\\Users\\avila\\OneDrive\\Escritorio\\site CartoiosRJ\\downloads_cnj', 'download.prompt_for_download': False, 'download.directory_upgrade': True, 'safebrowsing.enabled': True}, 'extensions': [], 'args': ['--no-sandbox', '--disable-dev-shm-usage', '--window-size=2560,1440']}}}}
+2025-12-09 03:33:15,380 [DEBUG] Starting new HTTP connection (1): localhost:60915
+2025-12-09 03:33:16,123 [DEBUG] http://localhost:60915 "POST /session HTTP/1.1" 200 0
+2025-12-09 03:33:16,124 [DEBUG] Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"143.0.7499.41","chrome":{"chromedriverVersion":"143.0.7499.40 (c23ff452476d1b6322d73b9b629420ef119d0388-refs/branch-heads/7499@{#2388})","userDataDir":"C:\\Windows\\SystemTemp\\scoped_dir52776_1700627957"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:60918"},"goog:processID":36872,"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"windows","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"24ab49b62566dd00684141b4243f0b69"}} | headers=HTTPHeaderDict({'Content-Length': '890', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:33:16,124 [DEBUG] Finished Request
+2025-12-09 03:33:16,124 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/goog/cdp/execute {'cmd': 'Page.addScriptToEvaluateOnNewDocument', 'params': {'source': "\n            Object.defineProperty(navigator, 'webdriver', {\n                get: () => undefined\n  ..."}}
+2025-12-09 03:33:16,132 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/goog/cdp/execute HTTP/1.1" 200 0
+2025-12-09 03:33:16,133 [DEBUG] Remote response: status=200 | data={"value":{"identifier":"2"}} | headers=HTTPHeaderDict({'Content-Length': '28', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:33:16,134 [DEBUG] Finished Request
+2025-12-09 03:33:16,135 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/url {'url': 'https://paineisanalytics.cnj.jus.br/single/?appid=6ae52b4b-f6fb-4e06-8f8a-19c0656b1408&sheet=8413120...'}
+2025-12-09 03:33:16,541 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/url HTTP/1.1" 200 0
+2025-12-09 03:33:16,541 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:33:16,541 [DEBUG] Finished Request
+2025-12-09 03:33:16,541 [INFO] Página carregada, aguardando renderização (45s)...
+2025-12-09 03:34:01,542 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:34:01,574 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 200 0
+2025-12-09 03:34:01,574 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:01,574 [DEBUG] Finished Request
+2025-12-09 03:34:01,574 [INFO] Botões de exportação detectados!
+2025-12-09 03:34:01,574 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': 'window.scrollTo(0, document.body.scrollHeight);', 'args': []}
+2025-12-09 03:34:01,582 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:34:01,582 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:01,582 [DEBUG] Finished Request
+2025-12-09 03:34:06,582 [INFO] 
+--- Processando Tabela 1: SERVENTIAS ---
+2025-12-09 03:34:06,583 [INFO] Tentativa 1/3 para serventias
+2025-12-09 03:34:06,583 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Serventia') or contains(text(), 'CNS')]"}
+2025-12-09 03:34:06,602 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 200 0
+2025-12-09 03:34:06,602 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:06,602 [DEBUG] Finished Request
+2025-12-09 03:34:06,603 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25'}]}
+2025-12-09 03:34:06,610 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:34:06,611 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:06,611 [DEBUG] Finished Request
+2025-12-09 03:34:07,611 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25/click {}
+2025-12-09 03:34:07,743 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25/click HTTP/1.1" 200 0
+2025-12-09 03:34:07,743 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:07,743 [DEBUG] Finished Request
+2025-12-09 03:34:09,744 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/actions {'actions': [{'type': 'pointer', 'parameters': {'pointerType': 'mouse'}, 'id': 'mouse', 'actions': [{'type': 'pause', 'duration': 0}, {'type': 'pause', 'duration': 0}]}, {'type': 'key', 'id': 'key', 'actions': [{'type': 'keyDown', 'value': '\ue00c'}, {'type': 'keyUp', 'value': '\ue00c'}]}]}
+2025-12-09 03:34:09,760 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/actions HTTP/1.1" 200 0
+2025-12-09 03:34:09,760 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:09,761 [DEBUG] Finished Request
+2025-12-09 03:34:10,761 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:34:10,781 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/elements HTTP/1.1" 200 0
+2025-12-09 03:34:10,781 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24"},{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:10,781 [DEBUG] Finished Request
+2025-12-09 03:34:10,781 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24/rect {}
+2025-12-09 03:34:10,796 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24/rect HTTP/1.1" 200 0
+2025-12-09 03:34:10,796 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2890.375}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:10,796 [DEBUG] Finished Request
+2025-12-09 03:34:10,796 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect {}
+2025-12-09 03:34:10,806 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect HTTP/1.1" 200 0
+2025-12-09 03:34:10,806 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:10,806 [DEBUG] Finished Request
+2025-12-09 03:34:10,806 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect {}
+2025-12-09 03:34:10,817 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect HTTP/1.1" 200 0
+2025-12-09 03:34:10,817 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:10,818 [DEBUG] Finished Request
+2025-12-09 03:34:10,818 [INFO] Clicando no botão (Y=2150)...
+2025-12-09 03:34:10,818 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27'}]}
+2025-12-09 03:34:10,825 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:34:10,826 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:10,826 [DEBUG] Finished Request
+2025-12-09 03:34:11,826 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27'}]}
+2025-12-09 03:34:11,837 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:34:11,838 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:34:11,838 [DEBUG] Finished Request
+2025-12-09 03:34:11,838 [INFO] Aguardando download (timeout=180s)...
+2025-12-09 03:34:11,839 [DEBUG]   ... 0s aguardando...
+2025-12-09 03:34:16,842 [DEBUG]   ... 5s aguardando...
+2025-12-09 03:34:21,846 [DEBUG]   ... 10s aguardando...
+2025-12-09 03:34:26,850 [DEBUG]   ... 15s aguardando...
+2025-12-09 03:34:31,854 [DEBUG]   ... 20s aguardando...
+2025-12-09 03:34:36,858 [DEBUG]   ... 25s aguardando...
+2025-12-09 03:34:41,862 [DEBUG]   ... 30s aguardando...
+2025-12-09 03:34:46,866 [DEBUG]   ... 35s aguardando...
+2025-12-09 03:34:51,870 [DEBUG]   ... 40s aguardando...
+2025-12-09 03:34:56,875 [DEBUG]   ... 45s aguardando...
+2025-12-09 03:35:01,879 [DEBUG]   ... 50s aguardando...
+2025-12-09 03:35:06,883 [DEBUG]   ... 55s aguardando...
+2025-12-09 03:35:11,888 [DEBUG]   ... 60s aguardando...
+2025-12-09 03:35:16,892 [DEBUG]   ... 65s aguardando...
+2025-12-09 03:35:21,897 [DEBUG]   ... 70s aguardando...
+2025-12-09 03:35:26,901 [DEBUG]   ... 75s aguardando...
+2025-12-09 03:35:31,905 [DEBUG]   ... 80s aguardando...
+2025-12-09 03:35:36,909 [DEBUG]   ... 85s aguardando...
+2025-12-09 03:35:41,914 [DEBUG]   ... 90s aguardando...
+2025-12-09 03:35:46,918 [DEBUG]   ... 95s aguardando...
+2025-12-09 03:35:51,921 [DEBUG]   ... 100s aguardando...
+2025-12-09 03:35:56,926 [DEBUG]   ... 105s aguardando...
+2025-12-09 03:36:01,930 [DEBUG]   ... 110s aguardando...
+2025-12-09 03:36:06,935 [DEBUG]   ... 115s aguardando...
+2025-12-09 03:36:11,939 [DEBUG]   ... 120s aguardando...
+2025-12-09 03:36:16,943 [DEBUG]   ... 125s aguardando...
+2025-12-09 03:36:21,948 [DEBUG]   ... 130s aguardando...
+2025-12-09 03:36:26,957 [DEBUG]   ... 135s aguardando...
+2025-12-09 03:36:31,962 [DEBUG]   ... 140s aguardando...
+2025-12-09 03:36:36,967 [DEBUG]   ... 145s aguardando...
+2025-12-09 03:36:41,970 [DEBUG]   ... 150s aguardando...
+2025-12-09 03:36:46,975 [DEBUG]   ... 155s aguardando...
+2025-12-09 03:36:51,979 [DEBUG]   ... 160s aguardando...
+2025-12-09 03:36:56,984 [DEBUG]   ... 165s aguardando...
+2025-12-09 03:37:01,988 [DEBUG]   ... 170s aguardando...
+2025-12-09 03:37:06,991 [DEBUG]   ... 175s aguardando...
+2025-12-09 03:37:11,995 [WARNING] Timeout no download de serventias. Tentando novamente...
+2025-12-09 03:37:11,995 [INFO] Tentativa 2/3 para serventias
+2025-12-09 03:37:11,995 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Serventia') or contains(text(), 'CNS')]"}
+2025-12-09 03:37:12,011 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 200 0
+2025-12-09 03:37:12,011 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:12,012 [DEBUG] Finished Request
+2025-12-09 03:37:12,012 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25'}]}
+2025-12-09 03:37:12,022 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:37:12,022 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:12,022 [DEBUG] Finished Request
+2025-12-09 03:37:13,023 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25/click {}
+2025-12-09 03:37:14,150 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25/click HTTP/1.1" 400 0
+2025-12-09 03:37:14,150 [DEBUG] Remote response: status=400 | data={"value":{"error":"element click intercepted","message":"element click intercepted: Element \u003Cspan style=\"white-space: nowrap; text-overflow: ellipsis;\">...\u003C/span> is not clickable at point (1266, 117). Other element would receive the click: \u003Cdiv class=\"lui-modal-background ng-scope\" ng-class=\"{ 'lui-fade': fade }\">\u003C/div>\n  (Session info: chrome=143.0.7499.41)","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e6dd\n\t0x85f8ef\n\t0x85dbdc\n\t0x85b6c2\n\t0x85a945\n\t0x84f1c8\n\t0x87b4ec\n\t0x84ec34\n\t0x87b6a4\n\t0x89db13\n\t0x87b2e6\n\t0x84d321\n\t0x84e1d4\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0xa29028\n\t0xa291e9\n\t0xa13578\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '779', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:14,150 [DEBUG] Finished Request
+2025-12-09 03:37:14,150 [WARNING] Falha no foco de serventias: Message: element click intercepted: Element <span style="white-space: nowrap; text-overflow: ellipsis;">...</span> is not clickable at point (1266, 117). Other element would receive the click: <div class="lui-modal-background ng-scope" ng-class="{ 'lui-fade': fade }"></div>
+  (Session info: chrome=143.0.7499.41); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0xa20d23
+	0xa20d64
+	0x80e6dd
+	0x85f8ef
+	0x85dbdc
+	0x85b6c2
+	0x85a945
+	0x84f1c8
+	0x87b4ec
+	0x84ec34
+	0x87b6a4
+	0x89db13
+	0x87b2e6
+	0x84d321
+	0x84e1d4
+	0xc74d64
+	0xc7031b
+	0xc8cbfa
+	0xa3ac28
+	0xa42c2d
+	0xa29028
+	0xa291e9
+	0xa13578
+	0x76625d49
+	0x7750d6db
+	0x7750d661
+
+2025-12-09 03:37:14,150 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:37:14,168 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/elements HTTP/1.1" 200 0
+2025-12-09 03:37:14,168 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24"},{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:14,168 [DEBUG] Finished Request
+2025-12-09 03:37:14,168 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24/rect {}
+2025-12-09 03:37:14,178 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24/rect HTTP/1.1" 200 0
+2025-12-09 03:37:14,179 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2890.375}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:14,179 [DEBUG] Finished Request
+2025-12-09 03:37:14,179 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect {}
+2025-12-09 03:37:14,189 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect HTTP/1.1" 200 0
+2025-12-09 03:37:14,189 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:14,189 [DEBUG] Finished Request
+2025-12-09 03:37:14,189 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect {}
+2025-12-09 03:37:14,200 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect HTTP/1.1" 200 0
+2025-12-09 03:37:14,200 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:14,200 [DEBUG] Finished Request
+2025-12-09 03:37:14,200 [INFO] Clicando no botão (Y=2150)...
+2025-12-09 03:37:14,200 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27'}]}
+2025-12-09 03:37:14,208 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:37:14,208 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:14,208 [DEBUG] Finished Request
+2025-12-09 03:37:15,208 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27'}]}
+2025-12-09 03:37:15,219 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:37:15,219 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:37:15,220 [DEBUG] Finished Request
+2025-12-09 03:37:15,220 [INFO] Aguardando download (timeout=180s)...
+2025-12-09 03:37:15,220 [DEBUG]   ... 0s aguardando...
+2025-12-09 03:37:20,224 [DEBUG]   ... 5s aguardando...
+2025-12-09 03:37:25,228 [DEBUG]   ... 10s aguardando...
+2025-12-09 03:37:30,232 [DEBUG]   ... 15s aguardando...
+2025-12-09 03:37:35,237 [DEBUG]   ... 20s aguardando...
+2025-12-09 03:37:40,241 [DEBUG]   ... 25s aguardando...
+2025-12-09 03:37:45,245 [DEBUG]   ... 30s aguardando...
+2025-12-09 03:37:50,250 [DEBUG]   ... 35s aguardando...
+2025-12-09 03:37:55,254 [DEBUG]   ... 40s aguardando...
+2025-12-09 03:38:00,258 [DEBUG]   ... 45s aguardando...
+2025-12-09 03:38:05,262 [DEBUG]   ... 50s aguardando...
+2025-12-09 03:38:10,266 [DEBUG]   ... 55s aguardando...
+2025-12-09 03:38:15,270 [DEBUG]   ... 60s aguardando...
+2025-12-09 03:38:20,275 [DEBUG]   ... 65s aguardando...
+2025-12-09 03:38:25,280 [DEBUG]   ... 70s aguardando...
+2025-12-09 03:38:30,284 [DEBUG]   ... 75s aguardando...
+2025-12-09 03:38:35,288 [DEBUG]   ... 80s aguardando...
+2025-12-09 03:38:40,292 [DEBUG]   ... 85s aguardando...
+2025-12-09 03:38:45,297 [DEBUG]   ... 90s aguardando...
+2025-12-09 03:38:50,302 [DEBUG]   ... 95s aguardando...
+2025-12-09 03:38:55,306 [DEBUG]   ... 100s aguardando...
+2025-12-09 03:39:00,310 [DEBUG]   ... 105s aguardando...
+2025-12-09 03:39:05,315 [DEBUG]   ... 110s aguardando...
+2025-12-09 03:39:10,319 [DEBUG]   ... 115s aguardando...
+2025-12-09 03:39:15,323 [DEBUG]   ... 120s aguardando...
+2025-12-09 03:39:20,342 [DEBUG]   ... 125s aguardando...
+2025-12-09 03:39:25,346 [DEBUG]   ... 130s aguardando...
+2025-12-09 03:39:30,352 [DEBUG]   ... 135s aguardando...
+2025-12-09 03:39:35,356 [DEBUG]   ... 140s aguardando...
+2025-12-09 03:39:40,360 [DEBUG]   ... 145s aguardando...
+2025-12-09 03:39:45,365 [DEBUG]   ... 150s aguardando...
+2025-12-09 03:39:50,368 [DEBUG]   ... 155s aguardando...
+2025-12-09 03:39:55,372 [DEBUG]   ... 160s aguardando...
+2025-12-09 03:40:00,376 [DEBUG]   ... 165s aguardando...
+2025-12-09 03:40:05,380 [DEBUG]   ... 170s aguardando...
+2025-12-09 03:40:10,384 [DEBUG]   ... 175s aguardando...
+2025-12-09 03:40:15,388 [WARNING] Timeout no download de serventias. Tentando novamente...
+2025-12-09 03:40:15,388 [INFO] Tentativa 3/3 para serventias
+2025-12-09 03:40:15,389 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Serventia') or contains(text(), 'CNS')]"}
+2025-12-09 03:40:15,406 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 200 0
+2025-12-09 03:40:15,406 [DEBUG] Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25"}} | headers=HTTPHeaderDict({'Content-Length': '126', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:15,406 [DEBUG] Finished Request
+2025-12-09 03:40:15,406 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25'}]}
+2025-12-09 03:40:15,422 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:40:15,422 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:15,422 [DEBUG] Finished Request
+2025-12-09 03:40:16,423 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25/click {}
+2025-12-09 03:40:17,516 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.25/click HTTP/1.1" 400 0
+2025-12-09 03:40:17,516 [DEBUG] Remote response: status=400 | data={"value":{"error":"element click intercepted","message":"element click intercepted: Element \u003Cspan style=\"white-space: nowrap; text-overflow: ellipsis;\">...\u003C/span> is not clickable at point (1266, 117). Other element would receive the click: \u003Cdiv class=\"lui-modal-background ng-scope\" ng-class=\"{ 'lui-fade': fade }\">\u003C/div>\n  (Session info: chrome=143.0.7499.41)","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e6dd\n\t0x85f8ef\n\t0x85dbdc\n\t0x85b6c2\n\t0x85a945\n\t0x84f1c8\n\t0x87b4ec\n\t0x84ec34\n\t0x87b6a4\n\t0x89db13\n\t0x87b2e6\n\t0x84d321\n\t0x84e1d4\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0xa29028\n\t0xa291e9\n\t0xa13578\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '779', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:17,516 [DEBUG] Finished Request
+2025-12-09 03:40:17,516 [WARNING] Falha no foco de serventias: Message: element click intercepted: Element <span style="white-space: nowrap; text-overflow: ellipsis;">...</span> is not clickable at point (1266, 117). Other element would receive the click: <div class="lui-modal-background ng-scope" ng-class="{ 'lui-fade': fade }"></div>
+  (Session info: chrome=143.0.7499.41); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0xa20d23
+	0xa20d64
+	0x80e6dd
+	0x85f8ef
+	0x85dbdc
+	0x85b6c2
+	0x85a945
+	0x84f1c8
+	0x87b4ec
+	0x84ec34
+	0x87b6a4
+	0x89db13
+	0x87b2e6
+	0x84d321
+	0x84e1d4
+	0xc74d64
+	0xc7031b
+	0xc8cbfa
+	0xa3ac28
+	0xa42c2d
+	0xa29028
+	0xa291e9
+	0xa13578
+	0x76625d49
+	0x7750d6db
+	0x7750d661
+
+2025-12-09 03:40:17,516 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:40:17,531 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/elements HTTP/1.1" 200 0
+2025-12-09 03:40:17,531 [DEBUG] Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24"},{"element-6066-11e4-a52e-4f735466cecf":"f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27"}]} | headers=HTTPHeaderDict({'Content-Length': '245', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:17,531 [DEBUG] Finished Request
+2025-12-09 03:40:17,532 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24/rect {}
+2025-12-09 03:40:17,543 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.24/rect HTTP/1.1" 200 0
+2025-12-09 03:40:17,544 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2890.375}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:17,544 [DEBUG] Finished Request
+2025-12-09 03:40:17,544 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect {}
+2025-12-09 03:40:17,556 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect HTTP/1.1" 200 0
+2025-12-09 03:40:17,556 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:17,556 [DEBUG] Finished Request
+2025-12-09 03:40:17,557 [DEBUG] GET http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect {}
+2025-12-09 03:40:17,569 [DEBUG] http://localhost:60915 "GET /session/24ab49b62566dd00684141b4243f0b69/element/f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27/rect HTTP/1.1" 200 0
+2025-12-09 03:40:17,569 [DEBUG] Remote response: status=200 | data={"value":{"height":18,"width":142,"x":2359.875,"y":2150.125}} | headers=HTTPHeaderDict({'Content-Length': '61', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:17,569 [DEBUG] Finished Request
+2025-12-09 03:40:17,569 [INFO] Clicando no botão (Y=2150)...
+2025-12-09 03:40:17,570 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27'}]}
+2025-12-09 03:40:17,578 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:40:17,579 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:17,579 [DEBUG] Finished Request
+2025-12-09 03:40:18,580 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/execute/sync {'script': 'arguments[0].click();', 'args': [{'element-6066-11e4-a52e-4f735466cecf': 'f.E7A2CF5BC23A4CE60FE425CA07E8C33F.d.890934D768BF8EAE213BA21E0AA763C6.e.27'}]}
+2025-12-09 03:40:18,590 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/execute/sync HTTP/1.1" 200 0
+2025-12-09 03:40:18,590 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:40:18,591 [DEBUG] Finished Request
+2025-12-09 03:40:18,591 [INFO] Aguardando download (timeout=180s)...
+2025-12-09 03:40:18,591 [DEBUG]   ... 0s aguardando...
+2025-12-09 03:40:23,595 [DEBUG]   ... 5s aguardando...
+2025-12-09 03:40:28,599 [DEBUG]   ... 10s aguardando...
+2025-12-09 03:40:33,603 [DEBUG]   ... 15s aguardando...
+2025-12-09 03:40:38,607 [DEBUG]   ... 20s aguardando...
+2025-12-09 03:40:43,611 [DEBUG]   ... 25s aguardando...
+2025-12-09 03:40:48,616 [DEBUG]   ... 30s aguardando...
+2025-12-09 03:40:53,620 [DEBUG]   ... 35s aguardando...
+2025-12-09 03:40:58,624 [DEBUG]   ... 40s aguardando...
+2025-12-09 03:41:03,628 [DEBUG]   ... 45s aguardando...
+2025-12-09 03:41:08,633 [DEBUG]   ... 50s aguardando...
+2025-12-09 03:41:13,639 [DEBUG]   ... 55s aguardando...
+2025-12-09 03:41:18,643 [DEBUG]   ... 60s aguardando...
+2025-12-09 03:41:23,648 [DEBUG]   ... 65s aguardando...
+2025-12-09 03:41:28,652 [DEBUG]   ... 70s aguardando...
+2025-12-09 03:41:33,655 [DEBUG]   ... 75s aguardando...
+2025-12-09 03:41:38,659 [DEBUG]   ... 80s aguardando...
+2025-12-09 03:41:43,664 [DEBUG]   ... 85s aguardando...
+2025-12-09 03:41:48,670 [DEBUG]   ... 90s aguardando...
+2025-12-09 03:41:53,685 [DEBUG]   ... 95s aguardando...
+2025-12-09 03:41:58,739 [DEBUG]   ... 100s aguardando...
+2025-12-09 03:42:03,743 [DEBUG]   ... 105s aguardando...
+2025-12-09 03:42:08,748 [DEBUG]   ... 110s aguardando...
+2025-12-09 03:42:13,759 [DEBUG]   ... 115s aguardando...
+2025-12-09 03:42:18,763 [DEBUG]   ... 120s aguardando...
+2025-12-09 03:42:23,767 [DEBUG]   ... 125s aguardando...
+2025-12-09 03:42:28,771 [DEBUG]   ... 130s aguardando...
+2025-12-09 03:42:33,775 [DEBUG]   ... 135s aguardando...
+2025-12-09 03:42:38,778 [DEBUG]   ... 140s aguardando...
+2025-12-09 03:42:43,783 [DEBUG]   ... 145s aguardando...
+2025-12-09 03:42:48,787 [DEBUG]   ... 150s aguardando...
+2025-12-09 03:42:53,791 [DEBUG]   ... 155s aguardando...
+2025-12-09 03:42:58,806 [DEBUG]   ... 160s aguardando...
+2025-12-09 03:43:03,811 [DEBUG]   ... 165s aguardando...
+2025-12-09 03:43:08,815 [DEBUG]   ... 170s aguardando...
+2025-12-09 03:43:13,821 [DEBUG]   ... 175s aguardando...
+2025-12-09 03:43:18,825 [WARNING] Timeout no download de serventias. Tentando novamente...
+2025-12-09 03:43:18,825 [ERROR] FALHA FATAL: Não foi possível baixar serventias após 3 tentativas.
+2025-12-09 03:43:18,826 [INFO] 
+--- Processando Tabela 2: ARRECADACAO ---
+2025-12-09 03:43:18,826 [INFO] Aguardando 10 segundos antes da próxima tabela...
+2025-12-09 03:43:28,826 [INFO] Tentativa 1/3 para arrecadacao
+2025-12-09 03:43:28,827 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Atos, arrecadação')]"}
+2025-12-09 03:43:28,828 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 404 0
+2025-12-09 03:43:28,829 [DEBUG] Remote response: status=404 | data={"value":{"error":"invalid session id","message":"invalid session id: session deleted as the browser has closed the connection\nfrom disconnected: not connected to DevTools\n  (Session info: chrome=143.0.7499.41)","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e6dd\n\t0x7fd99e\n\t0x81c4e6\n\t0x8821d8\n\t0x89d44c\n\t0x87b2e6\n\t0x84d321\n\t0x84e1d4\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0xa29028\n\t0xa291e9\n\t0xa13578\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '543', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:28,829 [DEBUG] Finished Request
+2025-12-09 03:43:28,829 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:43:29,040 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/elements HTTP/1.1" 404 0
+2025-12-09 03:43:29,040 [DEBUG] Remote response: status=404 | data={"value":{"error":"invalid session id","message":"invalid session id","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e52b\n\t0x84c635\n\t0x87b3a6\n\t0x876ed1\n\t0x876846\n\t0x7debfd\n\t0x7df18e\n\t0x7df65d\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0x7de7ab\n\t0x7dddf7\n\t0xdc11ff\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '399', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:29,040 [DEBUG] Finished Request
+2025-12-09 03:43:29,040 [ERROR] Erro na tentativa 1: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0xa20d23
+	0xa20d64
+	0x80e52b
+	0x84c635
+	0x87b3a6
+	0x876ed1
+	0x876846
+	0x7debfd
+	0x7df18e
+	0x7df65d
+	0xc74d64
+	0xc7031b
+	0xc8cbfa
+	0xa3ac28
+	0xa42c2d
+	0x7de7ab
+	0x7dddf7
+	0xdc11ff
+	0x76625d49
+	0x7750d6db
+	0x7750d661
+
+2025-12-09 03:43:34,041 [INFO] Tentativa 2/3 para arrecadacao
+2025-12-09 03:43:34,042 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Atos, arrecadação')]"}
+2025-12-09 03:43:34,044 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 404 0
+2025-12-09 03:43:34,044 [DEBUG] Remote response: status=404 | data={"value":{"error":"invalid session id","message":"invalid session id","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e52b\n\t0x84c635\n\t0x87b3a6\n\t0x876ed1\n\t0x876846\n\t0x7debfd\n\t0x7df18e\n\t0x7df65d\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0x7de7ab\n\t0x7dddf7\n\t0xdc11ff\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '399', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:34,044 [DEBUG] Finished Request
+2025-12-09 03:43:34,045 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:43:34,046 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/elements HTTP/1.1" 404 0
+2025-12-09 03:43:34,047 [DEBUG] Remote response: status=404 | data={"value":{"error":"invalid session id","message":"invalid session id","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e52b\n\t0x84c635\n\t0x87b3a6\n\t0x876ed1\n\t0x876846\n\t0x7debfd\n\t0x7df18e\n\t0x7df65d\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0x7de7ab\n\t0x7dddf7\n\t0xdc11ff\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '399', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:34,047 [DEBUG] Finished Request
+2025-12-09 03:43:34,047 [ERROR] Erro na tentativa 2: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0xa20d23
+	0xa20d64
+	0x80e52b
+	0x84c635
+	0x87b3a6
+	0x876ed1
+	0x876846
+	0x7debfd
+	0x7df18e
+	0x7df65d
+	0xc74d64
+	0xc7031b
+	0xc8cbfa
+	0xa3ac28
+	0xa42c2d
+	0x7de7ab
+	0x7dddf7
+	0xdc11ff
+	0x76625d49
+	0x7750d6db
+	0x7750d661
+
+2025-12-09 03:43:39,047 [INFO] Tentativa 3/3 para arrecadacao
+2025-12-09 03:43:39,048 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/element {'using': 'xpath', 'value': "//*[contains(text(), 'Atos, arrecadação')]"}
+2025-12-09 03:43:39,049 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/element HTTP/1.1" 404 0
+2025-12-09 03:43:39,049 [DEBUG] Remote response: status=404 | data={"value":{"error":"invalid session id","message":"invalid session id","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e52b\n\t0x84c635\n\t0x87b3a6\n\t0x876ed1\n\t0x876846\n\t0x7debfd\n\t0x7df18e\n\t0x7df65d\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0x7de7ab\n\t0x7dddf7\n\t0xdc11ff\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '399', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:39,050 [DEBUG] Finished Request
+2025-12-09 03:43:39,050 [DEBUG] POST http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69/elements {'using': 'xpath', 'value': "//*[contains(text(), 'Exportar dados em .csv')]"}
+2025-12-09 03:43:39,051 [DEBUG] http://localhost:60915 "POST /session/24ab49b62566dd00684141b4243f0b69/elements HTTP/1.1" 404 0
+2025-12-09 03:43:39,051 [DEBUG] Remote response: status=404 | data={"value":{"error":"invalid session id","message":"invalid session id","stacktrace":"Symbols not available. Dumping unresolved backtrace:\n\t0xa20d23\n\t0xa20d64\n\t0x80e52b\n\t0x84c635\n\t0x87b3a6\n\t0x876ed1\n\t0x876846\n\t0x7debfd\n\t0x7df18e\n\t0x7df65d\n\t0xc74d64\n\t0xc7031b\n\t0xc8cbfa\n\t0xa3ac28\n\t0xa42c2d\n\t0x7de7ab\n\t0x7dddf7\n\t0xdc11ff\n\t0x76625d49\n\t0x7750d6db\n\t0x7750d661\n"}} | headers=HTTPHeaderDict({'Content-Length': '399', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:39,051 [DEBUG] Finished Request
+2025-12-09 03:43:39,051 [ERROR] Erro na tentativa 3: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0xa20d23
+	0xa20d64
+	0x80e52b
+	0x84c635
+	0x87b3a6
+	0x876ed1
+	0x876846
+	0x7debfd
+	0x7df18e
+	0x7df65d
+	0xc74d64
+	0xc7031b
+	0xc8cbfa
+	0xa3ac28
+	0xa42c2d
+	0x7de7ab
+	0x7dddf7
+	0xdc11ff
+	0x76625d49
+	0x7750d6db
+	0x7750d661
+
+2025-12-09 03:43:44,052 [ERROR] FALHA FATAL: Não foi possível baixar arrecadacao após 3 tentativas.
+2025-12-09 03:43:44,053 [DEBUG] DELETE http://localhost:60915/session/24ab49b62566dd00684141b4243f0b69 {}
+2025-12-09 03:43:44,054 [DEBUG] http://localhost:60915 "DELETE /session/24ab49b62566dd00684141b4243f0b69 HTTP/1.1" 200 0
+2025-12-09 03:43:44,054 [DEBUG] Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2025-12-09 03:43:44,054 [DEBUG] Finished Request

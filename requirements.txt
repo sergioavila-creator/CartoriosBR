@@ -10,3 +10,5 @@ selenium
 webdriver-manager
 openpyxl
 toml
+
+supabase
