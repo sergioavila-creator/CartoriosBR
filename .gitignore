@@ -16,6 +16,7 @@ Thumbs.db
 
 # Project-specific
 downloads_cnj/
+dados_debug/
 *.pdf
 cnj_dados_rj_*.csv
 chromedriver.exe
