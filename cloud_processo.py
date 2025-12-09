@@ -455,7 +455,7 @@ def exportar_para_sheets(df_brutos: pd.DataFrame, df_analise: pd.DataFrame, df_d
 # ORQUESTRADOR PRINCIPAL (master_processo.py main)
 # ####################################################################
 
-def cloud_main(request):
+def cloud_main(request, run_enrichment=True):
     """
     Função principal que será executada pelo Google Cloud Functions (GCF).
     """
@@ -465,6 +465,7 @@ def cloud_main(request):
     print("#"*70)
     print("      Sistema CartoriosRJ - Orquestrador Cloud (V80.6 - Refinado)")
     print(f"      Iniciado em: {datetime.date.today().strftime('%d/%m/%Y')}")
+    print(f"      [PARAM] run_enrichment = {run_enrichment}")
     print("#"*70)
     
     # 1. Obter lista de links dos PDFs
@@ -521,8 +522,14 @@ def cloud_main(request):
     # =================================================================================
     # MAPEAMENTO DE CNS (SERVIÇO INDEPENDENTE)
     # =================================================================================
-    # Chama a função de enriquecimento que foi isolada para modularidade
-    df_brutos = enrich_tjrj_with_cns(df_brutos)
+    if run_enrichment:
+        # Chama a função de enriquecimento que foi isolada para modularidade
+        df_brutos = enrich_tjrj_with_cns(df_brutos)
+    else:
+        print("\n[INFO] Enriquecimento de CNS IGNORADO conforme solicitado.")
+        # Se não enriquecer, garante que a coluna CNS exista vazia para não quebrar
+        if 'CNS' not in df_brutos.columns:
+            df_brutos['CNS'] = "NAO_PROCESSADO"
 
     # --- ANALISE 1 (Média por Cartório) ---
     df_analise = df_brutos.groupby(['cod', 'cidade', 'designacao'], as_index=False).agg({
@@ -555,9 +562,16 @@ def enrich_tjrj_with_cns(df_brutos):
              if "GCP_SERVICE_ACCOUNT" in os.environ:
                   import json
                   creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+                  # Correção de chave privada
+                  if "private_key" in creds_dict:
+                      creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
                   gc_map = gspread.service_account_from_dict(creds_dict)
              elif st and hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
-                  gc_map = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+                  # Converte AttrDict para dict mutável e sanitiza
+                  creds_dict = dict(st.secrets["gcp_service_account"])
+                  if "private_key" in creds_dict:
+                      creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+                  gc_map = gspread.service_account_from_dict(creds_dict)
              else:
                   gc_map = gspread.service_account()
              
@@ -585,7 +599,7 @@ def enrich_tjrj_with_cns(df_brutos):
          col_nome = next((c for c in df_serventias.columns if 'nome' in c.lower() or 'denominacao' in c.lower() or 'denominação' in c.lower()), 'Denominação')
          col_municipio = next((c for c in df_serventias.columns if 'municipio' in c.lower() or 'cidade' in c.lower()), 'Município')
          col_cns = next((c for c in df_serventias.columns if 'cns' in c.lower()), 'CNS')
-         col_gestor = next((c for c in df_serventias.columns if 'titular' in c.lower() or 'responsavel' in c.lower() or 'responsável' in c.lower()), 'Titular')
+         col_gestor = next((c for c in df_serventias.columns if ('titular' in c.lower() or 'responsavel' in c.lower() or 'responsável' in c.lower()) and 'data' not in c.lower() and 'dat.' not in c.lower()), 'Titular')
          col_atribuicao = next((c for c in df_serventias.columns if 'atribuicao' in c.lower() or 'atribuição' in c.lower()), 'Atribuição')
          
          # Indexar Base CNJ

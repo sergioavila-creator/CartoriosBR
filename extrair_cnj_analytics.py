@@ -791,9 +791,6 @@ def upload_to_gsheets(files_dict):
                     
                     # Sincroniza com Supabase
                     sync_to_supabase(df_proc, df_serv)
-                    
-            except Exception as e:
-                print(f"Erro ao adicionar fórmulas: {e}")
         
         # Limpeza de abas legadas
         try:

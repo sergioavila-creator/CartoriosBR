@@ -18,6 +18,10 @@ import sys
 import contextlib
 import os
 import subprocess
+import importlib
+
+# Força reload do módulo cloud_processo para pegar mudanças
+importlib.reload(cloud_processo)
 
 # Adiciona diretório pai
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -169,8 +173,17 @@ def clean_currency(x):
 def load_data():
     """Carrega dados da planilha Google Sheets com cache de 10 minutos"""
     try:
-        gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
-        sh = gc.open_by_key(st.secrets["SHEET_ID"])
+        # Autenticação robusta (compatível com Cloud e Local)
+        if hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
+            gc = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+        elif "GCP_SERVICE_ACCOUNT" in os.environ:
+            import json
+            creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+            gc = gspread.service_account_from_dict(creds_dict)
+        else:
+            gc = gspread.service_account()
+
+        sh = gc.open_by_key(cloud_processo.GOOGLE_SHEET_ID)
         
         try:
             worksheet = sh.worksheet("Análise 12 Meses")
@@ -304,7 +317,8 @@ with st.sidebar:
         with contextlib.redirect_stdout(StreamlitConsole(log_placeholder)):
             with st.spinner("Processando..."):
                 try:
-                    msg, code = cloud_processo.cloud_main(None)
+                    # Executa update SEM enriquecimento (run_enrichment=False)
+                    msg, code = cloud_processo.cloud_main(None, run_enrichment=False)
                     if code == 200:
                         st.success(msg)
                         st.cache_data.clear()
@@ -334,8 +348,8 @@ with st.sidebar:
                 env["GCP_SERVICE_ACCOUNT"] = json.dumps(creds)
             
             # Injeta ID da Planilha se existir nos secrets
-            if "SHEET_ID" in st.secrets:
-                env["SHEET_ID"] = st.secrets["SHEET_ID"]
+            # Injeta ID da Planilha se existir nos secrets ou usa o do cloud_processo
+            env["SHEET_ID"] = cloud_processo.GOOGLE_SHEET_ID
             
             process = subprocess.Popen(
                 cmd,
@@ -368,7 +382,7 @@ with st.sidebar:
 
     
     st.divider()
-    url_planilha = f"https://docs.google.com/spreadsheets/d/{st.secrets['SHEET_ID']}"
+    url_planilha = f"https://docs.google.com/spreadsheets/d/{cloud_processo.GOOGLE_SHEET_ID}"
     
     try:
         with open("icon_sheets.png", "rb") as img_file:

@@ -58,11 +58,29 @@ def autenticar_google_sheets():
         'https://www.googleapis.com/auth/spreadsheets',
         'https://www.googleapis.com/auth/drive'
     ]
-    credentials = Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"],
-        scopes=scope
-    )
-    return gspread.authorize(credentials)
+    
+    # Prepara credenciais (suporte a st.secrets e env var)
+    creds_dict = None
+    if "gcp_service_account" in st.secrets:
+        # Converte AttrDict para dict normal para ser mutável
+        creds_dict = dict(st.secrets["gcp_service_account"])
+    elif "GCP_SERVICE_ACCOUNT" in os.environ:
+        import json
+        creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+    
+    if creds_dict:
+        # Correção de chave privada (comum erro de \n escapado)
+        if "private_key" in creds_dict:
+            creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+
+        credentials = Credentials.from_service_account_info(
+            creds_dict,
+            scopes=scope
+        )
+        return gspread.authorize(credentials)
+    else:
+        # Fallback para default (local com gcloud auth)
+        return gspread.service_account()
 
 def salvar_em_sheets(df):
     """
