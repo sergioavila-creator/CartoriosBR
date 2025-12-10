@@ -816,8 +816,90 @@ def enrich_tjrj_with_cns(df_brutos):
              if recovered > 0:
                  print(f"  -> Recuperados {recovered} registros via código!")
          
+         
+         # Passo Avançado: Matching por Atribuições Únicas
+         # Para NAO_ENCONTRADO restantes, tenta match por combinação única de atribuições
+         print("  -> Aplicando matching por atribuições únicas...")
+         
+         nao_encontrados = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO'].copy()
+         
+         if len(nao_encontrados) > 0 and 'cidade' in df_brutos.columns:
+             # Para cada NAO_ENCONTRADO, identifica suas atribuições (colunas com receita > 0)
+             cols_receita = ['RCPJ', 'RCPN', 'RI', 'RTD', 'Notas', 'Protesto']
+             
+             for idx, row in nao_encontrados.iterrows():
+                 cidade = row['cidade']
+                 
+                 # Identifica atribuições do registro TJRJ
+                 atribs_tjrj = set()
+                 for col in cols_receita:
+                     if col in row.index:
+                         val = pd.to_numeric(row[col], errors='coerce')
+                         if pd.notna(val) and val > 0:
+                             atribs_tjrj.add(col)
+                 
+                 if not atribs_tjrj:
+                     continue  # Sem atribuições identificadas
+                 
+                 # Busca no CNJ cartórios da mesma cidade com as mesmas atribuições
+                 candidatos_cnj = []
+                 for _, cnj_row in df_serventias[df_serventias[col_municipio].str.upper().str.strip() == cidade.upper().strip()].iterrows():
+                     cns_cand = str(cnj_row[col_cns]).strip()
+                     atribs_cnj_str = str(cnj_row[col_atribuicao]).upper()
+                     
+                     # Verifica se todas as atribuições do TJRJ estão no CNJ
+                     match_count = 0
+                     for atrib in atribs_tjrj:
+                         termos_busca = [atrib]
+                         if atrib == 'Notas': termos_busca += ['TABELIE', 'NOTAS']
+                         if atrib == 'RI': termos_busca += ['REGISTRO DE IMOVEIS', 'IMOVEIS']
+                         if atrib == 'RCPN': termos_busca += ['CIVIL DAS PESSOAS NATURAIS', 'PESSOAS NATURAIS']
+                         if atrib == 'RCPJ': termos_busca += ['CIVIL DAS PESSOAS JURIDICAS', 'PESSOAS JURIDICAS']
+                         if atrib == 'RTD': termos_busca += ['TITULOS E DOCUMENTOS']
+                         if atrib == 'Protesto': termos_busca += ['PROTESTO']
+                         
+                         if any(termo in atribs_cnj_str for termo in termos_busca):
+                             match_count += 1
+                     
+                     # Se todas as atribuições batem, é candidato
+                     if match_count == len(atribs_tjrj):
+                         candidatos_cnj.append(cns_cand)
+                 
+                 # Se há exatamente 1 candidato (único), atribui o CNS
+                 if len(candidatos_cnj) == 1:
+                     df_brutos.at[idx, 'CNS'] = candidatos_cnj[0]
+         
+         # Conta recuperados por atribuição
+         recovered_attr = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].shape[0] - success_count
+         if recovered_attr > 0:
+             print(f"  -> Recuperados {recovered_attr} registros via atribuições únicas!")
+         
+         # Estatísticas Finais: Comparação CNJ vs TJRJ
+         print("\n  [ESTATÍSTICAS CNJ vs TJRJ]")
+         
+         # Total de cartórios ativos no CNJ (RJ)
+         cnj_rj_ativos = df_serventias[
+             (df_serventias[col_municipio].str.contains('RIO DE JANEIRO|NITER', case=False, na=False)) |
+             (df_serventias['UF'] == 'RJ')
+         ]
+         total_cnj_rj = len(cnj_rj_ativos)
+         
+         # Total de cartórios únicos com receita no TJRJ
+         if 'cod' in df_brutos.columns:
+             total_tjrj_unicos = df_brutos['cod'].nunique()
+         else:
+             total_tjrj_unicos = len(df_brutos.groupby(['cidade', 'designacao']))
+         
+         # Cartórios mapeados com sucesso
+         cns_mapeados_unicos = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO']['CNS'].nunique()
+         
+         print(f"  -> Cartórios ativos CNJ (RJ): {total_cnj_rj}")
+         print(f"  -> Cartórios com receita TJRJ: {total_tjrj_unicos}")
+         print(f"  -> CNS mapeados (distintos): {cns_mapeados_unicos}")
+         print(f"  -> Cobertura: {(cns_mapeados_unicos/total_tjrj_unicos*100):.1f}%")
+         
          success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
-         print(f"  -> Enriquecimento concluído: {success_count}/{len(df_brutos)} mapeados.")
+         print(f"\n  -> Enriquecimento concluído: {success_count}/{len(df_brutos)} mapeados.")
          return df_brutos
 
     except Exception as e:
