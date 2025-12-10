@@ -2,10 +2,8 @@ import os
 from supabase import create_client, Client
 import toml
 
-# Configuração Hardcoded (Migrar para secrets.toml em produção)
-# Project Ref extraído do JWT: ezshmkwbzfqffdlloyrwn
-SUPABASE_URL = "https://ezshmkwbzfqffdloyrwn.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6c2hta3diemZxZmZkbG95cnduIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NTMxMDAyOCwiZXhwIjoyMDgwODg2MDI4fQ.9x8JcpAh6L7WACG0QgCNYGycESFVoWycv3WEDvIWhtU"
+# IMPORTANTE: Credenciais devem estar em secrets.toml ou variáveis de ambiente
+# NUNCA commitar credenciais no código!
 
 def get_supabase_client() -> Client:
     """Retorna cliente Supabase autenticado"""
