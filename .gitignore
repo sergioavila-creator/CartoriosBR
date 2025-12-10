@@ -22,3 +22,9 @@ cnj_dados_rj_*.csv
 chromedriver.exe
 geckodriver.exe
 debug_*.py
+
+# Credentials (CRITICAL - NEVER COMMIT)
+*-*.json
+*.json
+!package.json
+!tsconfig.json
