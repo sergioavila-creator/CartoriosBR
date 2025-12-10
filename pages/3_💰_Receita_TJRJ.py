@@ -622,7 +622,27 @@ if not df.empty:
                 )
                 fig1.update_layout(separators=",.", margin=dict(t=20, b=20, l=10, r=10))
                 fig1.update_traces(textposition='inside', textinfo='percent+label')
-                st.plotly_chart(fig1, use_container_width=True, config={'displayModeBar': True})
+                # Gera nome dinâmico para o arquivo
+                filename_cidade = "receita_por_cidade"
+                if cidades_selecionadas and len(cidades_selecionadas) == 1:
+                    filename_cidade += f"_{cidades_selecionadas[0].replace(' ', '_')}"
+                elif cidades_selecionadas:
+                     filename_cidade += f"_{len(cidades_selecionadas)}_cidades"
+
+                st.plotly_chart(
+                    fig1, 
+                    use_container_width=True, 
+                    config={
+                        'displayModeBar': True,
+                        'toImageButtonOptions': {
+                            'format': 'png', # one of png, svg, jpeg, webp
+                            'filename': filename_cidade,
+                            'height': 600,
+                            'width': 800,
+                            'scale': 2 # Multiply title/legend/axis/canvas sizes by this factor
+                        }
+                    }
+                )
         
         # Gráfico 2: Receita por Atribuição
         with container_atribuicao:
@@ -639,7 +659,25 @@ if not df.empty:
                 )
                 fig2.update_traces(textposition='inside', textinfo='percent+label')
                 fig2.update_layout(separators=",.", showlegend=True, margin=dict(t=20, b=20, l=10, r=10))
-                st.plotly_chart(fig2, use_container_width=True, config={'displayModeBar': True})
+                # Gera nome dinâmico para atribuições
+                filename_attr = "receita_por_atribuicao"
+                if cidades_selecionadas and len(cidades_selecionadas) == 1:
+                    filename_attr += f"_{cidades_selecionadas[0].replace(' ', '_')}"
+                
+                st.plotly_chart(
+                    fig2, 
+                    use_container_width=True, 
+                    config={
+                        'displayModeBar': True,
+                        'toImageButtonOptions': {
+                            'format': 'png',
+                            'filename': filename_attr,
+                            'height': 600,
+                            'width': 800,
+                            'scale': 2
+                        }
+                    }
+                )
             else:
                 st.info("Selecione o desejado nos filtros acima.")
         
@@ -663,7 +701,21 @@ if not df.empty:
                         )
                         fig_cargo.update_traces(textposition='inside', textinfo='percent+label')
                         fig_cargo.update_layout(separators=",.", showlegend=True, margin=dict(t=20, b=20, l=10, r=10))
-                        st.plotly_chart(fig_cargo, use_container_width=True, config={'displayModeBar': True})
+                        filename_cargo = "receita_por_cargo"
+                        st.plotly_chart(
+                            fig_cargo, 
+                            use_container_width=True, 
+                            config={
+                                'displayModeBar': True,
+                                'toImageButtonOptions': {
+                                    'format': 'png',
+                                    'filename': filename_cargo,
+                                    'height': 600,
+                                    'width': 800,
+                                    'scale': 2
+                                }
+                            }
+                        )
                     else:
                         st.info("Sem dados de cargo para exibir.")
                 else:
@@ -689,7 +741,24 @@ if not df.empty:
             )
             fig3.update_layout(separators=",.", margin=dict(t=20, b=20, l=10, r=10))
             fig3.update_traces(textposition='inside', textinfo='percent+label')
-            st.plotly_chart(fig3, use_container_width=True, config={'displayModeBar': True})
+            filename_cartorio = "receita_por_cartorio"
+            if cidades_selecionadas and len(cidades_selecionadas) == 1:
+                filename_cartorio += f"_{cidades_selecionadas[0].replace(' ', '_')}"
+
+            st.plotly_chart(
+                fig3, 
+                use_container_width=True, 
+                config={
+                    'displayModeBar': True,
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': filename_cartorio,
+                        'height': 600,
+                        'width': 800,
+                        'scale': 2
+                    }
+                }
+            )
         
         # --- TABELA DE DETALHAMENTO ---
         st.divider()
