@@ -690,7 +690,7 @@ def enrich_tjrj_with_cns(df_brutos):
          col_municipio = next((c for c in df_serventias.columns if 'municipio' in c.lower() or 'cidade' in c.lower()), 'Município')
          col_cns = next((c for c in df_serventias.columns if 'cns' in c.lower()), 'CNS')
          col_gestor = next((c for c in df_serventias.columns if ('titular' in c.lower() or 'responsavel' in c.lower() or 'responsável' in c.lower()) and 'data' not in c.lower() and 'dat.' not in c.lower()), 'Titular')
-         col_atribuicao = next((c for c in df_serventias.columns if 'atribuicao' in c.lower() or 'atribuição' in c.lower()), 'Atribuição')
+         col_atribuicao = next((c for c in df_serventias.columns if 'atribuicao' in c.lower() or 'atribuição' in c.lower()), 'Atribuições')
          
          # Indexar Base CNJ
          cnj_map_nome = {}
