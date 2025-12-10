@@ -794,6 +794,28 @@ def enrich_tjrj_with_cns(df_brutos):
          # Hack: atualizar a lista global COLUNAS_BRUTAS se necessario
          # Mas aqui estamos retornando o DF modificado. O caller deve usar esse DF.
          
+         # Passo Final: Propagar CNS baseado no código (coluna 'cod')
+         # Para registros NAO_ENCONTRADO, verifica se existe CNS válido para o mesmo código
+         print("  -> Aplicando fallback por código...")
+         
+         if 'cod' in df_brutos.columns:
+             # Cria mapeamento: cod -> CNS (apenas CNS válidos)
+             cod_to_cns = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].groupby('cod')['CNS'].first().to_dict()
+             
+             # Função para aplicar fallback
+             def apply_code_fallback(row):
+                 if row['CNS'] == 'NAO_ENCONTRADO' and row['cod'] in cod_to_cns:
+                     return cod_to_cns[row['cod']]
+                 return row['CNS']
+             
+             # Aplica fallback
+             df_brutos['CNS'] = df_brutos.apply(apply_code_fallback, axis=1)
+             
+             # Conta quantos foram recuperados
+             recovered = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].shape[0] - success_count
+             if recovered > 0:
+                 print(f"  -> Recuperados {recovered} registros via código!")
+         
          success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
          print(f"  -> Enriquecimento concluído: {success_count}/{len(df_brutos)} mapeados.")
          return df_brutos
