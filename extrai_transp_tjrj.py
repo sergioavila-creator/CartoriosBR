@@ -451,6 +451,45 @@ def exportar_para_sheets(df_brutos: pd.DataFrame, df_analise: pd.DataFrame, df_d
         print(traceback.format_exc())
         return False
 
+
+# ####################################################################
+# LOG DE EXECUÇÃO (Google Sheets)
+# ####################################################################
+def log_execution(status, message, elapsed_time=0):
+    """Registra a execução na aba 'Log Execucoes'."""
+    try:
+        print(f"[LOG] Registrando execução: {status} - {message}")
+        
+        # Autenticação
+        if "GCP_SERVICE_ACCOUNT" in os.environ:
+             import json
+             creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+             if "private_key" in creds_dict:
+                 creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+             gc = gspread.service_account_from_dict(creds_dict)
+        elif st and hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
+             creds_dict = dict(st.secrets["gcp_service_account"])
+             if "private_key" in creds_dict:
+                 creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+             gc = gspread.service_account_from_dict(creds_dict)
+        else:
+             gc = gspread.service_account()
+        
+        sh = gc.open_by_key(GOOGLE_SHEET_ID)
+        
+        try:
+            ws = sh.worksheet("Log Execucoes")
+        except gspread.exceptions.WorksheetNotFound:
+            ws = sh.add_worksheet(title="Log Execucoes", rows=1000, cols=5)
+            ws.append_row(["Data Hora", "Status", "Tempo (s)", "Mensagem", "Detalhes"])
+            
+        timestamp = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        ws.append_row([timestamp, status, round(elapsed_time, 2), message, "Cloud Function/Streamlit"])
+        print("[LOG] Sucesso ao salvar log.")
+        
+    except Exception as e:
+        print(f"[LOG ERROR] Falha ao salvar log de execução: {e}")
+
 # ####################################################################
 # ORQUESTRADOR PRINCIPAL (master_processo.py main)
 # ####################################################################
@@ -504,6 +543,9 @@ def cloud_main(request, run_enrichment=True):
     # 3. Análise (Pandas)
     if not dados_consolidados:
         print("[ERRO] Nenhuma dado extraído dos PDFs. Análise finalizada.")
+    if not dados_consolidados:
+        print("[ERRO] Nenhuma dado extraído dos PDFs. Análise finalizada.")
+        log_execution("ERRO", "Nenhum dado extraído dos PDFs", time.time() - inicio_total)
         return 'Falha ao processar PDFs', 500
 
     df_brutos = pd.DataFrame(dados_consolidados)
@@ -578,6 +620,8 @@ def cloud_main(request, run_enrichment=True):
     tempo_total = fim_total - inicio_total
     
     print(f"\n[SUCESSO] Processo Cloud concluído em {tempo_total:.2f} segundos.")
+    print(f"\n[SUCESSO] Processo Cloud concluído em {tempo_total:.2f} segundos.")
+    log_execution("SUCESSO", "Processo concluído", tempo_total)
     return 'Planilha atualizada com sucesso', 200
 
 # ####################################################################

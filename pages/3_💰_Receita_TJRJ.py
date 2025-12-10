@@ -238,6 +238,10 @@ class StreamlitConsole:
 
     def write(self, text):
         self.buffer.append(text)
+        # Atualiza session state se disponível para persistência
+        if 'log_buffer' in st.session_state:
+             st.session_state.log_buffer.append(text)
+             
         self.placeholder.code("".join(self.buffer), language="bash")
         sys.__stdout__.write(text)
 
@@ -315,8 +319,18 @@ with st.sidebar:
     st.markdown("---")
     st.subheader("Administração")
     
+    
+    # Exibe log persistente se existir
+    if 'log_buffer' in st.session_state and st.session_state.log_buffer:
+        with st.expander("📜 Log da Última Execução", expanded=False):
+            st.code("".join(st.session_state.log_buffer), language="bash")
+
     if st.button("🔄 Atualizar Dados Agora"):
         st.info("Iniciando processo... Acompanhe o log abaixo.")
+        
+        # Limpa/Inicia buffer no session state
+        st.session_state.log_buffer = []
+        
         log_placeholder = st.empty()
         with contextlib.redirect_stdout(StreamlitConsole(log_placeholder)):
             with st.spinner("Processando..."):
@@ -425,7 +439,49 @@ with st.spinner('Buscando dados atualizados na nuvem...'):
 
 if not df.empty:
     # --- CONFIGURAÇÃO DE ABAS ---
-    tab_geral, tab_cidades = st.tabs(["Painel Geral", "🏙️ Cidades"])
+    tab_geral, tab_cidades, tab_historico = st.tabs(["Painel Geral", "🏙️ Cidades", "📜 Histórico"])
+
+    # ========================================================================
+    # ABA 3: HISTÓRICO DE EXECUÇÕES
+    # ========================================================================
+    with tab_historico:
+        st.subheader("Histórico de Atualizações do Robô")
+        
+        if st.button("🔄 Recarregar Histórico"):
+             st.cache_data.clear()
+             st.rerun()
+
+        try:
+            # Carrega Log usando a mesma lógica do load_data
+            if hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
+                 gc_log = gspread.service_account_from_dict(st.secrets["gcp_service_account"])
+            elif "GCP_SERVICE_ACCOUNT" in os.environ:
+                 import json
+                 creds = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+                 gc_log = gspread.service_account_from_dict(creds)
+            else:
+                 gc_log = gspread.service_account()
+            
+            sh_log = gc_log.open_by_key(extrai_transp_tjrj.GOOGLE_SHEET_ID)
+            ws_log = sh_log.worksheet("Log Execucoes")
+            rows_log = ws_log.get_all_values()
+            
+            if len(rows_log) > 1:
+                df_log = pd.DataFrame(rows_log[1:], columns=rows_log[0])
+                # Ordena por Data Hora (assumindo formato dd/mm/yyyy hh:mm:ss)
+                try:
+                     df_log['Data_Obj'] = pd.to_datetime(df_log['Data Hora'], format="%d/%m/%Y %H:%M:%S", errors='coerce')
+                     df_log = df_log.sort_values('Data_Obj', ascending=False).drop(columns=['Data_Obj'])
+                except: pass
+                
+                st.dataframe(df_log, use_container_width=True, hide_index=True)
+            else:
+                st.info("Nenhum registro de execução encontrado ainda.")
+                
+        except gspread.exceptions.WorksheetNotFound:
+            st.warning("A aba 'Log Execucoes' ainda não foi criada. Execute uma atualização para criá-la.")
+        except Exception as e:
+            st.error(f"Não foi possível carregar o histórico: {e}")
 
     # ========================================================================
     # ABA 2: CIDADES (Relatório Solicitado)
