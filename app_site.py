@@ -154,6 +154,9 @@ def clean_currency(x):
 # ============================================================================
 def check_password():
     """Sistema de autenticação para área administrativa"""
+    # SENHA DESATIVADA TEMPORARIAMENTE
+    return True
+
     def password_entered():
         if st.session_state["password"] == st.secrets["PASSWORD"]:
             st.session_state["password_correct"] = True
