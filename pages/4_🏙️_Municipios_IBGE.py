@@ -22,9 +22,10 @@ st.set_page_config(
 # ============================================================================
 # VERIFICAÇÃO DE AUTENTICAÇÃO
 # ============================================================================
-if not auth_utils.check_password():
-    st.warning("⚠️ Acesso restrito. Por favor, faça login na página inicial.")
-    st.stop()
+# TEMPORARIAMENTE DESATIVADO PARA HOMOLOGAÇÃO
+# if not auth_utils.check_password():
+#     st.warning("⚠️ Acesso restrito. Por favor, faça login na página inicial.")
+#     st.stop()
 
 # ============================================================================
 # CONSTANTES

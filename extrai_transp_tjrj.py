@@ -41,7 +41,7 @@ except Exception:
 
 if not GOOGLE_SHEET_ID:
     # Fallback para o ID conhecido (extraído do st.secrets anteriormente se necessário, ou mantido hardcoded se for seguro)
-    GOOGLE_SHEET_ID = '1SkxwQoAnNpcNBg1niLpaRaMs79h8rp143NPgsr1EAXo' # ID da planilha de Receita
+    GOOGLE_SHEET_ID = '1_BXjFfmKM_K0ZHpcU8qiEWYQm4weZeekg8E2CbOiQfE' # ID da planilha de Receita atualizado
 
 # --- CONFIGURAÇÕES DO BAIXADOR ---
 BASE_PAGE = "https://www.tjrj.jus.br/transparencia/relatorio-de-receita-cartoraria-extrajudicial"
@@ -519,24 +519,70 @@ def cloud_main(request, run_enrichment=True):
     df_brutos.drop_duplicates(subset=['cod', 'cidade', 'designacao', 'arquivo_origem', 'mes', 'ano', 'Total'], keep='first', inplace=True)
     df_brutos.sort_values(by=['cidade', 'designacao', 'ano', 'mes'], inplace=True)
 
-    # =================================================================================
-    # MAPEAMENTO DE CNS (SERVIÇO INDEPENDENTE)
-    # =================================================================================
-    if run_enrichment:
-        # Chama a função de enriquecimento que foi isolada para modularidade
-        df_brutos = enrich_tjrj_with_cns(df_brutos)
-    else:
-        print("\n[INFO] Enriquecimento de CNS IGNORADO conforme solicitado.")
-        # Se não enriquecer, garante que a coluna CNS exista vazia para não quebrar
-        if 'CNS' not in df_brutos.columns:
-            df_brutos['CNS'] = "NAO_PROCESSADO"
-
     # --- ANALISE 1 (Média por Cartório) ---
     df_analise = df_brutos.groupby(['cod', 'cidade', 'designacao'], as_index=False).agg({
         'RCPJ': 'mean', 'RCPN': 'mean', 'IT': 'mean', 'RI': 'mean', 'RTD': 'mean', 
         'Notas': 'mean', 'Protesto': 'mean', 'Emolumentos': 'mean', 'Funarpem': 'mean', 
         'Gratuitos': 'mean', 'Total': 'mean', 'gestor': 'last', 'cargo': 'last'
     })
+
+    # Renomear para compatibilidade
+    df_analise_compat = df_analise.copy()
+    df_analise_compat.rename(columns={'Total': 'Media Mensal Total (R$)'}, inplace=True)
+
+    # --- ANALISE 2 (Distritos) ---
+    df_distritos = df_analise[df_analise['designacao'].apply(eh_distrito_valido)].copy()
+    
+    # --- ANALISE 3 (Cidades) ---
+    # Média Mensal Total (Soma das médias dos cartórios da cidade)
+    df_cidades_media = df_analise.groupby('cidade', as_index=False)['Total'].sum()
+    df_cidades_media.rename(columns={'Total': 'Media Mensal Total (R$)'}, inplace=True)
+
+    # Faturamento Acumulado Bruto
+    df_cidades_acum = df_brutos.groupby('cidade', as_index=False)['Total'].sum()
+    df_cidades_acum.rename(columns={'Total': 'Faturamento Acumulado Bruto (R$)'}, inplace=True)
+    
+    # Qtd Cartorios (Novo rótulo)
+    df_cidades_cont = df_analise.groupby('cidade').size().reset_index(name='Qtd Cartorios')
+    
+    # Merge
+    df_cidades = pd.merge(df_cidades_media, df_cidades_acum, on='cidade', how='left')
+    df_cidades = pd.merge(df_cidades, df_cidades_cont, on='cidade', how='left')
+    
+    # Nova Coluna E: Média por cartório
+    # Média por cartório = Media Mensal Total (B) / Qtd Cartorios (D)
+    df_cidades['Média por cartório'] = df_cidades['Media Mensal Total (R$)'] / df_cidades['Qtd Cartorios']
+    df_cidades['Média por cartório'] = df_cidades['Média por cartório'].round(2)
+    
+    # Ordenar colunas e linhas
+    # A=cidade, B=Media Mensal, C=Fat Acum, D=Qtd Cart, E=Média por cartório
+    cols_cidades = ['cidade', 'Media Mensal Total (R$)', 'Faturamento Acumulado Bruto (R$)', 'Qtd Cartorios', 'Média por cartório']
+    df_cidades = df_cidades[cols_cidades]
+    
+    df_cidades.sort_values(by='Media Mensal Total (R$)', ascending=False, inplace=True)
+    
+    # 4. Snapshots de Debug (Solicitado pelo usuário)
+    try:
+        from logging_utils import save_debug_snapshot
+        save_debug_snapshot(df_brutos, "tjrj_dados_brutos")
+        save_debug_snapshot(df_analise_compat, "tjrj_analise_12m")
+        save_debug_snapshot(df_distritos, "tjrj_distritos")
+        save_debug_snapshot(df_cidades, "tjrj_cidades")
+    except ImportError:
+        print("[AVISO] logging_utils não encontrado para snapshots.")
+
+    # 5. Exportação para Google Sheets
+    exportar_para_sheets(df_brutos, df_analise_compat, df_distritos, df_cidades)
+
+    fim_total = time.time()
+    tempo_total = fim_total - inicio_total
+    
+    print(f"\n[SUCESSO] Processo Cloud concluído em {tempo_total:.2f} segundos.")
+    return 'Planilha atualizada com sucesso', 200
+
+# ####################################################################
+# SERVIÇO INDEPENDENTE: ENRIQUECIMENTO DE CNS
+# ####################################################################
 
 def enrich_tjrj_with_cns(df_brutos):
     """
@@ -713,59 +759,6 @@ def enrich_tjrj_with_cns(df_brutos):
         import traceback
         traceback.print_exc()
         return df_brutos
-    # Renomear para compatibilidade
-    df_analise_compat = df_analise.copy()
-    df_analise_compat.rename(columns={'Total': 'Media Mensal Total (R$)'}, inplace=True)
-
-    # --- ANALISE 2 (Distritos) ---
-    df_distritos = df_analise[df_analise['designacao'].apply(eh_distrito_valido)].copy()
-    
-    # --- ANALISE 3 (Cidades) ---
-    # Média Mensal Total (Soma das médias dos cartórios da cidade)
-    df_cidades_media = df_analise.groupby('cidade', as_index=False)['Total'].sum()
-    df_cidades_media.rename(columns={'Total': 'Media Mensal Total (R$)'}, inplace=True)
-
-    # Faturamento Acumulado Bruto
-    df_cidades_acum = df_brutos.groupby('cidade', as_index=False)['Total'].sum()
-    df_cidades_acum.rename(columns={'Total': 'Faturamento Acumulado Bruto (R$)'}, inplace=True)
-    
-    # Qtd Cartorios (Novo rótulo)
-    df_cidades_cont = df_analise.groupby('cidade').size().reset_index(name='Qtd Cartorios')
-    
-    # Merge
-    df_cidades = pd.merge(df_cidades_media, df_cidades_acum, on='cidade', how='left')
-    df_cidades = pd.merge(df_cidades, df_cidades_cont, on='cidade', how='left')
-    
-    # Nova Coluna E: Média por cartório
-    # Média por cartório = Media Mensal Total (B) / Qtd Cartorios (D)
-    df_cidades['Média por cartório'] = df_cidades['Media Mensal Total (R$)'] / df_cidades['Qtd Cartorios']
-    df_cidades['Média por cartório'] = df_cidades['Média por cartório'].round(2)
-    
-    # Ordenar colunas e linhas
-    # A=cidade, B=Media Mensal, C=Fat Acum, D=Qtd Cart, E=Média por cartório
-    cols_cidades = ['cidade', 'Media Mensal Total (R$)', 'Faturamento Acumulado Bruto (R$)', 'Qtd Cartorios', 'Média por cartório']
-    df_cidades = df_cidades[cols_cidades]
-    
-    df_cidades.sort_values(by='Media Mensal Total (R$)', ascending=False, inplace=True)
-    
-    # 4. Snapshots de Debug (Solicitado pelo usuário)
-    try:
-        from logging_utils import save_debug_snapshot
-        save_debug_snapshot(df_brutos, "tjrj_dados_brutos")
-        save_debug_snapshot(df_analise_compat, "tjrj_analise_12m")
-        save_debug_snapshot(df_distritos, "tjrj_distritos")
-        save_debug_snapshot(df_cidades, "tjrj_cidades")
-    except ImportError:
-        print("[AVISO] logging_utils não encontrado para snapshots.")
-
-    # 5. Exportação para Google Sheets
-    exportar_para_sheets(df_brutos, df_analise_compat, df_distritos, df_cidades)
-
-    fim_total = time.time()
-    tempo_total = fim_total - inicio_total
-    
-    print(f"\n[SUCESSO] Processo Cloud concluído em {tempo_total:.2f} segundos.")
-    return 'Planilha atualizada com sucesso', 200
 
 if __name__ == "__main__":
     # Esta seção é apenas para teste local no ambiente Python puro

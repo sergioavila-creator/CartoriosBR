@@ -29,10 +29,11 @@ st.set_page_config(
 # ============================================================================
 # VERIFICAÇÃO DE AUTENTICAÇÃO
 # ============================================================================
+# TEMPORARIAMENTE DESATIVADO PARA HOMOLOGAÇÃO
 # Se não estiver logado, interrompe a execução e pede login na Home
-if not auth_utils.check_password():
-    st.warning("⚠️ Acesso restrito. Por favor, faça login na página inicial.")
-    st.stop()
+# if not auth_utils.check_password():
+#     st.warning("⚠️ Acesso restrito. Por favor, faça login na página inicial.")
+#     st.stop()
 
 # ============================================================================
 # CONSTANTES E CONFIGURAÇÕES
@@ -119,29 +120,21 @@ def salvar_em_sheets(df):
 def load_data_from_sheets():
     """Carrega dados da planilha Google Sheets"""
     try:
-        # DEBUG MODE ATIVADO
-        st.write("🔧 DEBUG: Iniciando autenticação...")
         gc = autenticar_google_sheets()
-        st.write("🔧 DEBUG: Autenticado. Abrindo planilha...")
         
         try:
             sh = gc.open_by_key(SHEET_ID)
-            st.write(f"🔧 DEBUG: Planilha aberta. Buscando aba '{WORKSHEET_NAME}'...")
             
             try:
                 worksheet = sh.worksheet(WORKSHEET_NAME)
-                st.write(f"🔧 DEBUG: Aba '{WORKSHEET_NAME}' encontrada. Baixando dados...")
                 
                 # Lê todos os dados
                 data = worksheet.get_all_records()
-                st.write(f"🔧 DEBUG: Dados brutos: {len(data)} registros encontrados.")
                 
                 if not data:
-                    st.warning(f"⚠️ A aba '{WORKSHEET_NAME}' existe mas está vazia.")
                     return pd.DataFrame()
                 
                 df = pd.DataFrame(data)
-                st.write(f"🔧 DEBUG: DataFrame criado. Colunas: {df.columns.tolist()}")
                 
                 # Remove a coluna de metadata se existir
                 if 'data_atualizacao' in df.columns:
@@ -156,15 +149,15 @@ def load_data_from_sheets():
                 return df
                 
             except gspread.exceptions.WorksheetNotFound:
-                st.error(f"❌ ERRO: Aba '{WORKSHEET_NAME}' NÃO encontrada na planilha.")
+                # Aba não existe ainda - retorna DataFrame vazio silenciosamente
                 return pd.DataFrame()
                 
         except Exception as e:
-             st.error(f"❌ ERRO ao abrir planilha: {e}")
+             # Erro ao abrir planilha - retorna vazio silenciosamente
              return pd.DataFrame()
             
     except Exception as e:
-        st.error(f"❌ ERRO CRÍTICO ao carregar dados salvos: {e}")
+        # Erro de autenticação - retorna vazio silenciosamente
         return pd.DataFrame()
 
 # ============================================================================

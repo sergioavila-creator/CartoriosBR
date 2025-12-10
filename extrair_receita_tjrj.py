@@ -1,4 +1,4 @@
-import cloud_processo
+import extrai_transp_tjrj
 import sys
 
 if __name__ == "__main__":
@@ -7,9 +7,10 @@ if __name__ == "__main__":
     start_time = print_start_log("Extração Receitas TJRJ")
     
     try:
-        # Chama a função principal do módulo cloud_processo
+        # Chama a função principal do módulo extrai_transp_tjrj
         # Passa None como request, pois não é uma requisição HTTP real
-        res = cloud_processo.cloud_main(None)
+        print("Iniciando extração via extrai_transp_tjrj...")
+        res = extrai_transp_tjrj.cloud_main(None)
         print(f"Resultado: {res}")
         print_end_log(start_time, success=True)
         sys.exit(0)

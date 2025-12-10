@@ -11,7 +11,7 @@ import pandas as pd
 import gspread
 import plotly.express as px
 import plotly.graph_objects as go
-import cloud_processo
+import extrai_transp_tjrj
 import traceback
 import base64
 import sys
@@ -314,7 +314,7 @@ with st.sidebar:
             with contextlib.redirect_stdout(StreamlitConsole(log_placeholder)):
                 with st.spinner("Processando..."):
                     try:
-                        msg, code = cloud_processo.cloud_main(None)
+                        msg, code = extrai_transp_tjrj.cloud_main(None)
                         if code == 200:
                             st.success(msg)
                             st.cache_data.clear()

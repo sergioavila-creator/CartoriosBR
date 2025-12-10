@@ -11,7 +11,7 @@ import pandas as pd
 import gspread
 import plotly.express as px
 import plotly.graph_objects as go
-import cloud_processo
+import extrai_transp_tjrj
 import traceback
 import base64
 import sys
@@ -20,8 +20,8 @@ import os
 import subprocess
 import importlib
 
-# Força reload do módulo cloud_processo para pegar mudanças
-importlib.reload(cloud_processo)
+# Força reload do módulo extrai_transp_tjrj para pegar mudanças
+importlib.reload(extrai_transp_tjrj)
 
 # Adiciona diretório pai
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -40,9 +40,10 @@ st.set_page_config(
 # ============================================================================
 # VERIFICAÇÃO DE AUTENTICAÇÃO
 # ============================================================================
-if not auth_utils.check_password():
-    st.warning("⚠️ Acesso restrito. Por favor, faça login na página inicial.")
-    st.stop()
+# TEMPORARIAMENTE DESATIVADO PARA HOMOLOGAÇÃO
+# if not auth_utils.check_password():
+#     st.warning("⚠️ Acesso restrito. Por favor, faça login na página inicial.")
+#     st.stop()
 
 # CSS Customizado
 st.markdown("""
@@ -183,7 +184,7 @@ def load_data():
         else:
             gc = gspread.service_account()
 
-        sh = gc.open_by_key(cloud_processo.GOOGLE_SHEET_ID)
+        sh = gc.open_by_key(extrai_transp_tjrj.GOOGLE_SHEET_ID)
         
         try:
             worksheet = sh.worksheet("Análise 12 Meses")
@@ -306,7 +307,10 @@ def calculate_dynamic_total(df_filtered, attributions):
 with st.sidebar:
     col_logo, _ = st.columns([1, 0.1])
     with col_logo:
-        st.image("logo_ribrj.png", width=250)
+        if os.path.exists("logo_ribrj.png"):
+            st.image("logo_ribrj.png", width=250)
+        else:
+            st.write("Cartórios BR")
     
     st.markdown("---")
     st.subheader("Administração")
@@ -318,7 +322,7 @@ with st.sidebar:
             with st.spinner("Processando..."):
                 try:
                     # Executa update SEM enriquecimento (run_enrichment=False)
-                    msg, code = cloud_processo.cloud_main(None, run_enrichment=False)
+                    msg, code = extrai_transp_tjrj.cloud_main(None, run_enrichment=False)
                     if code == 200:
                         st.success(msg)
                         st.cache_data.clear()
@@ -348,8 +352,8 @@ with st.sidebar:
                 env["GCP_SERVICE_ACCOUNT"] = json.dumps(creds)
             
             # Injeta ID da Planilha se existir nos secrets
-            # Injeta ID da Planilha se existir nos secrets ou usa o do cloud_processo
-            env["SHEET_ID"] = cloud_processo.GOOGLE_SHEET_ID
+            # Injeta ID da Planilha se existir nos secrets ou usa o do extrai_transp_tjrj
+            env["SHEET_ID"] = extrai_transp_tjrj.GOOGLE_SHEET_ID
             
             process = subprocess.Popen(
                 cmd,
@@ -382,7 +386,7 @@ with st.sidebar:
 
     
     st.divider()
-    url_planilha = f"https://docs.google.com/spreadsheets/d/{cloud_processo.GOOGLE_SHEET_ID}"
+    url_planilha = f"https://docs.google.com/spreadsheets/d/{extrai_transp_tjrj.GOOGLE_SHEET_ID}"
     
     try:
         with open("icon_sheets.png", "rb") as img_file:

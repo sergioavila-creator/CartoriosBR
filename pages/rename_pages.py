@@ -1,9 +1,13 @@
 
 import os
 import sys
+import io
 
-# Caminhos absolutos para evitar ambiguidade
-base = r"c:\Users\avila\OneDrive\Escritorio\site CartoiosRJ\pages"
+# Configure stdout to use UTF-8 encoding to handle emojis
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+# Use dynamic path instead of hardcoded one
+base = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".")
 
 p1 = os.path.join(base, "2_💰_Receita_TJRJ.py")
 p2 = os.path.join(base, "3_⚖️_Justica_Aberta_CNJ.py")

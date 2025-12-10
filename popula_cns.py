@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import gspread
-import cloud_processo
+import extrai_transp_tjrj
 from logging_utils import print_start_log, print_end_log
 import sys
 
@@ -57,7 +57,7 @@ def main():
             df_brutos.drop(columns=['CNS'], inplace=True)
             
         # 4. Executar Enriquecimento
-        df_enriquecido = cloud_processo.enrich_tjrj_with_cns(df_brutos)
+        df_enriquecido = extrai_transp_tjrj.enrich_tjrj_with_cns(df_brutos)
         
         # 5. Salvar de volta
         print("Salvando dados enriquecidos...")
