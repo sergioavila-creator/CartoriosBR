@@ -675,6 +675,90 @@ def normalize_tjrj_designations(df_brutos):
     return df_brutos
 
 # ####################################################################
+# CACHE DE MATCHES CNS
+# ####################################################################
+def load_cns_cache(gc, sheet_id):
+    """Carrega cache de matches COD TJRJ → CNS"""
+    try:
+        sh = gc.open_by_key(sheet_id)
+        ws = sh.worksheet("Cache Matches CNS")
+        data = ws.get_all_records()
+        df_cache = pd.DataFrame(data)
+        print(f"  [CACHE] Carregados {len(df_cache)} matches do cache")
+        return df_cache
+    except Exception as e:
+        print(f"  [CACHE] Aba não encontrada, criando...")
+        return pd.DataFrame(columns=['COD_TJRJ', 'CNS', 'NOME_TJRJ', 'NOME_CNJ', 'CIDADE', 'METODO_MATCH', 'DATA_CRIACAO', 'MANUAL'])
+
+def create_cache_sheet(gc, sheet_id):
+    """Cria aba de cache se não existir"""
+    try:
+        sh = gc.open_by_key(sheet_id)
+        try:
+            ws = sh.worksheet("Cache Matches CNS")
+        except:
+            ws = sh.add_worksheet("Cache Matches CNS", rows=1000, cols=8)
+            ws.update('A1:H1', [[
+                'COD_TJRJ', 'CNS', 'NOME_TJRJ', 'NOME_CNJ',
+                'CIDADE', 'METODO_MATCH', 'DATA_CRIACAO', 'MANUAL'
+            ]])
+            print("  [CACHE] Aba criada com sucesso")
+        return ws
+    except Exception as e:
+        print(f"  [CACHE] Erro ao criar aba: {e}")
+        return None
+
+def save_to_cache(gc, sheet_id, df_brutos, df_serventias, col_cns, col_nome):
+    """Salva novos matches no cache"""
+    try:
+        # Filtra apenas matches bem-sucedidos que não vieram do cache
+        new_matches = df_brutos[
+            (df_brutos['CNS'] != 'NAO_ENCONTRADO') &
+            (~df_brutos.get('FROM_CACHE', pd.Series([False]*len(df_brutos))))
+        ]
+        
+        if len(new_matches) == 0:
+            return
+        
+        # Agrupa por código único
+        new_matches_unique = new_matches.groupby('cod').first().reset_index()
+        
+        ws = create_cache_sheet(gc, sheet_id)
+        if ws is None:
+            return
+        
+        # Prepara dados
+        rows = []
+        for idx, row in new_matches_unique.iterrows():
+            # Busca nome CNJ
+            nome_cnj = ''
+            try:
+                cnj_row = df_serventias[df_serventias[col_cns] == row['CNS']]
+                if len(cnj_row) > 0:
+                    nome_cnj = str(cnj_row.iloc[0][col_nome])
+            except:
+                pass
+            
+            rows.append([
+                str(row['cod']),
+                str(row['CNS']),
+                str(row['designacao']),
+                nome_cnj,
+                str(row['cidade']),
+                'auto',
+                datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
+                'FALSE'
+            ])
+        
+        # Append
+        if rows:
+            ws.append_rows(rows)
+            print(f"  [CACHE] {len(rows)} novos matches salvos")
+    
+    except Exception as e:
+        print(f"  [CACHE] Erro ao salvar: {e}")
+
+# ####################################################################
 # SERVIÇO INDEPENDENTE: ENRIQUECIMENTO DE CNS
 # ####################################################################
 def enrich_tjrj_with_cns(df_brutos):
@@ -687,6 +771,45 @@ def enrich_tjrj_with_cns(df_brutos):
     
     # 0. Normalizar dados TJRJ antes do matching
     df_brutos = normalize_tjrj_designations(df_brutos)
+    
+    # 0.5 Carregar e aplicar cache
+    try:
+        if hasattr(st, "secrets") and "gcp_service_account" in st.secrets:
+            creds_dict = dict(st.secrets["gcp_service_account"])
+            if "private_key" in creds_dict:
+                creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+            gc_cache = gspread.service_account_from_dict(creds_dict)
+        elif "GCP_SERVICE_ACCOUNT" in os.environ:
+            import json
+            creds_dict = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+            gc_cache = gspread.service_account_from_dict(creds_dict)
+        else:
+            gc_cache = gspread.service_account()
+        
+        cache_df = load_cns_cache(gc_cache, GOOGLE_SHEET_ID)
+        
+        if len(cache_df) > 0:
+            cache_map = dict(zip(cache_df['COD_TJRJ'].astype(str), cache_df['CNS'].astype(str)))
+            
+            def apply_cache(row):
+                cod = str(row.get('cod', ''))
+                if cod in cache_map:
+                    return cache_map[cod]
+                return 'NAO_ENCONTRADO'
+            
+            df_brutos['CNS'] = df_brutos.apply(apply_cache, axis=1)
+            df_brutos['FROM_CACHE'] = df_brutos['CNS'] != 'NAO_ENCONTRADO'
+            
+            cache_hits = df_brutos['FROM_CACHE'].sum()
+            print(f"  [CACHE] {cache_hits} matches encontrados no cache")
+        else:
+            df_brutos['CNS'] = 'NAO_ENCONTRADO'
+            df_brutos['FROM_CACHE'] = False
+    
+    except Exception as e:
+        print(f"  [CACHE] Erro ao carregar cache: {e}")
+        df_brutos['CNS'] = 'NAO_ENCONTRADO'
+        df_brutos['FROM_CACHE'] = False
     
     # 1. Carregar Base de Conhecimento (Serventias CNJ)
     df_serventias = None
@@ -1110,6 +1233,13 @@ def enrich_tjrj_with_cns(df_brutos):
          
          success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
          print(f"\n  -> Enriquecimento concluído: {success_count}/{len(df_brutos)} mapeados.")
+         
+         # Salvar novos matches no cache
+         try:
+             save_to_cache(gc_cache, GOOGLE_SHEET_ID, df_brutos, df_serventias, col_cns, col_nome)
+         except Exception as e:
+             print(f"  [CACHE] Erro ao salvar cache: {e}")
+         
          return df_brutos
 
     except Exception as e:
