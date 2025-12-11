@@ -346,8 +346,8 @@ with st.sidebar:
                     st.error(f"Erro crítico: {e}")
                     st.code(traceback.format_exc())
     
-    if st.button("🧬 Popular CNS (TJRJ + CNJ)"):
-        st.info("Iniciando enriquecimento de CNS...")
+    if st.button("🧬 Normalizar e Popular CNS (TJRJ + CNJ)"):
+        st.info("Iniciando normalização e enriquecimento de CNS...")
         log_placeholder = st.empty()
         
         # Como popula_cns.py tem sys.exit, usamos subprocess para segurança

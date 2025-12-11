@@ -6,7 +6,7 @@ from logging_utils import print_start_log, print_end_log
 import sys
 
 def main():
-    start_time = print_start_log("Serviço Independente: População de CNS")
+    start_time = print_start_log("Normalização e População de CNS")
     
     try:
         # 1. Conectar ao Google Sheets
