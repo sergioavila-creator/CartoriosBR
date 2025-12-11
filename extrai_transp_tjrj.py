@@ -824,6 +824,10 @@ def enrich_tjrj_with_cns(df_brutos):
          nao_encontrados = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO'].copy()
          
          if len(nao_encontrados) > 0 and 'cidade' in df_brutos.columns:
+             # IMPORTANTE: Filtra CNS já usados (mapeados anteriormente)
+             cns_ja_usados = set(df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO']['CNS'].unique())
+             print(f"  -> CNS já mapeados: {len(cns_ja_usados)}")
+             
              # Para cada NAO_ENCONTRADO, identifica suas atribuições (colunas com receita > 0)
              cols_receita = ['RCPJ', 'RCPN', 'RI', 'RTD', 'Notas', 'Protesto']
              
@@ -842,9 +846,15 @@ def enrich_tjrj_with_cns(df_brutos):
                      continue  # Sem atribuições identificadas
                  
                  # Busca no CNJ cartórios da mesma cidade com as mesmas atribuições
+                 # MAS APENAS OS QUE AINDA NÃO FORAM USADOS
                  candidatos_cnj = []
                  for _, cnj_row in df_serventias[df_serventias[col_municipio].str.upper().str.strip() == cidade.upper().strip()].iterrows():
                      cns_cand = str(cnj_row[col_cns]).strip()
+                     
+                     # FILTRO CRÍTICO: Ignora CNS já mapeados
+                     if cns_cand in cns_ja_usados:
+                         continue
+                     
                      atribs_cnj_str = str(cnj_row[col_atribuicao]).upper()
                      
                      # Verifica se todas as atribuições do TJRJ estão no CNJ
