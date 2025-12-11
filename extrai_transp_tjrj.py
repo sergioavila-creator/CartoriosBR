@@ -794,6 +794,9 @@ def enrich_tjrj_with_cns(df_brutos):
          # Hack: atualizar a lista global COLUNAS_BRUTAS se necessario
          # Mas aqui estamos retornando o DF modificado. O caller deve usar esse DF.
          
+         # Conta sucesso inicial (antes dos fallbacks)
+         success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
+         
          # Passo Final: Propagar CNS baseado no código (coluna 'cod')
          # Para registros NAO_ENCONTRADO, verifica se existe CNS válido para o mesmo código
          print("  -> Aplicando fallback por código...")
