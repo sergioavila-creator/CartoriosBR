@@ -794,30 +794,43 @@ def enrich_tjrj_with_cns(df_brutos):
          # Hack: atualizar a lista global COLUNAS_BRUTAS se necessario
          # Mas aqui estamos retornando o DF modificado. O caller deve usar esse DF.
          
-         # Conta sucesso inicial (antes dos fallbacks)
-         success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
-         
-         # Passo Final: Propagar CNS baseado no código (coluna 'cod')
-         # Para registros NAO_ENCONTRADO, verifica se existe CNS válido para o mesmo código
-         print("  -> Aplicando fallback por código...")
-         
-         if 'cod' in df_brutos.columns:
+         # Função helper para fallback por código (reutilizável)
+         def apply_code_fallback_step(df, step_name):
+             """Aplica fallback por código e retorna quantidade recuperada"""
+             if 'cod' not in df.columns:
+                 return 0
+             
+             before_count = df[df['CNS'] != 'NAO_ENCONTRADO'].shape[0]
+             
              # Cria mapeamento: cod -> CNS (apenas CNS válidos)
-             cod_to_cns = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].groupby('cod')['CNS'].first().to_dict()
+             cod_to_cns = df[df['CNS'] != 'NAO_ENCONTRADO'].groupby('cod')['CNS'].first().to_dict()
              
              # Função para aplicar fallback
-             def apply_code_fallback(row):
+             def apply_fallback(row):
                  if row['CNS'] == 'NAO_ENCONTRADO' and row['cod'] in cod_to_cns:
                      return cod_to_cns[row['cod']]
                  return row['CNS']
              
              # Aplica fallback
-             df_brutos['CNS'] = df_brutos.apply(apply_code_fallback, axis=1)
+             df['CNS'] = df.apply(apply_fallback, axis=1)
              
-             # Conta quantos foram recuperados
-             recovered = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].shape[0] - success_count
+             after_count = df[df['CNS'] != 'NAO_ENCONTRADO'].shape[0]
+             recovered = after_count - before_count
+             
              if recovered > 0:
-                 print(f"  -> Recuperados {recovered} registros via código!")
+                 print(f"  -> [{step_name}] Recuperados {recovered} via código")
+             
+             return recovered
+         
+         # Conta sucesso inicial (antes dos fallbacks)
+         success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
+         print(f"  -> Matching inicial: {success_count}/{len(df_brutos)} mapeados")
+         
+         # Fallback 1: Logo após matching principal
+         apply_code_fallback_step(df_brutos, "Fallback 1")
+         
+         # Fallback 2: Após fallback por código inicial
+         apply_code_fallback_step(df_brutos, "Fallback 2")
          
          
          # Passo Avançado: Matching por Atribuições Únicas
@@ -886,6 +899,54 @@ def enrich_tjrj_with_cns(df_brutos):
          recovered_attr = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].shape[0] - success_count
          if recovered_attr > 0:
              print(f"  -> Recuperados {recovered_attr} registros via atribuições únicas!")
+         
+         # Fallback 3: Após matching por atribuições
+         apply_code_fallback_step(df_brutos, "Fallback 3")
+         
+         
+         # Log Detalhado: NAO_ENCONTRADO com comparação CNJ
+         nao_encontrados_final = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO']
+         
+         if len(nao_encontrados_final) > 0:
+             print(f"\n  [LOG DETALHADO - NAO_ENCONTRADO: {len(nao_encontrados_final)} registros]")
+             
+             # Agrupa por cidade para log mais organizado
+             cidades_nao_encontradas = nao_encontrados_final.groupby('cidade')
+             
+             for cidade, grupo in cidades_nao_encontradas:
+                 print(f"\n  Cidade: {cidade}")
+                 print(f"  -> TJRJ não mapeados: {len(grupo)}")
+                 
+                 # Mostra os registros TJRJ não encontrados
+                 for idx, row in grupo.head(3).iterrows():  # Limita a 3 por cidade
+                     print(f"     * Cod {row.get('cod', 'N/A')}: {row['designacao']} - Gestor: {row.get('gestor', 'N/A')}")
+                     
+                     # Atribuições
+                     atribs = []
+                     for col in ['RCPJ', 'RCPN', 'RI', 'RTD', 'Notas', 'Protesto']:
+                         if col in row.index:
+                             val = pd.to_numeric(row[col], errors='coerce')
+                             if pd.notna(val) and val > 0:
+                                 atribs.append(col)
+                     if atribs:
+                         print(f"       Atrib: {', '.join(atribs)}")
+                 
+                 if len(grupo) > 3:
+                     print(f"     ... e mais {len(grupo) - 3} registros")
+                 
+                 # Mostra cartórios CNJ disponíveis na mesma cidade
+                 cnj_cidade = df_serventias[df_serventias[col_municipio].str.upper().str.strip() == cidade.upper().strip()]
+                 cns_ja_usados = set(df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO']['CNS'].unique())
+                 cnj_disponiveis = cnj_cidade[~cnj_cidade[col_cns].isin(cns_ja_usados)]
+                 
+                 print(f"  -> CNJ disponíveis (não mapeados): {len(cnj_disponiveis)}")
+                 for idx, cnj_row in cnj_disponiveis.head(3).iterrows():
+                     print(f"     * CNS {cnj_row[col_cns]}: {cnj_row[col_nome]}")
+                     print(f"       Atrib: {cnj_row[col_atribuicao]}")
+                     print(f"       Resp: {cnj_row[col_gestor]}")
+                 
+                 if len(cnj_disponiveis) > 3:
+                     print(f"     ... e mais {len(cnj_disponiveis) - 3} cartórios")
          
          # Estatísticas Finais: Comparação CNJ vs TJRJ
          print("\n  [ESTATÍSTICAS CNJ vs TJRJ]")
