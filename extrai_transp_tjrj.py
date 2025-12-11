@@ -1013,6 +1013,32 @@ def enrich_tjrj_with_cns(df_brutos):
          # Fallback 3: Após matching por atribuições
          apply_code_fallback_step(df_brutos, "Fallback 3")
          
+         # CRITÉRIO FINAL: Match 1-para-1 (se sobrar apenas 1 CNJ e 1 TJRJ na cidade)
+         print("  -> Aplicando matching 1-para-1 final...")
+         nao_encontrados_final = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO'].copy()
+         
+         if len(nao_encontrados_final) > 0:
+             cns_ja_usados = set(df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO']['CNS'].unique())
+             
+             # Agrupa por cidade
+             for cidade in nao_encontrados_final['cidade'].unique():
+                 tjrj_nao_enc_cidade = nao_encontrados_final[nao_encontrados_final['cidade'] == cidade]
+                 cnj_cidade = df_serventias[df_serventias[col_municipio].str.upper().str.strip() == cidade.upper().strip()]
+                 cnj_disponiveis = cnj_cidade[~cnj_cidade[col_cns].isin(cns_ja_usados)]
+                 
+                 # Se há exatamente 1 TJRJ não mapeado e 1 CNJ disponível
+                 tjrj_unicos = tjrj_nao_enc_cidade['cod'].unique() if 'cod' in tjrj_nao_enc_cidade.columns else tjrj_nao_enc_cidade.index
+                 if len(tjrj_unicos) == 1 and len(cnj_disponiveis) == 1:
+                     cns_match = cnj_disponiveis.iloc[0][col_cns]
+                     # Atribui a todos os registros desse código
+                     if 'cod' in df_brutos.columns:
+                         cod_unico = tjrj_unicos[0]
+                         df_brutos.loc[df_brutos['cod'] == cod_unico, 'CNS'] = cns_match
+                         print(f"  -> Match 1-para-1 em {cidade}: cod {cod_unico} → CNS {cns_match}")
+         
+         # Fallback 4: Após matching 1-para-1
+         apply_code_fallback_step(df_brutos, "Fallback 4")
+         
          
          # Log Detalhado: NAO_ENCONTRADO com comparação CNJ
          nao_encontrados_final = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO']
