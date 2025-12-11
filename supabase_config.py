@@ -6,11 +6,14 @@ import toml
 # NUNCA commitar credenciais no código!
 
 def get_supabase_client() -> Client:
-    """Retorna cliente Supabase autenticado
+    """Retorna cliente Supabase autenticado ou None se credenciais não estiverem configuradas
     
     Credenciais devem estar em:
     1. Variáveis de ambiente: SUPABASE_URL e SUPABASE_KEY
     2. Arquivo .streamlit/secrets.toml
+    
+    Returns:
+        Client: Cliente Supabase autenticado, ou None se credenciais não encontradas
     """
     url = None
     key = None
@@ -30,10 +33,12 @@ def get_supabase_client() -> Client:
             pass
     
     if not url or not key:
-        raise ValueError(
-            "Credenciais Supabase não encontradas! "
-            "Configure SUPABASE_URL e SUPABASE_KEY em variáveis de ambiente "
-            "ou em .streamlit/secrets.toml"
-        )
+        # Retorna None em vez de lançar exceção - permite fallback para Google Sheets
+        print("⚠️ Supabase não configurado. Usando Google Sheets como fallback.")
+        return None
         
-    return create_client(url, key)
+    try:
+        return create_client(url, key)
+    except Exception as e:
+        print(f"⚠️ Erro ao conectar com Supabase: {e}. Usando Google Sheets como fallback.")
+        return None

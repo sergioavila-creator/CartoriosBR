@@ -212,6 +212,11 @@ def carregar_dados():
         from supabase_config import get_supabase_client
         supabase = get_supabase_client()
         
+        # Se Supabase não está configurado, pula para Google Sheets
+        if supabase is None:
+            print("ℹ️ Supabase não configurado, usando Google Sheets")
+            raise Exception("Supabase não configurado")
+        
         # Query: seleciona colunas
         # Limitando a 500k registros (seu dataset é ~470k)
         response = supabase.table('arrecadacao').select('*').limit(500000).execute()
@@ -250,8 +255,10 @@ def carregar_dados():
             return df
             
     except Exception as e:
-        print(f"⚠️ Erro/Fallback Supabase: {e}")
-        st.warning(f"Usando Google Sheets (Supabase indisponível: {e})")
+        print(f"ℹ️ Usando Google Sheets (Supabase: {e})")
+        # Não mostra warning se Supabase simplesmente não está configurado
+        if "não configurado" not in str(e).lower():
+            st.info("💡 Carregando dados do Google Sheets (pode demorar um pouco mais)")
 
     # 2. Fallback: Google Sheets (Lento)
     try:

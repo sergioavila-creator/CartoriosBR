@@ -318,8 +318,13 @@ def sync_to_supabase(df_arrecadacao, df_serventias):
     try:
         from supabase_config import get_supabase_client
         
-        print("\n🔄 Sincronizando com Supabase...")
+        print("\n🔄 Verificando Supabase...")
         supabase = get_supabase_client()
+        
+        # Se Supabase não está configurado, pula a sincronização
+        if supabase is None:
+            print("ℹ️ Supabase não configurado. Sincronização ignorada.")
+            return
         
         # 1. Limpa tabela arrecadacao
         print("Limpando tabela arrecadacao...")
