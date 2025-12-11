@@ -732,7 +732,11 @@ def enrich_tjrj_with_cns(df_brutos):
          # Função helper interna
          def normalize_name(name):
              if not isinstance(name, str): return ""
-             return normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII').upper().strip()
+             # Remove acentos e apóstrofos
+             normalized = normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII')
+             normalized = normalized.replace("'", " ")  # D'ARAUJO → D ARAUJO
+             normalized = normalized.upper().strip()
+             return normalized
          
          print(f"  [DEBUG] Colunas encontradas na base CNJ: {list(df_serventias.columns)}")
          
@@ -856,6 +860,22 @@ def enrich_tjrj_with_cns(df_brutos):
                      key_cross = f"{cidade_palavra}_{tjrj_nome}"
                      if key_cross in cnj_map_nome: 
                          return cnj_map_nome[key_cross]
+             
+             # 2d. Match Numérico (extrai número + tipo)
+             import re
+             num_match_tjrj = re.search(r'(\d+)\s*(OFICIO|OF|NOTAS|JUSTICA|DISTRITO)', tjrj_nome)
+             if num_match_tjrj:
+                 num_tjrj = num_match_tjrj.group(1)
+                 tipo_tjrj = num_match_tjrj.group(2)
+                 
+                 # Busca no CNJ cartórios da mesma cidade com mesmo número
+                 for cand_key in candidates:
+                     cand_nome_only = cand_key.replace(f"{tjrj_mun}_", "")
+                     num_match_cnj = re.search(r'(\d+)', cand_nome_only)
+                     if num_match_cnj and num_match_cnj.group(1) == num_tjrj:
+                         # Verifica se tipo também bate
+                         if tipo_tjrj in cand_nome_only or 'OFICIO' in cand_nome_only:
+                             return cnj_map_nome[cand_key]
 
              # 3. Fuzzy Match Nome
              candidates = [k for k in cnj_map_nome.keys() if k.startswith(f"{tjrj_mun}_")]
