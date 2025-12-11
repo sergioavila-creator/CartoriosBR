@@ -26,6 +26,18 @@ try:
 except ImportError:
     st = None
 
+# Importa utilitário de normalização CNS
+try:
+    from cns_utils import normalize_cns
+except ImportError:
+    # Fallback se não encontrar o módulo
+    def normalize_cns(cns_value):
+        if cns_value is None or cns_value == '':
+            return ''
+        cns_str = str(cns_value)
+        cns_clean = ''.join(filter(str.isdigit, cns_str))
+        return cns_clean.zfill(6)
+
 # ####################################################################
 # CONFIGURAÇÕES GERAIS (Cloud)
 # ####################################################################
@@ -1250,6 +1262,35 @@ def enrich_tjrj_with_cns(df_brutos):
          
          success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
          print(f"\n  -> Enriquecimento concluído: {success_count}/{len(df_brutos)} mapeados.")
+         
+         # Normalizar CNS para 6 dígitos com zeros à esquerda
+         print("  [NORMALIZAÇÃO CNS] Aplicando formato 6 dígitos...")
+         df_brutos['CNS'] = df_brutos['CNS'].apply(lambda x: normalize_cns(x) if x != 'NAO_ENCONTRADO' else x)
+         
+         # Detectar duplicatas: mesmo CNS para múltiplos CODs
+         print("\n  [VALIDAÇÃO] Verificando duplicatas...")
+         cns_validos = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].copy()
+         
+         # Duplicata 1: Mesmo CNS atribuído a múltiplos CODs
+         if 'cod' in cns_validos.columns:
+             cns_por_cod = cns_validos.groupby('CNS')['cod'].nunique()
+             duplicatas_cns = cns_por_cod[cns_por_cod > 1]
+             
+             if len(duplicatas_cns) > 0:
+                 print(f"  ⚠️  ALERTA: {len(duplicatas_cns)} CNS atribuídos a múltiplos CODs:")
+                 for cns, count in duplicatas_cns.items():
+                     cods = cns_validos[cns_validos['CNS'] == cns]['cod'].unique()
+                     print(f"     CNS {cns} → CODs {list(cods)}")
+             
+             # Duplicata 2: Mesmo COD com múltiplos CNS
+             cod_por_cns = cns_validos.groupby('cod')['CNS'].nunique()
+             duplicatas_cod = cod_por_cns[cod_por_cns > 1]
+             
+             if len(duplicatas_cod) > 0:
+                 print(f"  ⚠️  ALERTA: {len(duplicatas_cod)} CODs com múltiplos CNS:")
+                 for cod, count in duplicatas_cod.items():
+                     cnss = cns_validos[cns_validos['cod'] == cod]['CNS'].unique()
+                     print(f"     COD {cod} → CNS {list(cnss)}")
          
          # Salvar novos matches no cache
          try:
