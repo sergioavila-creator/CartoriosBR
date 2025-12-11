@@ -256,9 +256,7 @@ def carregar_dados():
             
     except Exception as e:
         print(f"ℹ️ Usando Google Sheets (Supabase: {e})")
-        # Não mostra warning se Supabase simplesmente não está configurado
-        if "não configurado" not in str(e).lower():
-            st.info("💡 Carregando dados do Google Sheets (pode demorar um pouco mais)")
+        # Fallback silencioso - mensagens de UI não podem estar em funções cacheadas
 
     # 2. Fallback: Google Sheets (Lento)
     try:
