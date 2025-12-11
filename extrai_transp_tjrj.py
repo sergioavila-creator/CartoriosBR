@@ -862,6 +862,9 @@ def enrich_tjrj_with_cns(df_brutos):
                      if key_cross in cnj_map_nome: 
                          return cnj_map_nome[key_cross]
              
+             # Prepara lista de candidatos para matching avançado
+             candidates = [k for k in cnj_map_nome.keys() if k.startswith(f"{tjrj_mun}_")]
+             
              # 2d. Match Numérico (extrai número + tipo)
              import re
              num_match_tjrj = re.search(r'(\d+)\s*(OFICIO|OF|NOTAS|JUSTICA|DISTRITO)', tjrj_nome)
@@ -879,7 +882,6 @@ def enrich_tjrj_with_cns(df_brutos):
                              return cnj_map_nome[cand_key]
 
              # 3. Fuzzy Match Nome
-             candidates = [k for k in cnj_map_nome.keys() if k.startswith(f"{tjrj_mun}_")]
              best_ratio = 0
              best_cns = None
              from difflib import SequenceMatcher
