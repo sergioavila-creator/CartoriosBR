@@ -644,6 +644,7 @@ def normalize_tjrj_designations(df_brutos):
         
         # REGRA 1: Abreviações de tipo
         normalizado = re.sub(r'\bOF DE JUSTICA\b', 'OFICIO DE JUSTICA', normalizado)
+        normalizado = re.sub(r'\bOF DE\b', 'OFICIO DE', normalizado)  # OF DE → OFICIO DE
         normalizado = re.sub(r'\bOF\b(?! DE)', 'OFICIO', normalizado)
         normalizado = re.sub(r'\bDISTR\b', 'DISTRITO', normalizado)
         normalizado = re.sub(r'\bSUBDIST\b', 'SUBDISTRITO', normalizado)
