@@ -1,18 +1,18 @@
 # Script para mover o projeto CartoriosRJ para fora do OneDrive
 # Isso melhora a performance ao evitar sincronizacao constante
 
-$origem = "c:\Users\avila\OneDrive\Escritorio\site CartoiosRJ"
-$destino = "C:\Projects\CartoriosRJ"
+$origem = "g:\Meu Drive\dev\CartoriosBR"
+$destino = "c:\dev\cartoriosbr"
 
-Write-Host "=== Movendo projeto CartoriosRJ ===" -ForegroundColor Cyan
+Write-Host "=== Movendo projeto CartoriosBR ===" -ForegroundColor Cyan
 Write-Host "Origem: $origem" -ForegroundColor Yellow
 Write-Host "Destino: $destino" -ForegroundColor Yellow
 Write-Host ""
 
 # Criar diretorio de destino se nao existir
-if (-not (Test-Path "C:\Projects")) {
-    Write-Host "Criando diretorio C:\Projects..." -ForegroundColor Green
-    New-Item -ItemType Directory -Path "C:\Projects" -Force | Out-Null
+if (-not (Test-Path "c:\dev")) {
+    Write-Host "Criando diretorio c:\dev..." -ForegroundColor Green
+    New-Item -ItemType Directory -Path "c:\dev" -Force | Out-Null
 }
 
 # Verificar se o destino ja existe

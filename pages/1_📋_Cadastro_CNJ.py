@@ -181,7 +181,7 @@ with st.sidebar:
     st.subheader("Filtros")
     
     # Seleção de Estados com opção "Todo o Brasil"
-    selecionar_todos = st.checkbox("🇧🇷 Todo o Brasil", value=False)
+    selecionar_todos = st.checkbox("🇧🇷 Todo o Brasil", value=True)
     
     if selecionar_todos:
         ufs_selecionadas = ESTADOS_BRASIL
@@ -210,9 +210,9 @@ with st.sidebar:
     st.markdown("**Período de Consulta**")
     col_d1, col_d2 = st.columns(2)
     with col_d1:
-        dt_inicio = st.date_input("Data Inicial", value=datetime(2024, 1, 1))
+        dt_inicio = st.date_input("Data Inicial", value=datetime.now() - timedelta(days=30))
     with col_d2:
-        dt_final = st.date_input("Data Final", value=datetime(2024, 12, 31))
+        dt_final = st.date_input("Data Final", value=datetime.now())
         
     st.markdown("---")
     # Botão de busca

@@ -706,15 +706,22 @@ def create_cache_sheet(gc, sheet_id):
     """Cria aba de cache se não existir"""
     try:
         sh = gc.open_by_key(sheet_id)
+        created_new = False
         try:
             ws = sh.worksheet("Cache Matches CNS")
         except:
             ws = sh.add_worksheet("Cache Matches CNS", rows=1000, cols=8)
-            ws.update('A1:H1', [[
-                'COD_TJRJ', 'CNS', 'NOME_TJRJ', 'NOME_CNJ',
-                'CIDADE', 'METODO_MATCH', 'DATA_CRIACAO', 'MANUAL'
-            ]])
+            created_new = True
             print("  [CACHE] Aba criada com sucesso")
+        
+        # Garante que os cabeçalhos estejam sempre na primeira linha
+        first_row = ws.row_values(1)
+        expected_headers = ['COD_TJRJ', 'CNS', 'NOME_TJRJ', 'NOME_CNJ', 'CIDADE', 'METODO_MATCH', 'DATA_CRIACAO', 'MANUAL']
+        
+        if not first_row or first_row != expected_headers:
+            ws.update('A1:H1', [expected_headers])
+            print("  [CACHE] Cabeçalhos inseridos/atualizados")
+        
         return ws
     except Exception as e:
         print(f"  [CACHE] Erro ao criar aba: {e}")
@@ -739,26 +746,24 @@ def save_to_cache(gc, sheet_id, df_brutos, df_serventias, col_cns, col_nome):
         if ws is None:
             return
         
-        # HARDCODED: Garante que 4450 → 91041 está no cache
+        # Carrega cache existente
         existing_cache = ws.get_all_records()
-        has_4450 = any(str(row.get('COD_TJRJ', '')) == '4450' for row in existing_cache)
+        existing_codes = set(str(row.get('COD_TJRJ', '')) for row in existing_cache)
         
-        if not has_4450:
-            ws.append_row([
-                '4450',
-                '91041',
-                'OFICIO UNICO MACUCO',
-                'Cartório do Ofício Único de Cordeiro',
-                'CORDEIRO',
-                'hardcoded',
-                datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
-                'TRUE'
-            ])
-            print("  [CACHE] Match hardcoded 4450→91041 adicionado")
+        print(f"  [CACHE] Códigos já no cache: {len(existing_codes)}")
         
-        # Prepara dados
+        # Prepara dados - APENAS códigos novos
+
         rows = []
+        skipped = 0
         for idx, row in new_matches_unique.iterrows():
+            cod_str = str(row['cod'])
+            
+            # VERIFICAÇÃO CRÍTICA: Pula se código já existe no cache
+            if cod_str in existing_codes:
+                skipped += 1
+                continue
+            
             # Busca nome CNJ
             nome_cnj = ''
             try:
@@ -769,7 +774,7 @@ def save_to_cache(gc, sheet_id, df_brutos, df_serventias, col_cns, col_nome):
                 pass
             
             rows.append([
-                str(row['cod']),
+                cod_str,
                 str(row['CNS']),
                 str(row['designacao']),
                 nome_cnj,
@@ -779,13 +784,17 @@ def save_to_cache(gc, sheet_id, df_brutos, df_serventias, col_cns, col_nome):
                 'FALSE'
             ])
         
-        # Append
+        # Append apenas códigos novos
         if rows:
             ws.append_rows(rows)
             print(f"  [CACHE] {len(rows)} novos matches salvos")
+        
+        if skipped > 0:
+            print(f"  [CACHE] {skipped} códigos ignorados (já existem no cache)")
     
     except Exception as e:
         print(f"  [CACHE] Erro ao salvar: {e}")
+
 
 # ####################################################################
 # SERVIÇO INDEPENDENTE: ENRIQUECIMENTO DE CNS
@@ -815,6 +824,28 @@ def enrich_tjrj_with_cns(df_brutos):
         else:
             gc_cache = gspread.service_account()
         
+        # IMPORTANTE: Garante que o hardcode existe ANTES de carregar o cache
+        # Isso garante que funcione na primeira execução
+        ws_cache = create_cache_sheet(gc_cache, GOOGLE_SHEET_ID)
+        if ws_cache:
+            existing_cache = ws_cache.get_all_records()
+            existing_codes = set(str(row.get('COD_TJRJ', '')) for row in existing_cache)
+            
+            # HARDCODED: Garante que 4450 → 091041 está no cache (6 dígitos)
+            if '4450' not in existing_codes:
+                ws_cache.append_row([
+                    '4450',
+                    '091041',  # 6 dígitos com zero à esquerda
+                    'OFICIO UNICO MACUCO',
+                    'Cartório do Ofício Único de Cordeiro',
+                    'CORDEIRO',
+                    'hardcoded',
+                    datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
+                    'TRUE'
+                ])
+                print("  [CACHE] Match hardcoded 4450→091041 adicionado ao cache")
+        
+        # Agora carrega o cache (incluindo o hardcode recém-adicionado)
         cache_df = load_cns_cache(gc_cache, GOOGLE_SHEET_ID)
         
         if len(cache_df) > 0:
@@ -834,6 +865,7 @@ def enrich_tjrj_with_cns(df_brutos):
         else:
             df_brutos['CNS'] = 'NAO_ENCONTRADO'
             df_brutos['FROM_CACHE'] = False
+
     
     except Exception as e:
         print(f"  [CACHE] Erro ao carregar cache: {e}")
@@ -947,7 +979,7 @@ def enrich_tjrj_with_cns(df_brutos):
              key_exact = f"{tjrj_mun}_{tjrj_nome}"
              if key_exact in cnj_map_nome: return cnj_map_nome[key_exact]
              
-             # 2. Match Gestor (com Desambiguação de Atribuição)
+             # 2. Match Gestor Completo (com Desambiguação de Atribuição)
              if tjrj_gestor and tjrj_gestor in cnj_map_gestor:
                  candidatos = cnj_map_gestor[tjrj_gestor]
                  # Filtra municipio
@@ -990,7 +1022,7 @@ def enrich_tjrj_with_cns(df_brutos):
                      pontuacao.sort(key=lambda x: x[0], reverse=True)
                      if pontuacao: return pontuacao[0][1]
              
-             # 2b. Match Gestor por primeiros 3 nomes (se match exato falhou)
+             # 3. Match Gestor Parcial (primeiros 3 nomes)
              if tjrj_gestor:
                  partes_tjrj = tjrj_gestor.split()
                  if len(partes_tjrj) >= 3:
@@ -1002,59 +1034,21 @@ def enrich_tjrj_with_cns(df_brutos):
                          
                          if len(cand_mun) == 1:
                              return cand_mun[0]['cns']
-                         # Se mais de 1, deixa para fuzzy decidir
              
-             # 2c. Cross-city search (se designação contém outra cidade)
-             import re
-             for cidade_palavra in row['designacao'].upper().split():
-                 # Verifica se alguma palavra parece nome de cidade (3+ letras maiúsculas)
-                 if len(cidade_palavra) >= 3 and cidade_palavra != tjrj_mun:
-                     # Tenta buscar com essa cidade
-                     key_cross = f"{cidade_palavra}_{tjrj_nome}"
-                     if key_cross in cnj_map_nome: 
-                         return cnj_map_nome[key_cross]
-             
-             # Prepara lista de candidatos para matching avançado
-             candidates = [k for k in cnj_map_nome.keys() if k.startswith(f"{tjrj_mun}_")]
-             
-             # 2d. Match Numérico (extrai número + tipo)
-             import re
-             num_match_tjrj = re.search(r'(\d+)\s*(OFICIO|OF|NOTAS|JUSTICA|DISTRITO)', tjrj_nome)
-             if num_match_tjrj:
-                 num_tjrj = num_match_tjrj.group(1)
-                 tipo_tjrj = num_match_tjrj.group(2)
-                 
-                 # Busca no CNJ cartórios da mesma cidade com mesmo número
-                 for cand_key in candidates:
-                     cand_nome_only = cand_key.replace(f"{tjrj_mun}_", "")
-                     num_match_cnj = re.search(r'(\d+)', cand_nome_only)
-                     if num_match_cnj and num_match_cnj.group(1) == num_tjrj:
-                         # Verifica se tipo também bate
-                         if tipo_tjrj in cand_nome_only or 'OFICIO' in cand_nome_only:
-                             return cnj_map_nome[cand_key]
-
-             # 3. Fuzzy Match Nome
-             best_ratio = 0
-             best_cns = None
-             from difflib import SequenceMatcher
-             for cand_key in candidates:
-                 cand_nome_only = cand_key.replace(f"{tjrj_mun}_", "")
-                 ratio = SequenceMatcher(None, tjrj_nome, cand_nome_only).ratio()
-                 if ratio > 0.85 and ratio > best_ratio:
-                     best_ratio = ratio
-                     best_cns = cnj_map_nome[cand_key]
-             if best_cns: return best_cns
+             # Critérios removidos:
+             # - Cross-city search (causava matches incorretos)
+             # - Match Numérico (baixa confiabilidade)
+             # - Fuzzy Match (baixa confiabilidade)
+             # Casos não resolvidos serão tratados via hardcoding manual
              
              return "NAO_ENCONTRADO"
+
 
          df_brutos['CNS'] = df_brutos.apply(find_cns, axis=1)
          
          # Reordenar colunas
          cols = ['CNS'] + [c for c in df_brutos.columns if c != 'CNS']
          df_brutos = df_brutos[cols]
-         
-         # Hack: atualizar a lista global COLUNAS_BRUTAS se necessario
-         # Mas aqui estamos retornando o DF modificado. O caller deve usar esse DF.
          
          # Função helper para fallback por código (reutilizável)
          def apply_code_fallback_step(df, step_name):
@@ -1084,27 +1078,28 @@ def enrich_tjrj_with_cns(df_brutos):
              
              return recovered
          
-         # Conta sucesso inicial (antes dos fallbacks)
-         success_count = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
-         print(f"  -> Matching inicial: {success_count}/{len(df_brutos)} mapeados")
+         # Estatísticas iniciais
+         print(f"\n  [MATCHING] Iniciando processo de enriquecimento...")
          
-         # Fallback 1: Logo após matching principal
-         apply_code_fallback_step(df_brutos, "Fallback 1")
+         # CRITÉRIO 0: Cache (já aplicado antes do find_cns)
+         cache_count = df_brutos[df_brutos.get('FROM_CACHE', False)].shape[0]
+         print(f"  -> [Cache] {cache_count} matches do cache")
          
-         # Fallback 2: Após fallback por código inicial
-         apply_code_fallback_step(df_brutos, "Fallback 2")
+         # CRITÉRIO 1: Match Exato + Fallback
+         success_after_cache = df_brutos['CNS'].ne('NAO_ENCONTRADO').sum()
+         print(f"  -> [Critério 1-3] Matching principal: {success_after_cache}/{len(df_brutos)} mapeados")
          
+         # Fallback após critérios principais
+         apply_code_fallback_step(df_brutos, "Fallback após critérios 1-3")
          
-         # Passo Avançado: Matching por Atribuições Únicas
-         # Para NAO_ENCONTRADO restantes, tenta match por combinação única de atribuições
-         print("  -> Aplicando matching por atribuições únicas...")
+         # CRITÉRIO 4: Matching por Atribuições Únicas
+         print("  -> [Critério 4] Aplicando matching por atribuições únicas...")
          
          nao_encontrados = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO'].copy()
          
          if len(nao_encontrados) > 0 and 'cidade' in df_brutos.columns:
              # IMPORTANTE: Filtra CNS já usados (mapeados anteriormente)
              cns_ja_usados = set(df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO']['CNS'].unique())
-             print(f"  -> CNS já mapeados: {len(cns_ja_usados)}")
              
              # Para cada NAO_ENCONTRADO, identifica suas atribuições (colunas com receita > 0)
              cols_receita = ['RCPJ', 'RCPN', 'RI', 'RTD', 'Notas', 'Protesto']
@@ -1158,38 +1153,13 @@ def enrich_tjrj_with_cns(df_brutos):
                      df_brutos.at[idx, 'CNS'] = candidatos_cnj[0]
          
          # Conta recuperados por atribuição
-         recovered_attr = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].shape[0] - success_count
-         if recovered_attr > 0:
-             print(f"  -> Recuperados {recovered_attr} registros via atribuições únicas!")
+         before_attr = success_after_cache + apply_code_fallback_step.__defaults__[0] if hasattr(apply_code_fallback_step, '__defaults__') else success_after_cache
+         after_attr = df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO'].shape[0]
          
-         # Fallback 3: Após matching por atribuições
-         apply_code_fallback_step(df_brutos, "Fallback 3")
+         # Fallback após atribuições únicas
+         apply_code_fallback_step(df_brutos, "Fallback após atribuições")
          
-         # CRITÉRIO FINAL: Match 1-para-1 (se sobrar apenas 1 CNJ e 1 TJRJ na cidade)
-         print("  -> Aplicando matching 1-para-1 final...")
-         nao_encontrados_final = df_brutos[df_brutos['CNS'] == 'NAO_ENCONTRADO'].copy()
-         
-         if len(nao_encontrados_final) > 0:
-             cns_ja_usados = set(df_brutos[df_brutos['CNS'] != 'NAO_ENCONTRADO']['CNS'].unique())
-             
-             # Agrupa por cidade
-             for cidade in nao_encontrados_final['cidade'].unique():
-                 tjrj_nao_enc_cidade = nao_encontrados_final[nao_encontrados_final['cidade'] == cidade]
-                 cnj_cidade = df_serventias[df_serventias[col_municipio].str.upper().str.strip() == cidade.upper().strip()]
-                 cnj_disponiveis = cnj_cidade[~cnj_cidade[col_cns].isin(cns_ja_usados)]
-                 
-                 # Se há exatamente 1 TJRJ não mapeado e 1 CNJ disponível
-                 tjrj_unicos = tjrj_nao_enc_cidade['cod'].unique() if 'cod' in tjrj_nao_enc_cidade.columns else tjrj_nao_enc_cidade.index
-                 if len(tjrj_unicos) == 1 and len(cnj_disponiveis) == 1:
-                     cns_match = cnj_disponiveis.iloc[0][col_cns]
-                     # Atribui a todos os registros desse código
-                     if 'cod' in df_brutos.columns:
-                         cod_unico = tjrj_unicos[0]
-                         df_brutos.loc[df_brutos['cod'] == cod_unico, 'CNS'] = cns_match
-                         print(f"  -> Match 1-para-1 em {cidade}: cod {cod_unico} → CNS {cns_match}")
-         
-         # Fallback 4: Após matching 1-para-1
-         apply_code_fallback_step(df_brutos, "Fallback 4")
+         # Match 1-para-1 REMOVIDO (será tratado via hardcoding manual)
          
          
          # Log Detalhado: NAO_ENCONTRADO com comparação CNJ
