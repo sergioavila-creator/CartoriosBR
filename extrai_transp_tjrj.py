@@ -727,6 +727,23 @@ def save_to_cache(gc, sheet_id, df_brutos, df_serventias, col_cns, col_nome):
         if ws is None:
             return
         
+        # HARDCODED: Garante que 4450 → 91041 está no cache
+        existing_cache = ws.get_all_records()
+        has_4450 = any(str(row.get('COD_TJRJ', '')) == '4450' for row in existing_cache)
+        
+        if not has_4450:
+            ws.append_row([
+                '4450',
+                '91041',
+                'OFICIO UNICO MACUCO',
+                'Cartório do Ofício Único de Cordeiro',
+                'CORDEIRO',
+                'hardcoded',
+                datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
+                'TRUE'
+            ])
+            print("  [CACHE] Match hardcoded 4450→91041 adicionado")
+        
         # Prepara dados
         rows = []
         for idx, row in new_matches_unique.iterrows():
