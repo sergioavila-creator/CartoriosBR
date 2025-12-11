@@ -765,6 +765,18 @@ def enrich_tjrj_with_cns(df_brutos):
                      'atribuicoes': atribs,
                      'nome_cartorio': nome
                  })
+                 
+                 # NOVO: Indexa também por primeiros 3 nomes do gestor
+                 partes = gestor.split()
+                 if len(partes) >= 3:
+                     gestor_3 = ' '.join(partes[:3])
+                     if gestor_3 not in cnj_map_gestor: cnj_map_gestor[gestor_3] = []
+                     cnj_map_gestor[gestor_3].append({
+                         'cns': cns,
+                         'municipio': mun,
+                         'atribuicoes': atribs,
+                         'nome_cartorio': nome
+                     })
          
          print(f"  -> Base indexada: {len(cnj_map_nome)} nomes, {len(cnj_map_gestor)} gestores.")
 
@@ -820,6 +832,30 @@ def enrich_tjrj_with_cns(df_brutos):
                      
                      pontuacao.sort(key=lambda x: x[0], reverse=True)
                      if pontuacao: return pontuacao[0][1]
+             
+             # 2b. Match Gestor por primeiros 3 nomes (se match exato falhou)
+             if tjrj_gestor:
+                 partes_tjrj = tjrj_gestor.split()
+                 if len(partes_tjrj) >= 3:
+                     gestor_3_tjrj = ' '.join(partes_tjrj[:3])
+                     if gestor_3_tjrj in cnj_map_gestor:
+                         candidatos = cnj_map_gestor[gestor_3_tjrj]
+                         cand_mun = [c for c in candidatos if c['municipio'] == tjrj_mun]
+                         if not cand_mun: cand_mun = candidatos
+                         
+                         if len(cand_mun) == 1:
+                             return cand_mun[0]['cns']
+                         # Se mais de 1, deixa para fuzzy decidir
+             
+             # 2c. Cross-city search (se designação contém outra cidade)
+             import re
+             for cidade_palavra in row['designacao'].upper().split():
+                 # Verifica se alguma palavra parece nome de cidade (3+ letras maiúsculas)
+                 if len(cidade_palavra) >= 3 and cidade_palavra != tjrj_mun:
+                     # Tenta buscar com essa cidade
+                     key_cross = f"{cidade_palavra}_{tjrj_nome}"
+                     if key_cross in cnj_map_nome: 
+                         return cnj_map_nome[key_cross]
 
              # 3. Fuzzy Match Nome
              candidates = [k for k in cnj_map_nome.keys() if k.startswith(f"{tjrj_mun}_")]
