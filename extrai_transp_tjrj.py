@@ -625,9 +625,57 @@ def cloud_main(request, run_enrichment=True):
     return 'Planilha atualizada com sucesso', 200
 
 # ####################################################################
+# NORMALIZAÇÃO DE DADOS TJRJ
+# ####################################################################
+def normalize_tjrj_designations(df_brutos):
+    """Normaliza designações TJRJ para melhorar matching com CNJ."""
+    import re
+    
+    print("  [NORMALIZAÇÃO] Aplicando regras de padronização...")
+    
+    if 'designacao' not in df_brutos.columns:
+        return df_brutos
+    
+    alteracoes = 0
+    
+    for idx, row in df_brutos.iterrows():
+        original = str(row['designacao'])
+        normalizado = original.upper().strip()
+        
+        # REGRA 1: Abreviações de tipo
+        normalizado = re.sub(r'\bOF DE JUSTICA\b', 'OFICIO DE JUSTICA', normalizado)
+        normalizado = re.sub(r'\bOF\b(?! DE)', 'OFICIO', normalizado)
+        normalizado = re.sub(r'\bDISTR\b', 'DISTRITO', normalizado)
+        normalizado = re.sub(r'\bSUBDIST\b', 'SUBDISTRITO', normalizado)
+        
+        # REGRA 2: Cidade CAPITAL → RIO DE JANEIRO
+        if 'cidade' in df_brutos.columns and row['cidade'] == 'CAPITAL':
+            df_brutos.at[idx, 'cidade'] = 'RIO DE JANEIRO'
+        
+        # REGRA 3: Números ordinais (com cautela)
+        if 'cidade' in df_brutos.columns:
+            cidade = row['cidade']
+            total_cidade = len(df_brutos[df_brutos['cidade'] == cidade])
+            
+            if total_cidade < 10:
+                normalizado = re.sub(r'\b([1-9])O\b', r'\1o', normalizado)
+                normalizado = re.sub(r'\b([1-9])A\b', r'\1a', normalizado)
+            
+            normalizado = re.sub(r'\b0([1-9])\b', r'\1', normalizado)
+        
+        # REGRA 4: Espaços
+        normalizado = re.sub(r'\s+', ' ', normalizado).strip()
+        
+        if normalizado != original.upper().strip():
+            df_brutos.at[idx, 'designacao'] = normalizado
+            alteracoes += 1
+    
+    print(f"  [NORMALIZAÇÃO] {alteracoes} designações normalizadas")
+    return df_brutos
+
+# ####################################################################
 # SERVIÇO INDEPENDENTE: ENRIQUECIMENTO DE CNS
 # ####################################################################
-
 def enrich_tjrj_with_cns(df_brutos):
     """
     Serviço Independente de População de CNS.
@@ -635,6 +683,9 @@ def enrich_tjrj_with_cns(df_brutos):
     com a base oficial do CNJ (Lista de Serventias).
     """
     print("\n[INFO] Iniciando Serviço de Enriquecimento de CNS...")
+    
+    # 0. Normalizar dados TJRJ antes do matching
+    df_brutos = normalize_tjrj_designations(df_brutos)
     
     # 1. Carregar Base de Conhecimento (Serventias CNJ)
     df_serventias = None
